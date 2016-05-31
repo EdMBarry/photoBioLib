@@ -1,0 +1,32 @@
+/* optical model */
+
+opticalModel/opticalModel/opticalModel.C
+
+opticalModel/opticalModel/newOpticalModel.C
+
+opticalModel/opticalP1/opticalP1.C
+
+opticalModel/opticalDOM/opticalDOM.C
+
+opticalModel/radiantIntensityRay/radiantIntensityRay.C
+
+
+/* Scatter model */
+subModels/scatterModel/scatterModel/scatterModel.C
+subModels/scatterModel/scatterModel/newScatterModel.C
+subModels/scatterModel/constantScatter/constantScatter.C
+
+
+/* Absorption/Emission model */
+subModels/absorptionEmissionModel/absorptionEmissionModel/absorptionEmissionModel.C
+subModels/absorptionEmissionModel/absorptionEmissionModel/newAbsorptionEmissionModel.C
+subModels/absorptionEmissionModel/bioMediaAbsorption/bioMediaAbsorption.C
+
+
+/* Boundary conditions */
+/*derivedFvPatchFields/semiTransSurface/semiTransSurface/semiTransSurfaceMixedFvPatchScalarField.C
+derivedFvPatchFields/reflectiveSureface/reflectiveSurfaceMixedFvPatchScalarField.C
+*/
+
+
+LIB = $(FOAM_USER_LIBBIN)/libopticalModels
