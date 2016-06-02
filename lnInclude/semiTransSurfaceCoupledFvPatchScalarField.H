@@ -1,1 +1,0 @@
-../derivedFvPatchFields/semiTransSurface/semiTransSurfaceCoupled/semiTransSurfaceCoupledFvPatchScalarField.H

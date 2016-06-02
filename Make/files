@@ -1,32 +1,28 @@
-/* optical model */
+/* light model */
 
-opticalModel/opticalModel/opticalModel.C
+lightModel/lightModel/lightModel.C
+lightModel/lightModel/newLightModel.C
 
-opticalModel/opticalModel/newOpticalModel.C
+lightModel/lightDOM/lightDOM/lightDOM.C  
+lightModel/lightDOM/lightIntensityRay/lightIntensityRay.C 
 
-opticalModel/opticalP1/opticalP1.C
+lightModel/lightDOM/phaseFunctionModel/phaseFunctionModel/phaseFunctionModel.C 
+lightModel/lightDOM/phaseFunctionModel/phaseFunctionModel/newPhaseFunctionModel.C 
+lightModel/lightDOM/phaseFunctionModel/userDefinedPhaseFunction/userDefinedPhaseFunction.C
+lightModel/lightDOM/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
 
-opticalModel/opticalDOM/opticalDOM.C
+subModels/extinctionModel/extinctionModel/extinctionModel.C
+subModels/extinctionModel/extinctionModel/newExtinctionModel.C
+subModels/extinctionModel/wideBandExtinction/wideBandExtinction.C
 
-opticalModel/radiantIntensityRay/radiantIntensityRay.C
+derivedFvPatchFields/reflectiveSurface/reflectiveSurfaceMixedFvPatchScalarField.C
+derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.C
+derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.C
+derivedFvPatchFields/transExteriorSurface/transExteriorSurfaceMixedFvPatchScalarField.C
+derivedFvPatchFields/transInteriorSurface/transInteriorSurfaceCoupledFvPatchScalarField.C
+derivedFvPatchFields/multiBandTransInterior/multiBandTransInteriorCoupledFvPatchScalarField.C
+derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.C
 
-
-/* Scatter model */
-subModels/scatterModel/scatterModel/scatterModel.C
-subModels/scatterModel/scatterModel/newScatterModel.C
-subModels/scatterModel/constantScatter/constantScatter.C
-
-
-/* Absorption/Emission model */
-subModels/absorptionEmissionModel/absorptionEmissionModel/absorptionEmissionModel.C
-subModels/absorptionEmissionModel/absorptionEmissionModel/newAbsorptionEmissionModel.C
-subModels/absorptionEmissionModel/bioMediaAbsorption/bioMediaAbsorption.C
-
-
-/* Boundary conditions */
-/*derivedFvPatchFields/semiTransSurface/semiTransSurface/semiTransSurfaceMixedFvPatchScalarField.C
-derivedFvPatchFields/reflectiveSureface/reflectiveSurfaceMixedFvPatchScalarField.C
-*/
+LIB = $(FOAM_USER_LIBBIN)/liblight
 
 
-LIB = $(FOAM_USER_LIBBIN)/libopticalModels

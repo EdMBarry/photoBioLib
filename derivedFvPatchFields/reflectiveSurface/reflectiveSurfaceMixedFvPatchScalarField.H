@@ -25,7 +25,7 @@ Class
     Foam::semiTransSurfaceMixedFvPatchScalarField
 
 Description
-    optical temperature specified
+    light temperature specified
 
 SourceFiles
     semiTransSurfaceMixedFvPatchScalarField.C
@@ -41,7 +41,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace light
 {
 /*---------------------------------------------------------------------------*\
         Class reflectiveSurfaceMixedFvPatchScalarField Declaration
@@ -53,9 +53,11 @@ class reflectiveSurfaceMixedFvPatchScalarField
 {
     // Private data
 
-        //- incident optical angle distribution
-
-
+		scalar  diffuseFraction_; 
+        scalar  reflectionCoef_; 
+   //     DynamicList<scalar,1,0>  angleDist; 
+        
+        
 public:
 
     //- Runtime type information
@@ -127,8 +129,7 @@ public:
     // Member functions
 
         // Access
-
-
+             
         // Evaluation functions
 
             //- Update the coefficients associated with the patch field
@@ -137,7 +138,7 @@ public:
         // I-O
 
             //- Write
-            virtual void write(Ostream&) const;
+             void write(Ostream&) const;
 };
 
 

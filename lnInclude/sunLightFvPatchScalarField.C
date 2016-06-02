@@ -1,1 +1,0 @@
-../derivedFvPatchFields/sunLight/sunLightFvPatchScalarField.C

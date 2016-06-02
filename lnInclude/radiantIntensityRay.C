@@ -1,1 +1,0 @@
-../opticalModel/radiantIntensityRay/radiantIntensityRay.C

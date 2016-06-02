@@ -1,1 +1,0 @@
-../derivedFvPatchFields/semiTransSurface/semiTransSurface/semiTransSurfaceMixedFvPatchScalarField.C

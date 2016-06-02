@@ -1,1 +1,0 @@
-../derivedFvPatchFields/lampLight/lampLightFvPatchFieldsFwd.H

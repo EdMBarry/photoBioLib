@@ -28,13 +28,14 @@ License
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "opticalDOM.H"
+#include "lightDOM.H"
 #include "mathematicalConstants.H"
 
+using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::
+Foam::light::reflectiveSurfaceMixedFvPatchScalarField::
 reflectiveSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -42,10 +43,8 @@ reflectiveSurfaceMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF),
-    n1_(0.0),
-    n2_(0.0),
-    d0_(vector::zero),
-    I0_(0.0)
+    diffuseFraction_(0.0),
+    reflectionCoef_(0.0)
 {
     refValue() = 0.0;
     refGrad() = 0.0;
@@ -53,7 +52,7 @@ reflectiveSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::
+Foam::light::reflectiveSurfaceMixedFvPatchScalarField::
 reflectiveSurfaceMixedFvPatchScalarField
 (
     const reflectiveSurfaceMixedFvPatchScalarField& ptf,
@@ -63,14 +62,12 @@ reflectiveSurfaceMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(ptf, p, iF, mapper),
-    n1_(ptf.n1_),
-    n2_(ptf.n2_),
-    d0_(ptf.d0_),
-    I0_(ptf.I0_)
+    diffuseFraction_(ptf.diffuseFraction_),
+    reflectionCoef_(ptf.reflectionCoef_)
 {}
 
 
-Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::
+Foam::light::reflectiveSurfaceMixedFvPatchScalarField::
 reflectiveSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -79,10 +76,8 @@ reflectiveSurfaceMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF),
-    n1_(readScalar(dict.lookup("n1"))), //scalarField("n1", dict),
-	n2_(readScalar(dict.lookup("n2"))), // scalarField("n2", dict);
-  	d0_(dict.lookup("d0")), // scalarField("d0", dict);
-    I0_(readScalar(dict.lookup("I0")))   //scalarField("I0", dict) ;
+    diffuseFraction_(readScalar(dict.lookup("diffuseFraction"))),
+        reflectionCoef_(readScalar(dict.lookup("reflectionCoef")))
 {
 
 
@@ -92,8 +87,7 @@ reflectiveSurfaceMixedFvPatchScalarField
         (
             scalarField("value", dict, p.size())
         );
-        
-        
+           
         refValue() = scalarField("refValue", dict, p.size());
         refGrad() = scalarField("refGradient", dict, p.size());
         valueFraction() = scalarField("valueFraction", dict, p.size());
@@ -111,27 +105,25 @@ reflectiveSurfaceMixedFvPatchScalarField
         
     }
     
-//    Info << "\n n1  \t" << n1_ << endl;
+//    Info << "\n n1  \t" << diffuseFraction_ << endl;
 
     
 }
 
 
-Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::
+Foam::light::reflectiveSurfaceMixedFvPatchScalarField::
 reflectiveSurfaceMixedFvPatchScalarField
 (
     const reflectiveSurfaceMixedFvPatchScalarField& ptf
 )
 :
     mixedFvPatchScalarField(ptf),
-    n1_(ptf.n1_),
-    n2_(ptf.n2_),
-    d0_(ptf.d0_),
-    I0_(ptf.I0_)
+    diffuseFraction_(ptf.diffuseFraction_),
+    reflectionCoef_(ptf.reflectionCoef_)
 {}
 
 
-Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::
+Foam::light::reflectiveSurfaceMixedFvPatchScalarField::
 reflectiveSurfaceMixedFvPatchScalarField
 (
     const reflectiveSurfaceMixedFvPatchScalarField& ptf,
@@ -139,125 +131,175 @@ reflectiveSurfaceMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(ptf, iF),
-    n1_(ptf.n1_),
-    n2_(ptf.n2_),
-    d0_(ptf.d0_),
-    I0_(ptf.I0_)
+    diffuseFraction_(ptf.diffuseFraction_),
+    reflectionCoef_(ptf.reflectionCoef_)
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::
+void Foam::light::reflectiveSurfaceMixedFvPatchScalarField::
 updateCoeffs()
 {
     if (this->updated())
     {
         return;
     }
+    
+    // Since we're inside initEvaluate/evaluate there might be processor
+    // comms underway. Change the tag we use.
+    int oldTag = UPstream::msgType();
+    UPstream::msgType() = oldTag+1;
 
       
     scalarField& Iw = *this;
     
-    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+    const lightModel& light = db().lookupObject<lightModel>("lightProperties");
 
-    const opticalDOM& dom(refCast<const opticalDOM>(optical));
-
+    const lightDOM& dom(refCast<const lightDOM>(light));
+ 
+    if (dom.nBand() == 0)
+    {
+        FatalErrorIn
+        (
+            "Foam::light::"
+            "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
+        )   << " a non-grey boundary condition is used with a grey "
+            << "absorption model" << nl << exit(FatalError);
+    }
+    
     label rayId = -1;
-    label lambdaId = -1;
-    dom.setRayIdLambdaId(dimensionedInternalField().name(), rayId, lambdaId);
+    dom.setRayId(dimensionedInternalField().name(), rayId);
+
+    const label patchI = patch().index();
+    const  vectorField n = patch().Sf()/patch().magSf();
     
-    if (dom.nLambda() != 1)
-    {	FatalErrorIn("reflectiveSurfaceMixedFvPatchScalarField::updateCoeffs") 
-          << "absorption model" << nl << exit(FatalError);  }
+    const  label iBand = dom.IRay(rayId).iBand();
+    const  label nAngle = dom.nAngle();     
+    const  label nTheta = dom.nTheta();    
+    const  label nPhi = dom.nPhi();    
+    const  vector& bdRayDir = dom.IRay(rayId).d();
+    const  scalar bdOmega  = dom.IRay(rayId).omega();
     
-    vectorField n = patch().Sf()/patch().magSf();
+    const scalar deltaPhi   =  pi /(2.0*nPhi);
+    const scalar deltaTheta =  pi  /nTheta;
+    label  npPhi  = dom.NumPixelPhi();    
+    label  npTheta = dom.NumPixelTheta();  
+    const scalar bdRayPhi  = dom.IRay(rayId).phi();
+    const scalar bdRayTheta  = dom.IRay(rayId).theta();
+
+   // const fvPatchScalarField&  dsFace =  dom.diffusionScatter().boundaryField()[patchI];
     
-//   const label patchI = patch().index();
-//   radiantIntensityRay& ray = const_cast<radiantIntensityRay&>(dom.IRay(rayId));
-//    const scalarField& IFace =  dom.IRay(rayId).ILambda(lambdaId).boundaryField()[patchI];  
-//   const vector& dAve = dom.IRay(rayId).dAve(); 
-//    ray.Qr().boundaryField()[patchI] += Iw*(n & ray.dAve());    
+	if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+	{	
+		npTheta = 1;
+    }
+    if (dimensionedInternalField().mesh().nSolutionD() == 1)    //2D (X & Y)
+	{	
+		npTheta = 1; npPhi =1;
+    }
+    
+  	scalar spectacular = 0.0;
+	scalar diffusive = 0.0;
 
-    const vector& d = dom.IRay(rayId).dAve();
-   
-
-    scalar sinTheta1 ,sinTheta2,sinTheta0;
-    scalar  r1,r2,R;
-    scalar cosTheta0,cosTheta1,cosTheta2;
-
-
+	
     forAll(Iw, faceI)
     {
-
-        cosTheta0 = -n[faceI] & d0_ ;  
-        cosTheta2 = -n[faceI] & d  ; // / mag(d);                //    /mag(n[faceI])
-        sinTheta2 = mag(-n[faceI] ^ d )  ;  //sinTheta2 
-       sinTheta0  = mag(-n[faceI] ^ d0_); //  sinTheta0 
-
-         
-  
-        if ( cosTheta2 > 0.0  &&  cosTheta0 > 0.0)   // direction out of the wall
-        {
-            sinTheta2 = mag(-n[faceI] ^ d)   ; //  / mag(d);       //  /mag(n[faceI])
-            sinTheta1 = n2_ * sinTheta2 / n1_ ; 
-            
-            if(sinTheta1 <= 1 )
-            {
-
-            cosTheta1 = Foam::cos(Foam::asin(sinTheta1));
-            
-      //      if ( mag(Foam::asin(sinTheta0) - Foam::asin(sinTheta1))*180/Foam::mathematicalConstant::pi < 5 )
-            {
-				r1 = (n1_*cosTheta1 - n2_*cosTheta2 )
-				  /  (n1_*cosTheta1 + n2_*cosTheta2 );
-				r2 = (n2_*cosTheta1 - n1_*cosTheta2 )
-				  /  (n1_*cosTheta2 + n2_*cosTheta1 );
-            
-				R = 0.5*(r1*r1 + r2*r2);
-                        
-				refValue()[faceI] = I0_ * Foam::cos(Foam::asin(sinTheta0) - Foam::asin(sinTheta1)) * (1 - R) ;         
-			} 
-	//		else
-			{
-//				refValue()[faceI] = 0.0 ;        
+         spectacular = 0.0;
+	     diffusive = 0.0;	
+	     vector surfNorm = -n[faceI];
+         scalar cosA = surfNorm& bdRayDir; 
+	
+	   if(cosA > 0.0 )    // direction out of the wall   
+       {
+			if( diffuseFraction_ > 0)
+			{	 
+				for (label jAngle = 0; jAngle < nAngle; jAngle++)
+				{         
+				label sweepRayID = jAngle + iBand*nAngle;
+				vector sweepDir = dom.IRay(sweepRayID).d();
+				vector sweepdAve = dom.IRay(sweepRayID).dAve();   
+				
+				scalar cosB = surfNorm& sweepDir; 
+			
+				if(  cosB > 0.0 )      // direction out of the wall   
+				{ 
+				    vector reflecIncidentDir = sweepDir - 2*cosB*surfNorm;		
+					label reflecIncidentRay = -1;
+                    dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
+                    const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];     		
+       
+					diffusive = diffusive + reflecFace[faceI]*mag(surfNorm & sweepdAve) ;  
+				}
+				}
 			}
-            
-            refGrad()[faceI] = 0.0;  //not used
-            valueFraction()[faceI] = 1.0;
-		    }
 
+
+		   for (label i = 1; i <= npTheta; i++)
+           {
+			scalar pxRayTheta = bdRayTheta - 0.5*deltaTheta + 0.5*(2*i -1)*deltaTheta/npTheta;
+				    
+			for (label j = 1; j <= npPhi; j++)
+			{
+				scalar pxRayPhi = bdRayPhi - 0.5*deltaPhi + 0.5*(2*j -1)*deltaPhi/npPhi;
+					
+				scalar sinTheta = Foam::sin(pxRayTheta);
+				scalar cosTheta = Foam::cos(pxRayTheta);
+				scalar sinPhi = Foam::sin(pxRayPhi);
+				scalar cosPhi = Foam::cos(pxRayPhi);
+					
+				vector  pixelDir = vector(sinTheta*cosPhi , sinTheta* sinPhi , cosTheta);
+					
+				scalar cosB =  pixelDir & surfNorm;
+					
+				if ( cosB > 0.0)   
+				{
+						
+					scalar  pixelOmega = 2.0*sinTheta*Foam::sin(deltaTheta/2.0/npTheta)*deltaPhi/npPhi;
+
+					vector reflecIncidentDir = pixelDir - 2*cosB*surfNorm;		
+					
+					label reflecIncidentRay = -1;
+                    dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
+                    
+                    const  scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];                                	
+
+					spectacular = spectacular + reflecFace[faceI]*pixelOmega;   
+				
+				}
+			}
+		   }
+
+   //         label  i0 = label(Foam::acos(cosA)/deltaPhi);
+            refValue()[faceI] = reflectionCoef_*
+					(diffuseFraction_*diffusive/pi/2  + (1.0 - diffuseFraction_)*spectacular/bdOmega); 
+            refGrad()[faceI] = 0.0;
+            valueFraction()[faceI] = 1.0;
         }
-        else                         // direction into the wall   
+        else
         {
-            
+            // direction into the wall
             valueFraction()[faceI] = 0.0;
             refGrad()[faceI] = 0.0;
             refValue()[faceI] = 0.0; //not used
-                   
         }
-        
-
     }
-    
-    
-    mixedFvPatchScalarField::updateCoeffs(); 
-    
 
-
+    UPstream::msgType() = oldTag;
+    mixedFvPatchScalarField::updateCoeffs();
+    
 }
 
 
-void Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::write
+void Foam::light::reflectiveSurfaceMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
 {
     mixedFvPatchScalarField::write(os);
-    os.writeKeyword("n1") << n1_ << token::END_STATEMENT << nl;
-    os.writeKeyword("n2") << n2_ << token::END_STATEMENT << nl;
-    os.writeKeyword("d0") << d0_ << token::END_STATEMENT << nl;
-    os.writeKeyword("I0") << I0_ << token::END_STATEMENT << nl;
+    os.writeKeyword("reflectionCoef  ")  << reflectionCoef_ << token::END_STATEMENT << nl;
+    os.writeKeyword("diffuseFraction  ")  << diffuseFraction_ << token::END_STATEMENT << nl;
+
 }
 
 
@@ -265,7 +307,7 @@ void Foam::optical::reflectiveSurfaceMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace optical
+namespace light
 {
     makePatchTypeField
     (
