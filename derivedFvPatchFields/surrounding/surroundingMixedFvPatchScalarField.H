@@ -25,7 +25,7 @@ Class
     Foam::semiTransSurfaceMixedFvPatchScalarField
 
 Description
-    light temperature specified
+    optical temperature specified
 
 SourceFiles
     semiTransSurfaceMixedFvPatchScalarField.C
@@ -41,7 +41,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 /*---------------------------------------------------------------------------*\
         Class surroundingMixedFvPatchScalarField Declaration
@@ -53,7 +53,7 @@ class surroundingMixedFvPatchScalarField
 {
     // Private data
 
-		scalar  surroundLight_; 
+		scalar  surroundOptical_; 
    
         
 public:

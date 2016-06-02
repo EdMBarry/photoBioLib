@@ -25,7 +25,7 @@ Class
     Foam::transExteriorSurfaceMixedFvPatchScalarField
 
 Description
-    light temperature specified
+    optical temperature specified
 
 SourceFiles
     transExteriorSurfaceMixedFvPatchScalarField.C
@@ -41,7 +41,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 /*---------------------------------------------------------------------------*\
         Class transExteriorSurfaceMixedFvPatchScalarField Declaration
@@ -53,18 +53,18 @@ class transExteriorSurfaceMixedFvPatchScalarField
 {
     // Private data
 
-        //- incident light angle distribution
+        //- incident optical angle distribution
         scalar  nNbg_ ;
         scalar  nOwn_;       
-        scalar  I0_;              // incident light intensity
+        scalar  I0_;              // incident optical intensity
         label   nBands_;
         scalar  diffuseFraction_;    
         scalar  beamWidthPhi_	;
         scalar  beamWidthTheta_	;
-        vector  beamDir_ ;         // incident light direction
+        vector  beamDir_ ;         // incident optical direction
         bool beamNormToSurf_;
 		label  initFlag_ ; 
-    	DynamicList<scalar,1,0>  lightBandDist_;
+    	DynamicList<scalar,1,0>  opticalBandDist_;
 		autoPtr<scalarField>   spectacularRefraction;
 		autoPtr<scalarField>   diffusiveRefraction;	
 		

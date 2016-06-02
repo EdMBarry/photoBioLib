@@ -1,0 +1,3 @@
+LOCAL_OBJECTS = \
+regionProperties.o\
+multiRegionOpticalFoam.o

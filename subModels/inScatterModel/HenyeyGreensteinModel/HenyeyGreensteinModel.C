@@ -31,7 +31,7 @@ License
 
 namespace Foam
 {
-    namespace light
+    namespace optical
     {
         defineTypeNameAndDebug(HenyeyGreensteinModel, 0);
 
@@ -47,7 +47,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::HenyeyGreensteinModel::HenyeyGreensteinModel
+Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
 (
     const dictionary& dict
   //  , const fvMesh& mesh
@@ -58,8 +58,8 @@ Foam::light::HenyeyGreensteinModel::HenyeyGreensteinModel
 {
      coeffsDict_.lookup("subAngleNum") >> subAngleNum;
      
-     const lightModel& light = db().lookupObject<lightModel>("lightProperties");
-     const lightDOM& dom(refCast<const lightDOM>(light));
+     const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+     const opticalDOM& dom(refCast<const opticalDOM>(optical));
      
      nBands_ = dom.nBands();   //    coeffsDict_.lookup("nBand") >> nBands_;
      asymmetryFactor_.setSize(nBands_);   
@@ -155,14 +155,14 @@ Foam::light::HenyeyGreensteinModel::HenyeyGreensteinModel
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::light::HenyeyGreensteinModel::~HenyeyGreensteinModel()
+Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
- Foam::scalar  Foam::light::HenyeyGreensteinModel::correct
+ Foam::scalar  Foam::optical::HenyeyGreensteinModel::correct
 (
           const   label rayI,
           const   label rayJ,
@@ -173,7 +173,7 @@ Foam::light::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 
 }
 
- Foam::scalar  Foam::light::HenyeyGreensteinModel::hg3d
+ Foam::scalar  Foam::optical::HenyeyGreensteinModel::hg3d
 (
 	const scalar cosV,
 	const scalar g
@@ -183,7 +183,7 @@ Foam::light::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 
 }
 
- Foam::scalar  Foam::light::HenyeyGreensteinModel::hg2d
+ Foam::scalar  Foam::optical::HenyeyGreensteinModel::hg2d
 (
 	const scalar cosV,
 	const scalar g

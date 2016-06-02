@@ -481,8 +481,8 @@ $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/sphericalTensorFieldField.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/sphericalTensorFieldField.C \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/tensorFieldField.C \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/calculatedFvPatchFields.H \
-lnInclude/lightDOM.H \
-lnInclude/lightModel.H \
+lnInclude/opticalDOM.H \
+lnInclude/opticalModel.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrices.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatricesFwd.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvScalarMatrix.H \
@@ -522,10 +522,10 @@ $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/LduMatrixSolver.C \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/DiagonalSolver.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/DiagonalSolver.C \
 lnInclude/extinctionModel.H \
-lnInclude/lightIntensityRay.H \
+lnInclude/opticalIntensityRay.H \
 lnInclude/phaseFunctionModel.H \
-lnInclude/lightIntensityRayI.H \
-lnInclude/lightDOMI.H \
+lnInclude/opticalIntensityRayI.H \
+lnInclude/opticalDOMI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/constants.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/fundamentalConstants.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/universalConstants.H \

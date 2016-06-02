@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::light::constantScatter
+    Foam::optical::constantScatter
 
 Description
-    Constant light scatter coefficient
+    Constant optical scatter coefficient
 
 SourceFiles
     scatterModel.C
@@ -47,7 +47,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 
 /*---------------------------------------------------------------------------*\
@@ -154,7 +154,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace light
+} // End namespace optical
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -30,7 +30,7 @@ License
 
 namespace Foam
 {
-    namespace light
+    namespace optical
     {
         defineTypeNameAndDebug(wideBandExtinction, 0);
 
@@ -47,7 +47,7 @@ namespace Foam
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 
-Foam::light::wideBandExtinction::wideBandExtinction
+Foam::optical::wideBandExtinction::wideBandExtinction
 (
     const dictionary& dict
  //   , const fvMesh& mesh
@@ -88,18 +88,18 @@ Foam::light::wideBandExtinction::wideBandExtinction
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::light::wideBandExtinction::~wideBandExtinction()
+Foam::optical::wideBandExtinction::~wideBandExtinction()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
       
-Foam::scalar Foam::light::wideBandExtinction::a( const label bandI ) const
+Foam::scalar Foam::optical::wideBandExtinction::a( const label bandI ) const
 {        
 	return  aBand_[bandI];
 }
          
-Foam::scalar Foam::light::wideBandExtinction::s( const label bandI ) const
+Foam::scalar Foam::optical::wideBandExtinction::s( const label bandI ) const
 {        
 	return  sBand_[bandI];
 }
@@ -108,14 +108,14 @@ Foam::scalar Foam::light::wideBandExtinction::s( const label bandI ) const
 
 /*
  * 
- * Foam::scalar  Foam::light::wideBandExtinction::k( const label bandI ) const
+ * Foam::scalar  Foam::optical::wideBandExtinction::k( const label bandI ) const
 {
 	return  kBand_[bandI];
 }
            
            
 Foam::tmp<Foam::volScalarField>
-Foam::light::wideBandExtinction::addIntensity
+Foam::optical::wideBandExtinction::addIntensity
 (
     const label i,
     const volScalarField& ILambda
@@ -126,7 +126,7 @@ Foam::light::wideBandExtinction::addIntensity
 
 
 
-void Foam::light::wideBandExtinction::correct
+void Foam::optical::wideBandExtinction::correct
 (
     volScalarField& k,
     PtrList<volScalarField>& kLambda

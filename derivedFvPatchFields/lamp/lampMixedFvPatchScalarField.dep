@@ -443,8 +443,8 @@ derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/volMesh.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/GeoMesh.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/calculatedFvPatchFields.H
-derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/lightDOM.H
-derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/lightModel.H
+derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/opticalDOM.H
+derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/opticalModel.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrices.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatricesFwd.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvScalarMatrix.H
@@ -471,10 +471,10 @@ derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/coupledFvPatchField.C
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrixSolve.C
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/extinctionModel.H
-derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/lightIntensityRay.H
+derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/opticalIntensityRay.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/phaseFunctionModel.H
-derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/lightIntensityRayI.H
-derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/lightDOMI.H
+derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/opticalIntensityRayI.H
+derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: lnInclude/opticalDOMI.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/constants.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/fundamentalConstants.H
 derivedFvPatchFields/lamp/lampMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/universalConstants.H

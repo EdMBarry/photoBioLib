@@ -31,14 +31,14 @@ License
 #include "mappedPatchBase.H"
 #include "regionProperties.H"
 
-#include "lightDOM.H"
+#include "opticalDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -56,7 +56,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 }
 
 
-Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const transInteriorSurfaceCoupledFvPatchScalarField& ptf,
@@ -72,7 +72,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 {}
 
 
-Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -129,7 +129,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 }
 
 
-Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const transInteriorSurfaceCoupledFvPatchScalarField& wtcsf,
@@ -145,7 +145,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs()
+void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs()
 {
 	
     if (updated())
@@ -170,9 +170,9 @@ void Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs()
     scalarField Ic(patchInternalField());
     scalarField& Iw = *this;
     
-    const lightModel& light = db().lookupObject<lightModel>("lightProperties");
+    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
 
-    const lightDOM& dom(refCast<const lightDOM>(light));
+    const opticalDOM& dom(refCast<const opticalDOM>(optical));
     
     label BDrayId = -1;
     dom.setRayId(dimensionedInternalField().name(), BDrayId);
@@ -377,7 +377,7 @@ void Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs()
 
 
 
-void Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::write
+void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -394,7 +394,7 @@ void Foam::light::transInteriorSurfaceCoupledFvPatchScalarField::write
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 makePatchTypeField
 (

@@ -31,14 +31,14 @@ License
 #include "mappedPatchBase.H"
 #include "regionProperties.H"
 
-#include "lightDOM.H"
+#include "opticalDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -50,7 +50,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(0.0),
     diffuseFraction_(0.0), 
     nBands_(1)
- //  , lightBandDist_(null)
+ //  , opticalBandDist_(null)
 {
     this->refValue() = 0.0;
     this->refGrad() = 0.0;
@@ -58,7 +58,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
 }
 
 
-Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const multiBandTransInteriorCoupledFvPatchScalarField& ptf,
@@ -72,11 +72,11 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(ptf.nOwn_),
     diffuseFraction_(ptf.diffuseFraction_),
     nBands_(ptf.nBands_),
-    lightBandDist_(ptf.lightBandDist_)
+    opticalBandDist_(ptf.opticalBandDist_)
 {}
 
 
-Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -90,8 +90,8 @@ multiBandTransInteriorCoupledFvPatchScalarField
 	diffuseFraction_(readScalar(dict.lookup("diffuseFraction"))),
     nBands_(readLabel(dict.lookup("nBands")))
 {
-   lightBandDist_.setSize(nBands_);   
-   dict.lookup("lightBandDist") >> lightBandDist_;
+   opticalBandDist_.setSize(nBands_);   
+   dict.lookup("opticalBandDist") >> opticalBandDist_;
    
     if (!isA<mappedPatchBase>(this->patch().patch()))
     {
@@ -136,7 +136,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
 }
 
 
-Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const multiBandTransInteriorCoupledFvPatchScalarField& wtcsf,
@@ -148,13 +148,13 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(wtcsf.nOwn_),
     diffuseFraction_(wtcsf.diffuseFraction_),
     nBands_(wtcsf.nBands_),
-    lightBandDist_(wtcsf.lightBandDist_)
+    opticalBandDist_(wtcsf.opticalBandDist_)
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs()
+void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs()
 {
 	
     if (updated())
@@ -171,9 +171,9 @@ void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs(
     scalarField Ic(patchInternalField());
     scalarField& Iw = *this;
     
-    const lightModel& light = db().lookupObject<lightModel>("lightProperties");
+    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
 
-    const lightDOM& dom(refCast<const lightDOM>(light));
+    const opticalDOM& dom(refCast<const opticalDOM>(optical));
     
     label BDrayId = -1;
     dom.setRayId(dimensionedInternalField().name(), BDrayId);
@@ -307,7 +307,7 @@ void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs(
 						dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	
           		    
 						diffusive = diffusive
-						+ (NbrRaySet[refracIncidentRay][faceI]*lightBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
+						+ (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
 					   }
 					   else
 					   {diffusive = diffusive + reflecFace[faceI]*R*mag(surfNorm & sweepdAve);  }  //
@@ -375,7 +375,7 @@ void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs(
           		    dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	// this is important 
             
 					spectacular = spectacular 
-					+ (NbrRaySet[refracIncidentRay][faceI]*lightBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
+					+ (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
 					}
 				    else
 				    {
@@ -417,7 +417,7 @@ void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs(
 
 
 
-void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::write
+void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -434,7 +434,7 @@ void Foam::light::multiBandTransInteriorCoupledFvPatchScalarField::write
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 makePatchTypeField
 (

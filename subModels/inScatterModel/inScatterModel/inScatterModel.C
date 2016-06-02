@@ -30,7 +30,7 @@ License
 
 namespace Foam
 {
-    namespace light
+    namespace optical
     {
         defineTypeNameAndDebug(inScatterModel, 0);
         defineRunTimeSelectionTable(inScatterModel, dictionary);
@@ -40,7 +40,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::inScatterModel::inScatterModel
+Foam::optical::inScatterModel::inScatterModel
 (
     const dictionary& dict
   //  ,const fvMesh& mesh
@@ -52,19 +52,19 @@ Foam::light::inScatterModel::inScatterModel
 
 // * * * * * * * * * * * * * * * * Destructor    * * * * * * * * * * * * * * //
 
-Foam::light::inScatterModel::~inScatterModel()
+Foam::optical::inScatterModel::~inScatterModel()
 {}
 
 
 // ************************************************************************* //
 
 
-bool  Foam::light::inScatterModel::inScatter() const
+bool  Foam::optical::inScatterModel::inScatter() const
 {
 return false;
 }
 
-Foam::void  Foam::light::inScatterModel::update
+Foam::void  Foam::optical::inScatterModel::update
 (
           const  label   nPhi,
           const   label  nTheta,
@@ -74,7 +74,7 @@ Foam::void  Foam::light::inScatterModel::update
 {
 }
 
-Foam::scalar  Foam::light::inScatterModel::correct
+Foam::scalar  Foam::optical::inScatterModel::correct
 (
           const  label  rayI,
           const   label  rayJ,
@@ -85,7 +85,7 @@ return 0.0;
 }
 
 /*
-Foam::scalar  Foam::light::inScatterModel::correct
+Foam::scalar  Foam::optical::inScatterModel::correct
 (
           const  scalar  angle,
           const   label  iBand

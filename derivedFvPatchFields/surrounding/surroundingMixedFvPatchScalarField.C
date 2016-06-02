@@ -28,14 +28,14 @@ License
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "lightDOM.H"
+#include "opticalDOM.H"
 #include "mathematicalConstants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::surroundingMixedFvPatchScalarField::
+Foam::optical::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -43,7 +43,7 @@ surroundingMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF),
-    surroundLight_(0.0)
+    surroundOptical_(0.0)
 {
     refValue() = 0.0;
     refGrad() = 0.0;
@@ -51,7 +51,7 @@ surroundingMixedFvPatchScalarField
 }
 
 
-Foam::light::surroundingMixedFvPatchScalarField::
+Foam::optical::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const surroundingMixedFvPatchScalarField& ptf,
@@ -61,11 +61,11 @@ surroundingMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(ptf, p, iF, mapper),
-    surroundLight_(ptf.surroundLight_)
+    surroundOptical_(ptf.surroundOptical_)
 {}
 
 
-Foam::light::surroundingMixedFvPatchScalarField::
+Foam::optical::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -74,7 +74,7 @@ surroundingMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF),
-    surroundLight_(readScalar(dict.lookup("surroundLight")))
+    surroundOptical_(readScalar(dict.lookup("surroundOptical")))
 {
 
 
@@ -105,18 +105,18 @@ surroundingMixedFvPatchScalarField
 }
 
 
-Foam::light::surroundingMixedFvPatchScalarField::
+Foam::optical::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const surroundingMixedFvPatchScalarField& ptf
 )
 :
     mixedFvPatchScalarField(ptf),
-    surroundLight_(ptf.surroundLight_)
+    surroundOptical_(ptf.surroundOptical_)
 {}
 
 
-Foam::light::surroundingMixedFvPatchScalarField::
+Foam::optical::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const surroundingMixedFvPatchScalarField& ptf,
@@ -124,13 +124,13 @@ surroundingMixedFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(ptf, iF),
-    surroundLight_(ptf.surroundLight_)
+    surroundOptical_(ptf.surroundOptical_)
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::light::surroundingMixedFvPatchScalarField::
+void Foam::optical::surroundingMixedFvPatchScalarField::
 updateCoeffs()
 {
     if (this->updated())
@@ -145,9 +145,9 @@ updateCoeffs()
       
     scalarField& Iw = *this;
     
-    const lightModel& light = db().lookupObject<lightModel>("lightProperties");
+    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
 
-    const lightDOM& dom(refCast<const lightDOM>(light));
+    const opticalDOM& dom(refCast<const opticalDOM>(optical));
  
     
     label rayId = -1;
@@ -164,7 +164,7 @@ updateCoeffs()
 	
 	   if((-n[faceI] & bdRayDir) > 0.0 )    // direction out of the wall   
        {	
-            refValue()[faceI] = surroundLight_/nBand/4/pi ; ; 
+            refValue()[faceI] = surroundOptical_/nBand/4/pi ; ; 
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;
         }
@@ -183,13 +183,13 @@ updateCoeffs()
 }
 
 
-void Foam::light::surroundingMixedFvPatchScalarField::write
+void Foam::optical::surroundingMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
 {
     mixedFvPatchScalarField::write(os);
-    os.writeKeyword("surroundLight  ")  << surroundLight_ << token::END_STATEMENT << nl;
+    os.writeKeyword("surroundOptical  ")  << surroundOptical_ << token::END_STATEMENT << nl;
 
 }
 
@@ -198,7 +198,7 @@ void Foam::light::surroundingMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
     makePatchTypeField
     (

@@ -28,14 +28,14 @@ License
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "lightDOM.H"
+#include "opticalDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::solarSurfaceMixedFvPatchScalarField::
+Foam::optical::solarSurfaceMixedFvPatchScalarField::
 solarSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -55,7 +55,7 @@ solarSurfaceMixedFvPatchScalarField
  //   visualAngle_(0.0),
     
     nBands_(1)
- //   lightBandDist_(null),
+ //   opticalBandDist_(null),
 
 {
     refValue() = 0.0;
@@ -64,7 +64,7 @@ solarSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::light::solarSurfaceMixedFvPatchScalarField::
+Foam::optical::solarSurfaceMixedFvPatchScalarField::
 solarSurfaceMixedFvPatchScalarField
 (
     const solarSurfaceMixedFvPatchScalarField& ptf,
@@ -85,11 +85,11 @@ solarSurfaceMixedFvPatchScalarField
  //   visualAngle_(ptf.visualAngle_), 
 
     nBands_(ptf.nBands_)
- //   lightBandDist_(ptf.lightBandDist_)
+ //   opticalBandDist_(ptf.opticalBandDist_)
 {}
 
 
-Foam::light::solarSurfaceMixedFvPatchScalarField::
+Foam::optical::solarSurfaceMixedFvPatchScalarField::
 solarSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -110,8 +110,8 @@ solarSurfaceMixedFvPatchScalarField
     nBands_(readLabel(dict.lookup("nBand"))) // scalarField("n2", dict);
 {
 	
-   lightBandDist_.setSize(nBands_);   
-   dict.lookup("lightBandDist") >> lightBandDist_;
+   opticalBandDist_.setSize(nBands_);   
+   dict.lookup("opticalBandDist") >> opticalBandDist_;
 	  
     if (dict.found("refValue"))
     {
@@ -136,7 +136,7 @@ solarSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::light::solarSurfaceMixedFvPatchScalarField::
+Foam::optical::solarSurfaceMixedFvPatchScalarField::
 solarSurfaceMixedFvPatchScalarField
 (
     const solarSurfaceMixedFvPatchScalarField& ptf
@@ -157,7 +157,7 @@ solarSurfaceMixedFvPatchScalarField
 {}
 
 
-Foam::light::solarSurfaceMixedFvPatchScalarField::
+Foam::optical::solarSurfaceMixedFvPatchScalarField::
 solarSurfaceMixedFvPatchScalarField
 (
     const solarSurfaceMixedFvPatchScalarField& ptf,
@@ -184,7 +184,7 @@ solarSurfaceMixedFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::light::solarSurfaceMixedFvPatchScalarField::
+void Foam::optical::solarSurfaceMixedFvPatchScalarField::
 updateCoeffs()
 {
 	if (this->updated())
@@ -198,15 +198,15 @@ updateCoeffs()
      	
     scalarField& Iw = *this;
    
-    const lightModel& light = db().lookupObject<lightModel>("lightProperties");
+    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
 
-    const lightDOM& dom(refCast<const lightDOM>(light));
+    const opticalDOM& dom(refCast<const opticalDOM>(optical));
  
     if (dom.nBand() == 0)
     {
         FatalErrorIn
         (
-            "Foam::light::"
+            "Foam::optical::"
             "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
         )   << " a non-grey boundary condition is used with a grey "
             << "absorption model" << nl << exit(FatalError);
@@ -402,7 +402,7 @@ updateCoeffs()
 		}
            
                           
-    //       refValue()[faceI] = (diffuseCoeff_*(diffusiveRefraction+ diffusiveReflection )/pi/2 + (1.0 - diffuseCoeff_)*(specularReflection + specularRefraction)/bdOmega)/bdOmega;  //careful here, first omega convert the light transmision control angle, second one convert the value to angle intensity 
+    //       refValue()[faceI] = (diffuseCoeff_*(diffusiveRefraction+ diffusiveReflection )/pi/2 + (1.0 - diffuseCoeff_)*(specularReflection + specularRefraction)/bdOmega)/bdOmega;  //careful here, first omega convert the optical transmision control angle, second one convert the value to angle intensity 
             refValue()[faceI] = (diffuseCoeff_*diffusiveRefraction/pi/2 + (1.0 - diffuseCoeff_)*specularRefraction/bdOmega)/bdOmega;     
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;
@@ -423,7 +423,7 @@ updateCoeffs()
     
 }
 
-void Foam::light::solarSurfaceMixedFvPatchScalarField::dirToAngle
+void Foam::optical::solarSurfaceMixedFvPatchScalarField::dirToAngle
 (
     const vector& dir,
     scalar&	tPhi,
@@ -450,7 +450,7 @@ void Foam::light::solarSurfaceMixedFvPatchScalarField::dirToAngle
 }
 
 
-void Foam::light::solarSurfaceMixedFvPatchScalarField::write
+void Foam::optical::solarSurfaceMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -473,7 +473,7 @@ void Foam::light::solarSurfaceMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
     makePatchTypeField
     (

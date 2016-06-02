@@ -1,15 +1,15 @@
-/* light model */
+/* optical model */
 
-lightModel/lightModel/lightModel.C
-lightModel/lightModel/newLightModel.C
+opticalModel/opticalModel/opticalModel.C
+opticalModel/opticalModel/newOpticalModel.C
 
-lightModel/lightDOM/lightDOM/lightDOM.C  
-lightModel/lightDOM/lightIntensityRay/lightIntensityRay.C 
+opticalModel/opticalDOM/opticalDOM/opticalDOM.C  
+opticalModel/opticalDOM/opticalIntensityRay/opticalIntensityRay.C 
 
-lightModel/lightDOM/phaseFunctionModel/phaseFunctionModel/phaseFunctionModel.C 
-lightModel/lightDOM/phaseFunctionModel/phaseFunctionModel/newPhaseFunctionModel.C 
-lightModel/lightDOM/phaseFunctionModel/userDefinedPhaseFunction/userDefinedPhaseFunction.C
-lightModel/lightDOM/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
+opticalModel/opticalDOM/phaseFunctionModel/phaseFunctionModel/phaseFunctionModel.C 
+opticalModel/opticalDOM/phaseFunctionModel/phaseFunctionModel/newPhaseFunctionModel.C 
+opticalModel/opticalDOM/phaseFunctionModel/userDefinedPhaseFunction/userDefinedPhaseFunction.C
+opticalModel/opticalDOM/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
 
 subModels/extinctionModel/extinctionModel/extinctionModel.C
 subModels/extinctionModel/extinctionModel/newExtinctionModel.C
@@ -23,6 +23,6 @@ derivedFvPatchFields/transInteriorSurface/transInteriorSurfaceCoupledFvPatchScal
 derivedFvPatchFields/multiBandTransInterior/multiBandTransInteriorCoupledFvPatchScalarField.C
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.C
 
-LIB = $(FOAM_USER_LIBBIN)/liblight
+LIB = $(FOAM_USER_LIBBIN)/liboptical
 
 

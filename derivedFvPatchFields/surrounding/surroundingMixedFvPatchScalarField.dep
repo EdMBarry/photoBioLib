@@ -443,8 +443,8 @@ derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PR
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/volMesh.H
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/GeoMesh.H
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/calculatedFvPatchFields.H
-derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/lightDOM.H
-derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/lightModel.H
+derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/opticalDOM.H
+derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/opticalModel.H
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrices.H
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatricesFwd.H
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvScalarMatrix.H
@@ -471,10 +471,10 @@ derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PR
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/coupledFvPatchField.C
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrixSolve.C
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/extinctionModel.H
-derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/lightIntensityRay.H
+derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/opticalIntensityRay.H
 derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/phaseFunctionModel.H
-derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/lightIntensityRayI.H
-derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/lightDOMI.H
+derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/opticalIntensityRayI.H
+derivedFvPatchFields/surrounding/surroundingMixedFvPatchScalarField.dep: lnInclude/opticalDOMI.H
 $(OBJECTS_DIR)/surroundingMixedFvPatchScalarField.o: $(EXE_DEP)
 $(OBJECTS_DIR)/surroundingMixedFvPatchScalarField.o:
 	@SOURCE_DIR=derivedFvPatchFields/surrounding

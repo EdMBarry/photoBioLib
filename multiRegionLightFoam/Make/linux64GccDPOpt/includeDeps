@@ -1,2 +1,0 @@
-include regionProperties.dep
-include multiRegionLightFoam.dep

@@ -27,7 +27,7 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::light::inScatterModel> Foam::light::inScatterModel::New
+Foam::autoPtr<Foam::optical::inScatterModel> Foam::optical::inScatterModel::New
 (
     const dictionary& dict
  //   ,const fvMesh& mesh

@@ -22,16 +22,16 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::light::extinctionModel
+    Foam::optical::extinctionModel
 
 Description
-    Model to supply absorption and emission coefficients for light
+    Model to supply absorption and emission coefficients for optical
     modelling
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef lightExtinctionModel_H
-#define lightExtinctionModel_H
+#ifndef opticalExtinctionModel_H
+#define opticalExtinctionModel_H
 
 #include "IOdictionary.H"
 #include "autoPtr.H"
@@ -43,7 +43,7 @@ Description
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 
 /*---------------------------------------------------------------------------*\
@@ -57,7 +57,7 @@ protected:
 
     // Protected data
 
-        //- light model dictionary
+        //- optical model dictionary
         const dictionary dict_;
 
         //- Reference to the fvMesh
@@ -172,7 +172,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace light
+} // End namespace optical
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

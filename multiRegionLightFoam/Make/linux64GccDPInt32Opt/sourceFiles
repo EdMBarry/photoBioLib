@@ -1,3 +1,0 @@
-SOURCE = \
-regionProperties.C \
-multiRegionLightFoam.C 

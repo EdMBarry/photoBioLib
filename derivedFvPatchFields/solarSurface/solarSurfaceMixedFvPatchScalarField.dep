@@ -443,8 +443,8 @@ derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/volMesh.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/GeoMesh.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/calculatedFvPatchFields.H
-derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/lightDOM.H
-derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/lightModel.H
+derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/opticalDOM.H
+derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/opticalModel.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrices.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatricesFwd.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvScalarMatrix.H
@@ -471,10 +471,10 @@ derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/coupledFvPatchField.C
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMatrixSolve.C
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/extinctionModel.H
-derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/lightIntensityRay.H
+derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/opticalIntensityRay.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/phaseFunctionModel.H
-derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/lightIntensityRayI.H
-derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/lightDOMI.H
+derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/opticalIntensityRayI.H
+derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: lnInclude/opticalDOMI.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/constants.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/fundamentalConstants.H
 derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.dep: $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/universalConstants.H

@@ -28,14 +28,14 @@ License
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "lightDOM.H"
+#include "opticalDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::light::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -52,7 +52,7 @@ transExteriorSurfaceMixedFvPatchScalarField
     beamWidthTheta_(0.0),
     beamDir_(vector::zero),
     beamNormToSurf_(false),
- //   lightBandDist_(null),
+ //   opticalBandDist_(null),
     initFlag_(0)
 {
     refValue() = 0.0;
@@ -61,7 +61,7 @@ transExteriorSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::light::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const transExteriorSurfaceMixedFvPatchScalarField& ptf,
@@ -80,12 +80,12 @@ transExteriorSurfaceMixedFvPatchScalarField
     beamWidthTheta_(ptf.beamWidthTheta_),
     beamDir_(ptf.beamDir_),
     beamNormToSurf_(ptf.beamNormToSurf_),
- //   lightBandDist_(ptf.lightBandDist_),
+ //   opticalBandDist_(ptf.opticalBandDist_),
     initFlag_(ptf.initFlag_)
 {}
 
 
-Foam::light::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -105,9 +105,9 @@ transExteriorSurfaceMixedFvPatchScalarField
     initFlag_(0)
 {
 	
-   lightBandDist_.setSize(nBands_);   
+   opticalBandDist_.setSize(nBands_);   
 
-   dict.lookup("lightBandDist") >> lightBandDist_;
+   dict.lookup("opticalBandDist") >> opticalBandDist_;
    dict.lookup("beamNormToSurf") >>beamNormToSurf_; 
 
  /*     Info << "\n nNbg_  \t" << nNbg_ << endl;
@@ -144,7 +144,7 @@ transExteriorSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::light::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const transExteriorSurfaceMixedFvPatchScalarField& ptf
@@ -160,12 +160,12 @@ transExteriorSurfaceMixedFvPatchScalarField
    beamWidthTheta_(ptf.beamWidthTheta_),
     beamDir_(ptf.beamDir_),
     beamNormToSurf_(ptf.beamNormToSurf_),
- //   lightBandDist_(ptf.lightBandDist_),
+ //   opticalBandDist_(ptf.opticalBandDist_),
     initFlag_(ptf.initFlag_)
 {}
 
 
-Foam::light::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const transExteriorSurfaceMixedFvPatchScalarField& ptf,
@@ -182,7 +182,7 @@ transExteriorSurfaceMixedFvPatchScalarField
     beamWidthTheta_(ptf.beamWidthTheta_),
     beamDir_(ptf.beamDir_),
     beamNormToSurf_(ptf.beamNormToSurf_),
- //   lightBandDist_(ptf.lightBandDist_),
+ //   opticalBandDist_(ptf.opticalBandDist_),
     initFlag_(ptf.initFlag_)
 {}
 
@@ -193,7 +193,7 @@ transExteriorSurfaceMixedFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::light::transExteriorSurfaceMixedFvPatchScalarField::
+void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
 updateCoeffs()
 {
 	if (this->updated())
@@ -207,15 +207,15 @@ updateCoeffs()
      	
     scalarField& Iw = *this;
    
-    const lightModel& light = db().lookupObject<lightModel>("lightProperties");
+    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
 
-    const lightDOM& dom(refCast<const lightDOM>(light));
+    const opticalDOM& dom(refCast<const opticalDOM>(optical));
  
     if (dom.nBand() == 0)
     {
         FatalErrorIn
         (
-            "Foam::light::"
+            "Foam::optical::"
             "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
         )   << " a non-grey boundary condition is used with a grey "
             << "absorption model" << nl << exit(FatalError);
@@ -267,7 +267,7 @@ updateCoeffs()
 	         
 	 dirToAngle(beamDir_, beamAnglePhi_,beamAngleTheta_) ;
 	    
-     // calculate the refraction light only once at the beginning
+     // calculate the refraction optical only once at the beginning
      if(initFlag_ == 0)
      {	
 
@@ -606,7 +606,7 @@ updateCoeffs()
     
 }
 
-void Foam::light::transExteriorSurfaceMixedFvPatchScalarField::dirToAngle
+void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::dirToAngle
 (
     const vector& dir,
     scalar&	tPhi,
@@ -632,7 +632,7 @@ void Foam::light::transExteriorSurfaceMixedFvPatchScalarField::dirToAngle
 	
 }
 
-void Foam::light::transExteriorSurfaceMixedFvPatchScalarField::write
+void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -654,7 +654,7 @@ void Foam::light::transExteriorSurfaceMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
     makePatchTypeField
     (

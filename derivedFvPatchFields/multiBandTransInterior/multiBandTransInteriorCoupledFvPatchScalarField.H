@@ -56,7 +56,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 /*---------------------------------------------------------------------------*\
         Class multiBandTransInteriorCoupledFvPatchScalarField Declaration
@@ -75,8 +75,8 @@ class multiBandTransInteriorCoupledFvPatchScalarField
         scalar  nOwn_;   
         scalar  diffuseFraction_;     
         label   nBands_;  
-    //     List<scalar> lightBandDist_(IStringStream("17 (  )")());
-        DynamicList<scalar,1,0>  lightBandDist_;  
+    //     List<scalar> opticalBandDist_(IStringStream("17 (  )")());
+        DynamicList<scalar,1,0>  opticalBandDist_;  
         
 public:
 
@@ -156,7 +156,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-} // End namespace light
+} // End namespace optical
 
 } // End namespace Foam
 

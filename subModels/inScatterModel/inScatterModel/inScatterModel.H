@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::light::scatterModel
+    Foam::optical::scatterModel
 
 Description
-    Base class for light scattering
+    Base class for optical scattering
 
 \*---------------------------------------------------------------------------*/
 
@@ -42,7 +42,7 @@ Description
 
 namespace Foam
 {
-namespace light
+namespace optical
 {
 
 /*---------------------------------------------------------------------------*\
@@ -60,7 +60,7 @@ protected:
    //     const fvMesh& mesh_;
         
         
-        //- light model dictionary
+        //- optical model dictionary
         const dictionary dict_;
         
         
@@ -157,7 +157,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace light
+} // End namespace optical
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
