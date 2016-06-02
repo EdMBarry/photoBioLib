@@ -13,6 +13,7 @@ This is an implementation of the radiation library which excludes heat radiation
 wmake libso
 
 ```
+
 3. The most basic implementation can be seen in the "opticalFoam" directory. This includes the optical model in a SIMPLE implementation. 
 
 4. Compile the solver by placing it in an appropriate directory (e.g. $FOAM_USER_APP -> <name>-<versionNumber>/applications) and calling
