@@ -67,7 +67,7 @@ Foam::optical::opticalDOM::opticalDOM(const volScalarField& intensity)
         ),
         mesh_,
      //   dimensionedScalar("G", dimMass/pow3(dimTime), 0.0)
-         dimensionedScalar("G", dimLuminousIntensity, 0.0)
+         dimensionedScalar("G", dimMass/pow3(dimTime), 0.0)
     ),
      diffusionScatter_
     (
@@ -80,7 +80,7 @@ Foam::optical::opticalDOM::opticalDOM(const volScalarField& intensity)
             IOobject::NO_WRITE
         ),
         mesh_,
-        dimensionedScalar("diffusionScatter",dimLuminousIntensity, 0.0)
+        dimensionedScalar("diffusionScatter",dimMass/pow3(dimTime), 0.0)
     ),
     nTheta_(readLabel(coeffs_.lookup("nTheta"))),
     nPhi_(readLabel(coeffs_.lookup("nPhi"))),
@@ -320,7 +320,7 @@ void Foam::optical::opticalDOM::calculate()
           
 			if(phaseFunctionModel_->inScatter())
 			{
-                diffusionScatter_ = dimensionedScalar("diffusionScatter",dimLuminousIntensity, 0.0) ;
+                diffusionScatter_ = dimensionedScalar("diffusionScatter",dimMass/pow3(dimTime), 0.0) ;
                 
 			    for (label jAngle = 0; jAngle < nAngle_; jAngle++)
 				{
@@ -333,7 +333,7 @@ void Foam::optical::opticalDOM::calculate()
 		
 	//				       if(rayCos > 0 )
 			   		   {
-		//				   diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*inScatter_->correct(rayCos, iBand)*IRay_[rayJ].omega();  //dimensionedScalar("diffusionScatter",dimLuminousIntensity, 0.0) ;  //
+		//				   diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*inScatter_->correct(rayCos, iBand)*IRay_[rayJ].omega();  //dimensionedScalar("diffusionScatter",dimMass/pow3(dimTime), 0.0) ;  //
                            diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*phaseFunctionModel_->correct(rayI,rayJ, iBand)*IRay_[rayJ].omega();  
 					   } 
 				    }
@@ -362,13 +362,13 @@ void Foam::optical::opticalDOM::calculate()
 void Foam::optical::opticalDOM::updateG()
 {
  
-      G_ = dimensionedScalar("zero",dimLuminousIntensity, 0.0);
+      G_ = dimensionedScalar("zero",dimMass/pow3(dimTime), 0.0);
       label rayI;
      
         forAll(GLambda_, iBand)    
         {
 	//		Info << "iBand: " << iBand << endl;
-           GLambda_[iBand] = dimensionedScalar("zero",dimLuminousIntensity, 0.0);
+           GLambda_[iBand] = dimensionedScalar("zero",dimMass/pow3(dimTime), 0.0);
        
            for (label iAngle = 0; iAngle < nAngle_; iAngle++)
 		   {
