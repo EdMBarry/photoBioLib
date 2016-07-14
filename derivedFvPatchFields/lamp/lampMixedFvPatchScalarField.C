@@ -1,11 +1,11 @@
 /*---------------------------------------------------------------------------*\
-=========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
+    =========                 |
+    \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+    \\    /   O peration     |
     \\  /    A nd           | Copyright (C) 2008-2010 OpenCFD Ltd.
-     \\/     M anipulation  |
--------------------------------------------------------------------------------
-License
+    \\/     M anipulation  |
+    -------------------------------------------------------------------------------
+    License
     This file is part of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
@@ -21,15 +21,15 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-\*---------------------------------------------------------------------------*/
+    \*---------------------------------------------------------------------------*/
 
-#include "lampMixedFvPatchScalarField.H"
-#include "addToRunTimeSelectionTable.H"
-#include "fvPatchFieldMapper.H"
-#include "volFields.H"
+    #include "lampMixedFvPatchScalarField.H"
+    #include "addToRunTimeSelectionTable.H"
+    #include "fvPatchFieldMapper.H"
+    #include "volFields.H"
 
-#include "opticalDOM.H"
-#include "constants.H"
+    #include "opticalDOM.H"
+    #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
@@ -41,7 +41,7 @@ lampMixedFvPatchScalarField
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
 )
-:
+    :
     mixedFvPatchScalarField(p, iF),
     I0_(0.0), 
     nBands_(1),
@@ -49,7 +49,7 @@ lampMixedFvPatchScalarField
     reflectionOnSurface_(false),
     reflectionCoef_(0.0),
     diffuseFraction_(0.0)
- //   opticalBandDist_(null),
+    //   opticalBandDist_(null),
 {
     refValue() = 0.0;
     refGrad() = 0.0;
@@ -65,7 +65,7 @@ lampMixedFvPatchScalarField
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
-:
+    :
     mixedFvPatchScalarField(ptf, p, iF, mapper),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
@@ -84,27 +84,27 @@ lampMixedFvPatchScalarField
     const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
-:
+    :
     mixedFvPatchScalarField(p, iF),
     I0_(readScalar(dict.lookup("irradiation"))),
-	nBands_(readLabel(dict.lookup("nBands"))), 
+    nBands_(readLabel(dict.lookup("nBands"))), 
     lampRadius_(readScalar(dict.lookup("lampRadius"))),
     reflectionCoef_(readScalar(dict.lookup("reflectionCoef"))),
     diffuseFraction_(readScalar(dict.lookup("diffuseFraction")))
 {
 	
-   dict.lookup("reflectionOnSurface") >>reflectionOnSurface_;  
+    dict.lookup("reflectionOnSurface") >>reflectionOnSurface_;  
    
-   opticalBandDist_.setSize(nBands_);   
-   dict.lookup("opticalBandDist") >> opticalBandDist_;
+    opticalBandDist_.setSize(nBands_);   
+    dict.lookup("opticalBandDist") >> opticalBandDist_;
    
 	
     if (dict.found("value"))
     {
         fvPatchScalarField::operator=
-        (
-            scalarField("value", dict, p.size())
-        );               
+            (
+                scalarField("value", dict, p.size())
+            );               
         refValue() = scalarField("refValue", dict, p.size());
         refGrad() = scalarField("refGradient", dict, p.size());
         valueFraction() = scalarField("valueFraction", dict, p.size());
@@ -127,7 +127,7 @@ lampMixedFvPatchScalarField
 (
     const lampMixedFvPatchScalarField& ptf
 )
-:
+    :
     mixedFvPatchScalarField(ptf),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
@@ -145,7 +145,7 @@ lampMixedFvPatchScalarField
     const lampMixedFvPatchScalarField& ptf,
     const DimensionedField<scalar, volMesh>& iF
 )
-:
+    :
     mixedFvPatchScalarField(ptf, iF),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
@@ -163,7 +163,7 @@ lampMixedFvPatchScalarField
 void Foam::optical::lampMixedFvPatchScalarField::
 updateCoeffs()
 {
-	if (this->updated())
+    if (this->updated())
     {
         return;
     }
@@ -177,15 +177,15 @@ updateCoeffs()
     const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
 
     const opticalDOM& dom(refCast<const opticalDOM>(optical));
- 
-    if (dom.nBand() == 0 || dimensionedInternalField().mesh().nSolutionD() != 2)
+    
+    if (dom.nBand() == 0  || dimensionedInternalField().mesh().nSolutionD() != 3)  // got rid of the hex mesh requirement
     {
         FatalErrorIn
-        (
-            "Foam::optical::"
-            "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
-        )   << " a non-grey boundary condition is used with a grey "
-            << "absorption model" << nl << exit(FatalError);
+            (
+                "Foam::optical::"
+                "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
+            )   << " a non-grey boundary condition is used with a grey "
+                << "absorption model" << nl << exit(FatalError);
     }
     const label patchI = patch().index();
     const  vectorField n = patch().Sf()/patch().magSf();
@@ -208,153 +208,153 @@ updateCoeffs()
     const  scalar deltaPhi   =  pi /(2.0*nPhi);
     const  scalar deltaTheta =  pi  /nTheta;
 
-      label  npPhi  = dom.NumPixelPhi();    
-      label  npTheta = dom.NumPixelTheta();  
+    label  npPhi  = dom.NumPixelPhi();    
+    label  npTheta = dom.NumPixelTheta();  
 
-	 const scalar nOwn_ = 1.00;    
-     const scalar nNbg_ = 1.5168;      // outside of air is glass
-     const scalar nRatio = nOwn_/  nNbg_;
-     const scalar height = 0.001;     
+    const scalar nOwn_ = 1.00;        // refractive index of the internal fluid solution (air as default) 
+    const scalar nNbg_ = 1.5168;      // refractive index of the lamp material
+    const scalar nRatio = nOwn_/  nNbg_;
+    const scalar height = 0.001;     
      
-	 angleDist.setSize(nPhi); 
-     scalar sumP =0;      
-	 for(label i = 0;i < nPhi;i++)
-	 {	
-		scalar alpha = (2*i+1)/2*deltaPhi ;
-		angleDist[i] = alpha + Foam::sin(alpha)*Foam::cos(alpha)- sumP ;  
-	    sumP = sumP + angleDist[i];
-		angleDist[i]  = angleDist[i] /pi;
-	}
-	angleDist[0] = 2*angleDist[0];
+    angleDist.setSize(nPhi); 
+    scalar sumP =0;      
+    for(label i = 0;i < nPhi;i++)
+    {	
+        scalar alpha = (2*i+1)/2*deltaPhi ;
+        angleDist[i] = alpha + Foam::sin(alpha)*Foam::cos(alpha)- sumP ;  
+        sumP = sumP + angleDist[i];
+        angleDist[i]  = angleDist[i] /pi;
+    }
+    angleDist[0] = 2*angleDist[0];
    
-     scalar spectacularReflection = 0.0;
-     scalar reflectionRefraction = 0.0;
-     scalar  diffuseRefractionInside = 0.0;	
- 	 autoPtr<scalarField>   diffusiveReflection;	   
-     diffusiveReflection.set(new scalarField(patch().size(),0.0)); 
+    scalar spectacularReflection = 0.0;
+    scalar reflectionRefraction = 0.0;
+    scalar  diffuseRefractionInside = 0.0;	
+    autoPtr<scalarField>   diffusiveReflection;	   
+    diffusiveReflection.set(new scalarField(patch().size(),0.0)); 
      
-     if(reflectionOnSurface_)
-     {     
+    if(reflectionOnSurface_)
+    {     
 	
-		forAll(Iw, faceI)
-		{
-			vector surfNorm = -n[faceI] ;
+        forAll(Iw, faceI)
+        {
+            vector surfNorm = -n[faceI] ;
        
-				for (label jAngle = 0; jAngle < nAngle; jAngle++)
-				{         
-					label sweepRayID = jAngle + (iBand)*nAngle;
-					vector sweepDir = dom.IRay(sweepRayID).d();
-					vector sweepdAve = dom.IRay(sweepRayID).dAve();   
-					scalar sweepdOmega = dom.IRay(sweepRayID).omega();   
+            for (label jAngle = 0; jAngle < nAngle; jAngle++)
+            {         
+                label sweepRayID = jAngle + (iBand)*nAngle;
+                vector sweepDir = dom.IRay(sweepRayID).d();
+                vector sweepdAve = dom.IRay(sweepRayID).dAve();   
+                scalar sweepdOmega = dom.IRay(sweepRayID).omega();   
      
-					scalar cosA = surfNorm & sweepDir; 
+                scalar cosA = surfNorm & sweepDir; 
      
-					if(  cosA < 0.0  && cosA >= -1)      // direction into  the wall   
-                      {
- 	                    const scalarField&  reflecFace = dom.IRay(sweepRayID).I().boundaryField()[patchI];            
+                if(  cosA < 0.0  && cosA >= -1)      // direction into  the wall   
+                {
+                    const scalarField&  reflecFace = dom.IRay(sweepRayID).I().boundaryField()[patchI];            
                  
-                        scalar sinA = Foam::sqrt(1-cosA*cosA);
-                        scalar sinB = sinA*nRatio ; 
-                        scalar cosB =-Foam::sqrt(1-sinB*sinB); 
+                    scalar sinA = Foam::sqrt(1-cosA*cosA);
+                    scalar sinB = sinA*nRatio ; 
+                    scalar cosB =-Foam::sqrt(1-sinB*sinB); 
     
-						scalar r1 = (nNbg_*cosB - nOwn_*cosA ) / (nNbg_*cosB + nOwn_*cosA );
-						scalar r2 = (nNbg_*cosA - nOwn_*cosB ) / (nNbg_*cosA + nOwn_*cosB );
+                    scalar r1 = (nNbg_*cosB - nOwn_*cosA ) / (nNbg_*cosB + nOwn_*cosA );
+                    scalar r2 = (nNbg_*cosA - nOwn_*cosB ) / (nNbg_*cosA + nOwn_*cosB );
      
-						scalar R = 0.5*(r1*r1 + r2*r2);
+                    scalar R = 0.5*(r1*r1 + r2*r2);
      
-				     	diffusiveReflection()[faceI] = diffusiveReflection()[faceI]+ reflecFace[faceI]* R *mag( n[faceI] & sweepdAve); 
-						diffuseRefractionInside = diffuseRefractionInside + reflecFace[faceI] * ( 1.0 - R )* sfSize[faceI] * sweepdOmega ;  //change from
-                      }
-				}
-			}
-	  }
+                    diffusiveReflection()[faceI] = diffusiveReflection()[faceI]+ reflecFace[faceI]* R *mag( n[faceI] & sweepdAve); 
+                    diffuseRefractionInside = diffuseRefractionInside + reflecFace[faceI] * ( 1.0 - R )* sfSize[faceI] * sweepdOmega ;  //change from
+                }
+            }
+        }
+    }
     
      
      
-     forAll(Iw, faceI)
-     {
-		vector surfNorm = -n[faceI] ;
+    forAll(Iw, faceI)
+    {
+        vector surfNorm = -n[faceI] ;
      
-		scalar cosA = surfNorm & bdRayDir; 
+        scalar cosA = surfNorm & bdRayDir; 
         label  i0 = label(Foam::acos(cosA)/deltaPhi);
 		
-		if(cosA > 0)
-		{  
-			reflectionRefraction = 0.0;
+        if(cosA > 0)
+        {  
+            reflectionRefraction = 0.0;
 		 
-			if(reflectionOnSurface_)
-			{
-				spectacularReflection = 0.0;
+            if(reflectionOnSurface_)
+            {
+                spectacularReflection = 0.0;
 
-				scalar pxRayTheta = bdRayTheta;
+                scalar pxRayTheta = bdRayTheta;
      
-				for (label j = 1; j <= npPhi; j++)
-				{
-					scalar pxRayPhi = bdRayPhi - 0.5*deltaPhi + 0.5*(2*j -1)*deltaPhi/npPhi;
+                for (label j = 1; j <= npPhi; j++)
+                {
+                    scalar pxRayPhi = bdRayPhi - 0.5*deltaPhi + 0.5*(2*j -1)*deltaPhi/npPhi;
      
-					scalar sinTheta = Foam::sin(pxRayTheta);
-					scalar cosTheta = Foam::cos(pxRayTheta);
-					scalar sinPhi = Foam::sin(pxRayPhi);
-					scalar cosPhi = Foam::cos(pxRayPhi);
+                    scalar sinTheta = Foam::sin(pxRayTheta);
+                    scalar cosTheta = Foam::cos(pxRayTheta);
+                    scalar sinPhi = Foam::sin(pxRayPhi);
+                    scalar cosPhi = Foam::cos(pxRayPhi);
      
-					vector  pixelDir = vector(sinTheta*cosPhi , sinTheta* sinPhi , cosTheta);
+                    vector  pixelDir = vector(sinTheta*cosPhi , sinTheta* sinPhi , cosTheta);
      
-					scalar cosB =  pixelDir & surfNorm;
+                    scalar cosB =  pixelDir & surfNorm;
      
-					if ( cosB > 0.0)   
-					{
+                    if ( cosB > 0.0)   
+                    {
      
-					scalar  pixelOmega = 2.0*sinTheta*Foam::sin(deltaTheta/2.0/npTheta)*deltaPhi/npPhi;
+                        scalar  pixelOmega = 2.0*sinTheta*Foam::sin(deltaTheta/2.0/npTheta)*deltaPhi/npPhi;
      
-					vector reflecIncidentDir = pixelDir - 2*cosB*surfNorm;		
+                        vector reflecIncidentDir = pixelDir - 2*cosB*surfNorm;		
      
-					label reflecIncidentRay = -1;
-					dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
+                        label reflecIncidentRay = -1;
+                        dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
      
-					const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];                                	
+                        const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];                                	
      
      
-					if( cosB*cosB > 1-1/(nRatio*nRatio) )      // weather  total reflection or not  
-					{ 
+                        if( cosB*cosB > 1-1/(nRatio*nRatio) )      // whether  total reflection or not  
+                        { 
      
-					   vector refracIncidentDir = (pixelDir - cosB * surfNorm )*nRatio 
-							+ Foam::sqrt(1 -(nRatio*nRatio)*(1- cosB*cosB))*surfNorm ;
+                            vector refracIncidentDir = (pixelDir - cosB * surfNorm )*nRatio 
+                                + Foam::sqrt(1 -(nRatio*nRatio)*(1- cosB*cosB))*surfNorm ;
      
-						scalar cosA = surfNorm& refracIncidentDir; // / mag(d);                //    /mag(n[faceI])
+                            scalar cosA = surfNorm& refracIncidentDir; // / mag(d);                //    /mag(n[faceI])
      
-					    scalar r1 = (nNbg_*cosB - nOwn_*cosA )/ (nNbg_*cosB + nOwn_*cosA );
-					    scalar r2 = (nNbg_*cosA - nOwn_*cosB )/ (nNbg_*cosA + nOwn_*cosB );
+                            scalar r1 = (nNbg_*cosB - nOwn_*cosA )/ (nNbg_*cosB + nOwn_*cosA );
+                            scalar r2 = (nNbg_*cosA - nOwn_*cosB )/ (nNbg_*cosA + nOwn_*cosB );
      
-					   scalar R =  0.5*(r1*r1 + r2*r2);
+                            scalar R =  0.5*(r1*r1 + r2*r2);
      
-					   spectacularReflection = spectacularReflection + reflecFace[faceI]*R*pixelOmega;
+                            spectacularReflection = spectacularReflection + reflecFace[faceI]*R*pixelOmega;
      
-					}   
-					else
-					{
-					   spectacularReflection = spectacularReflection + reflecFace[faceI]*pixelOmega;   
-					}
-					}
-				}
+                        }   
+                        else
+                        {
+                            spectacularReflection = spectacularReflection + reflecFace[faceI]*pixelOmega;   
+                        }
+                    }
+                }
      
-      reflectionRefraction =  diffuseRefractionInside/(2*pi*lampRadius_*height)/pi/2            
-                              + (diffuseFraction_*diffusiveReflection()[faceI] /pi/2 
-                              + (1.0 - diffuseFraction_)*spectacularReflection/bdOmega) ;
+                reflectionRefraction =  diffuseRefractionInside/(2*pi*lampRadius_*height)/pi/2            
+                    + (diffuseFraction_*diffusiveReflection()[faceI] /pi/2 
+                    + (1.0 - diffuseFraction_)*spectacularReflection/bdOmega) ;
      
-          }  
+            }  
           
      
-	 refValue()[faceI] = reflectionCoef_*reflectionRefraction  + I0_*opticalBandDist_[iBand]*angleDist[i0]/bdOmega;  ///pi/2;  //
-     refGrad()[faceI] = 0.0;
-     valueFraction()[faceI] = 1.0;
+            refValue()[faceI] = reflectionCoef_*reflectionRefraction  + I0_*opticalBandDist_[iBand]*angleDist[i0]/bdOmega;  ///pi/2;  //
+            refGrad()[faceI] = 0.0;
+            valueFraction()[faceI] = 1.0;
      
-     }
+        }
         else
         {
-       // direction into the wall
-        valueFraction()[faceI] = 0.0;
-       refGrad()[faceI] = 0.0;
-       refValue()[faceI] = 0.0; //not used
+            // direction into the wall
+            valueFraction()[faceI] = 0.0;
+            refGrad()[faceI] = 0.0;
+            refValue()[faceI] = 0.0; //not used
         }
     }
      
@@ -371,21 +371,21 @@ void Foam::optical::lampMixedFvPatchScalarField::dirToAngle
 ) const
 {
 
-	tTheta = Foam::acos(dir.z()/mag(dir));
+    tTheta = Foam::acos(dir.z()/mag(dir));
 
 
-	if(dir.x() != 0 )
-	{ 
-		tPhi = Foam::atan(dir.y()/dir.x());
-		if(dir.x() < 0 && dir.y() >= 0 ) tPhi = tPhi + pi;
-		if(dir.x() < 0 && dir.y() < 0 ) tPhi = tPhi + pi;
-		if(dir.x() > 0 && dir.y() < 0 ) tPhi = tPhi + 2*pi;
-	}
-	else
-	{
-		if(dir.y() > 0 ) tPhi = pi/2.0;
-		if(dir.y() < 0 ) tPhi = 3.0*pi/2.0;;
-	}
+    if(dir.x() != 0 )
+    { 
+        tPhi = Foam::atan(dir.y()/dir.x());
+        if(dir.x() < 0 && dir.y() >= 0 ) tPhi = tPhi + pi;
+        if(dir.x() < 0 && dir.y() < 0 ) tPhi = tPhi + pi;
+        if(dir.x() > 0 && dir.y() < 0 ) tPhi = tPhi + 2*pi;
+    }
+    else
+    {
+        if(dir.y() > 0 ) tPhi = pi/2.0;
+        if(dir.y() < 0 ) tPhi = 3.0*pi/2.0;;
+    }
 	
 }
 
@@ -410,14 +410,14 @@ void Foam::optical::lampMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace optical
-{
-    makePatchTypeField
-    (
-        fvPatchScalarField,
-        lampMixedFvPatchScalarField
-    );
-}
+    namespace optical
+    {
+        makePatchTypeField
+        (
+            fvPatchScalarField,
+            lampMixedFvPatchScalarField
+        );
+    }
 }
 
 

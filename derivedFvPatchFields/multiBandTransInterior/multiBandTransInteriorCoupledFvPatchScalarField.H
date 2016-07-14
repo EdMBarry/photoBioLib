@@ -48,120 +48,120 @@ SourceFiles
 \*---------------------------------------------------------------------------*/
 
 #ifndef multiBandTransInteriorCoupledFvPatchScalarField_H
-#define multiBandTransInteriorCoupledFvPatchScalarField_H
+    #define multiBandTransInteriorCoupledFvPatchScalarField_H
 
-#include "mixedFvPatchFields.H"
+    #include "mixedFvPatchFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace optical
-{
-/*---------------------------------------------------------------------------*\
-        Class multiBandTransInteriorCoupledFvPatchScalarField Declaration
-\*---------------------------------------------------------------------------*/
+    namespace optical
+    {
+        /*---------------------------------------------------------------------------*\
+            Class multiBandTransInteriorCoupledFvPatchScalarField Declaration
+            \*---------------------------------------------------------------------------*/
 
-class multiBandTransInteriorCoupledFvPatchScalarField
-:
-    public mixedFvPatchScalarField
-{
-    // Private data
+        class multiBandTransInteriorCoupledFvPatchScalarField
+        :
+        public mixedFvPatchScalarField
+        {
+            // Private data
 
-        //- Name of field on the neighbour region
+            //- Name of field on the neighbour region
 
         
-        scalar  nNbg_;          // index of refraction 
-        scalar  nOwn_;   
-        scalar  diffuseFraction_;     
-        label   nBands_;  
-    //     List<scalar> opticalBandDist_(IStringStream("17 (  )")());
-        DynamicList<scalar,1,0>  opticalBandDist_;  
+            scalar  nNbg_;          // index of refraction 
+            scalar  nOwn_;   
+            scalar  diffuseFraction_;     
+            label   nBands_;  
+            //     List<scalar> opticalBandDist_(IStringStream("17 (  )")());
+            DynamicList<scalar,1,0>  opticalBandDist_;  
         
-public:
+        public:
 
-    //- Runtime type information
-    TypeName("multiBandTransInteriorCoupled");
+            //- Runtime type information
+            TypeName("multiBandTransInteriorCoupled");
 
 
-    // Constructors
+            // Constructors
 
-        //- Construct from patch and internal field
-        multiBandTransInteriorCoupledFvPatchScalarField
-        (
-            const fvPatch&,
-            const DimensionedField<scalar, volMesh>&
-        );
-
-        //- Construct from patch, internal field and dictionary
-        multiBandTransInteriorCoupledFvPatchScalarField
-        (
-            const fvPatch&,
-            const DimensionedField<scalar, volMesh>&,
-            const dictionary&
-        );
-
-        //- Construct by mapping given
-        //  multiBandTransInteriorCoupledFvPatchScalarField onto a new patch
-        multiBandTransInteriorCoupledFvPatchScalarField
-        (
-            const multiBandTransInteriorCoupledFvPatchScalarField&,
-            const fvPatch&,
-            const DimensionedField<scalar, volMesh>&,
-            const fvPatchFieldMapper&
-        );
-
-        //- Construct and return a clone
-        virtual tmp<fvPatchScalarField> clone() const
-        {
-            return tmp<fvPatchScalarField>
+            //- Construct from patch and internal field
+            multiBandTransInteriorCoupledFvPatchScalarField
             (
-                new multiBandTransInteriorCoupledFvPatchScalarField(*this)
+                const fvPatch&,
+                const DimensionedField<scalar, volMesh>&
             );
-        }
 
-        //- Construct as copy setting internal field reference
-        multiBandTransInteriorCoupledFvPatchScalarField
-        (
-            const multiBandTransInteriorCoupledFvPatchScalarField&,
-            const DimensionedField<scalar, volMesh>&
-        );
-
-        //- Construct and return a clone setting internal field reference
-        virtual tmp<fvPatchScalarField> clone
-        (
-            const DimensionedField<scalar, volMesh>& iF
-        ) const
-        {
-            return tmp<fvPatchScalarField>
+            //- Construct from patch, internal field and dictionary
+            multiBandTransInteriorCoupledFvPatchScalarField
             (
-                new multiBandTransInteriorCoupledFvPatchScalarField
-                (
-                    *this,
-                    iF
-                )
+                const fvPatch&,
+                const DimensionedField<scalar, volMesh>&,
+                const dictionary&
             );
-        }
+
+            //- Construct by mapping given
+            //  multiBandTransInteriorCoupledFvPatchScalarField onto a new patch
+            multiBandTransInteriorCoupledFvPatchScalarField
+            (
+                const multiBandTransInteriorCoupledFvPatchScalarField&,
+                const fvPatch&,
+                const DimensionedField<scalar, volMesh>&,
+                const fvPatchFieldMapper&
+            );
+
+            //- Construct and return a clone
+            virtual tmp<fvPatchScalarField> clone() const
+                {
+                    return tmp<fvPatchScalarField>
+                        (
+                            new multiBandTransInteriorCoupledFvPatchScalarField(*this)
+                        );
+                }
+
+            //- Construct as copy setting internal field reference
+            multiBandTransInteriorCoupledFvPatchScalarField
+            (
+                const multiBandTransInteriorCoupledFvPatchScalarField&,
+                const DimensionedField<scalar, volMesh>&
+            );
+
+            //- Construct and return a clone setting internal field reference
+            virtual tmp<fvPatchScalarField> clone
+            (
+                const DimensionedField<scalar, volMesh>& iF
+            ) const
+                {
+                    return tmp<fvPatchScalarField>
+                        (
+                            new multiBandTransInteriorCoupledFvPatchScalarField
+                            (
+                                *this,
+                                iF
+                            )
+                        );
+                }
 
 
-    // Member functions
+            // Member functions
 
 
-        //- Update the coefficients associated with the patch field
-        virtual void updateCoeffs();
+            //- Update the coefficients associated with the patch field
+            virtual void updateCoeffs();
 
-        //- Write
-        virtual void write(Ostream&) const;
-};
+            //- Write
+            virtual void write(Ostream&) const;
+        };
 
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-} // End namespace optical
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    } // End namespace optical
 
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#endif
+    #endif
 
 // ************************************************************************* //

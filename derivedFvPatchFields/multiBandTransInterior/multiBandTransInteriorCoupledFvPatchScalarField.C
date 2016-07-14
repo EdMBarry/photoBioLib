@@ -83,33 +83,33 @@ multiBandTransInteriorCoupledFvPatchScalarField
     const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
-:
+    :
     mixedFvPatchScalarField(p, iF),
     nNbg_(readScalar(dict.lookup("nNbg"))), //scalarField("n1", dict),
-	nOwn_(readScalar(dict.lookup("nOwn"))), // scalarField("n2", dict);
-	diffuseFraction_(readScalar(dict.lookup("diffuseFraction"))),
+    nOwn_(readScalar(dict.lookup("nOwn"))), // scalarField("n2", dict);
+    diffuseFraction_(readScalar(dict.lookup("diffuseFraction"))),
     nBands_(readLabel(dict.lookup("nBands")))
 {
-   opticalBandDist_.setSize(nBands_);   
-   dict.lookup("opticalBandDist") >> opticalBandDist_;
+    opticalBandDist_.setSize(nBands_);   
+    dict.lookup("opticalBandDist") >> opticalBandDist_;
    
     if (!isA<mappedPatchBase>(this->patch().patch()))
     {
         FatalErrorIn
-        (
-            "turbulentTemperatureRadCoupledMixedFvPatchScalarField::"
-            "turbulentTemperatureRadCoupledMixedFvPatchScalarField\n"
-            "(\n"
-            "    const fvPatch& p,\n"
-            "    const DimensionedField<scalar, volMesh>& iF,\n"
-            "    const dictionary& dict\n"
-            ")\n"
-        )   << "\n    patch type '" << p.type()
-            << "' not type '" << mappedPatchBase::typeName << "'"
-            << "\n    for patch " << p.name()
-            << " of field " << dimensionedInternalField().name()
-            << " in file " << dimensionedInternalField().objectPath()
-            << exit(FatalError);
+            (
+                "turbulentTemperatureRadCoupledMixedFvPatchScalarField::"
+                "turbulentTemperatureRadCoupledMixedFvPatchScalarField\n"
+                "(\n"
+                "    const fvPatch& p,\n"
+                "    const DimensionedField<scalar, volMesh>& iF,\n"
+                "    const dictionary& dict\n"
+                ")\n"
+            )   << "\n    patch type '" << p.type()
+                << "' not type '" << mappedPatchBase::typeName << "'"
+                << "\n    for patch " << p.name()
+                << " of field " << dimensionedInternalField().name()
+                << " in file " << dimensionedInternalField().objectPath()
+                << exit(FatalError);
     }
     
     fvPatchScalarField::operator=(scalarField("value", dict, p.size()));
@@ -142,7 +142,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
     const multiBandTransInteriorCoupledFvPatchScalarField& wtcsf,
     const DimensionedField<scalar, volMesh>& iF
 )
-:
+    :
     mixedFvPatchScalarField(wtcsf, iF),
     nNbg_(wtcsf.nNbg_),
     nOwn_(wtcsf.nOwn_),
@@ -198,61 +198,61 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeff
     
 
     /*
-   	 angleDist.setSize(nPhi); 
-     scalar sumP =0;      
-	 for(label i = 0;i < nPhi;i++)
-	 {	
-		scalar alpha = i*deltaPhi ;
-		angleDist[i] = Foam::cos(alpha) ;  
-	    sumP = sumP + angleDist[i];
+        angleDist.setSize(nPhi); 
+        scalar sumP =0;      
+        for(label i = 0;i < nPhi;i++)
+        {	
+        scalar alpha = i*deltaPhi ;
+        angleDist[i] = Foam::cos(alpha) ;  
+        sumP = sumP + angleDist[i];
 
 	}
 	sumP = 2*sumP - angleDist[0];
 	for(label i = 0;i < nPhi;i++)
-	 {	angleDist[i]  = angleDist[i] /sumP;}
-	 */
+        {	angleDist[i]  = angleDist[i] /sumP;}
+        */
 	 
-	 PtrList<scalarField> NbrRaySet(nAngle);
+    PtrList<scalarField> NbrRaySet(nAngle);
 	 
-	 if(nBands_ > 1)
-	 {
-	     // Get the coupling information from the mappedPatchBase
-		const mappedPatchBase& mpp = refCast<const mappedPatchBase>(patch().patch());
-		const label samplePatchI = mpp.samplePolyPatch().index();
-		const polyMesh& nbrMesh = mpp.sampleMesh();
-		const fvPatch& nbrPatch = refCast<const fvMesh>(nbrMesh).boundary()[samplePatchI];
-		const mapDistribute& distMap = mpp.map();
+    if(nBands_ > 1)
+    {
+        // Get the coupling information from the mappedPatchBase
+        const mappedPatchBase& mpp = refCast<const mappedPatchBase>(patch().patch());
+        const label samplePatchI = mpp.samplePolyPatch().index();
+        const polyMesh& nbrMesh = mpp.sampleMesh();
+        const fvPatch& nbrPatch = refCast<const fvMesh>(nbrMesh).boundary()[samplePatchI];
+        const mapDistribute& distMap = mpp.map();
 
-		for (label jAngle = 0; jAngle < nAngle; jAngle++)
-		{	
+        for (label jAngle = 0; jAngle < nAngle; jAngle++)
+        {	
 
-        NbrRaySet.set(jAngle, new scalarField(patch().size(),0.0));
+            NbrRaySet.set(jAngle, new scalarField(patch().size(),0.0));
         
-        label rayI = jAngle;   
-		const multiBandTransInteriorCoupledFvPatchScalarField&
-        nbrField = refCast
-            <const multiBandTransInteriorCoupledFvPatchScalarField>
-            ( nbrPatch.lookupPatchField<volScalarField, scalar>(dom.IRay(rayI).I().name()) );
+            label rayI = jAngle;   
+            const multiBandTransInteriorCoupledFvPatchScalarField&
+                nbrField = refCast
+                <const multiBandTransInteriorCoupledFvPatchScalarField>
+                ( nbrPatch.lookupPatchField<volScalarField, scalar>(dom.IRay(rayI).I().name()) );
 
-		scalarField TcNbr(nbrField.patchInternalField());
-		distMap.distribute(TcNbr);
-		NbrRaySet[jAngle] = TcNbr;
-		}
+            scalarField TcNbr(nbrField.patchInternalField());
+            distMap.distribute(TcNbr);
+            NbrRaySet[jAngle] = TcNbr;
+        }
     
-     }
+    }
     
-  	scalar spectacular = 0.0;
-	scalar diffusive = 0.0;
+    scalar spectacular = 0.0;
+    scalar diffusive = 0.0;
 
 	
 	
-	if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
-	{	
-		npTheta = 1;
+    if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+    {	
+        npTheta = 1;
     }
     if (dimensionedInternalField().mesh().nSolutionD() == 1)    //2D (X & Y)
-	{	
-		npTheta = 1; npPhi =1;
+    {	
+        npTheta = 1; npPhi =1;
     }
 
     scalar nRatio = nOwn_/ nNbg_;
@@ -260,138 +260,138 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeff
 	     
     forAll(Iw, faceI)
     {
-         spectacular = 0.0;
-	     diffusive= 0.0;	
+        spectacular = 0.0;
+        diffusive= 0.0;	
 	     
-	     vector surfNorm = -n[faceI] ;
+        vector surfNorm = -n[faceI] ;
 	     
-	     scalar cosA = surfNorm& bdRayDir; 
+        scalar cosA = surfNorm& bdRayDir; 
  
-	   if(cosA > 0.0 )    // direction out of the wall   
-       {
-				if( diffuseFraction_ > 0)
-			{	 
-				for (label jAngle = 0; jAngle < nAngle; jAngle++)
-				{         
-				label sweepRayId = jAngle + iBand*nAngle;    
-				
-				vector sweepDir = dom.IRay(sweepRayId).d();
-				vector sweepdAve = dom.IRay(sweepRayId).dAve();   
-				
-				scalar cosB = surfNorm& sweepDir; 
-			
-				if(  cosB > 0.0 )      // direction out of the wall   
-				{ 
-				    vector reflecIncidentDir = sweepDir - 2*cosB*surfNorm;		
-					label reflecIncidentRay = -1;
-                    dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
-                    const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];     		
-                     
-                     if(cosB*cosB > 1 - 1/(nRatio*nRatio) )        
-                     {   
-						vector refracIncidentDir = (sweepDir - cosB*surfNorm )*nRatio 
-							+ Foam::sqrt(1 -(nRatio*nRatio)*(1- cosB*cosB))*surfNorm ;
-
-						scalar cosA = surfNorm& refracIncidentDir;  
-					    
-						scalar r1 = (nNbg_*cosB - nOwn_*cosA )
-								/  (nNbg_*cosB + nOwn_*cosA );
-						scalar r2 = (nNbg_*cosA - nOwn_*cosB )
-								/  (nNbg_*cosA + nOwn_*cosB );
-            
-						scalar R = 0.5*(r1*r1 + r2*r2);
-          			 
-          			   if(nBands_ > 1)
-						{
-						label refracIncidentRay = -1;  
-						dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	
-          		    
-						diffusive = diffusive
-						+ (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
-					   }
-					   else
-					   {diffusive = diffusive + reflecFace[faceI]*R*mag(surfNorm & sweepdAve);  }  //
-					   
-					 }
-					 else
-					 {
-						 diffusive = diffusive + reflecFace[faceI] *mag(surfNorm & sweepdAve) ;  
-					 }
-
-				}
-				}
-			}
-
-
-		for (label i = 1; i <= npTheta; i++)
+        if(cosA > 0.0 )    // direction out of the wall   
         {
-			scalar pxRayTheta = bdRayTheta - 0.5*deltaTheta + 0.5*(2*i -1)*deltaTheta/npTheta;
-				    
-			for (label j = 1; j <= npPhi; j++)
-			{
-				scalar pxRayPhi = bdRayPhi - 0.5*deltaPhi + 0.5*(2*j -1)*deltaPhi/npPhi;
-					
-				scalar sinTheta = Foam::sin(pxRayTheta);
-				scalar cosTheta = Foam::cos(pxRayTheta);
-				scalar sinPhi = Foam::sin(pxRayPhi);
-				scalar cosPhi = Foam::cos(pxRayPhi);
-					
-				vector  pixelDir = vector(sinTheta*cosPhi , sinTheta* sinPhi , cosTheta);
-					
-				scalar cosB =  pixelDir & surfNorm;
-					
-				if ( cosB > 0.0)   
-				{
-						
-					scalar  pixelOmega = 2.0*sinTheta*Foam::sin(deltaTheta/2.0/npTheta)*deltaPhi/npPhi;
+            if( diffuseFraction_ > 0)
+            {	 
+                for (label jAngle = 0; jAngle < nAngle; jAngle++)
+                {         
+                    label sweepRayId = jAngle + iBand*nAngle;    
+				
+                    vector sweepDir = dom.IRay(sweepRayId).d();
+                    vector sweepdAve = dom.IRay(sweepRayId).dAve();   
+				
+                    scalar cosB = surfNorm& sweepDir; 
+			
+                    if(  cosB > 0.0 )      // direction out of the wall   
+                    { 
+                        vector reflecIncidentDir = sweepDir - 2*cosB*surfNorm;		
+                        label reflecIncidentRay = -1;
+                        dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
+                        const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];     		
+                     
+                        if(cosB*cosB > 1 - 1/(nRatio*nRatio) )        
+                        {   
+                            vector refracIncidentDir = (sweepDir - cosB*surfNorm )*nRatio 
+                                + Foam::sqrt(1 -(nRatio*nRatio)*(1- cosB*cosB))*surfNorm ;
 
-					vector reflecIncidentDir = pixelDir - 2*cosB*surfNorm;		
-					
-					label reflecIncidentRay = -1;
-                    dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
-                    
-                    const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];                                	
-
-                    
-                    if( cosB*cosB > 1-1/(nRatio*nRatio) )      // 
-					{ 
-                    
-					vector refracIncidentDir = (pixelDir - cosB * surfNorm )*nRatio 
-					+ Foam::sqrt(1 -(nRatio*nRatio)*(1- cosB*cosB))*surfNorm ;
-					
-					scalar cosA = surfNorm& pixelDir; // / mag(d);                //    /mag(n[faceI])
-          
-					scalar r1 = (nNbg_*cosB - nOwn_*cosA )
-								/  (nNbg_*cosB + nOwn_*cosA );
-					scalar r2 = (nNbg_*cosA - nOwn_*cosB )
-								/  (nNbg_*cosA + nOwn_*cosB );
+                            scalar cosA = surfNorm& refracIncidentDir;  
+					    
+                            scalar r1 = (nNbg_*cosB - nOwn_*cosA )
+                                /  (nNbg_*cosB + nOwn_*cosA );
+                            scalar r2 = (nNbg_*cosA - nOwn_*cosB )
+                                /  (nNbg_*cosA + nOwn_*cosB );
             
-					scalar R =  0.5*(r1*r1 + r2*r2);
+                            scalar R = 0.5*(r1*r1 + r2*r2);
+          			 
+                            if(nBands_ > 1)
+                            {
+                                label refracIncidentRay = -1;  
+                                dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	
+          		    
+                                diffusive = diffusive
+                                    + (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
+                            }
+                            else
+                            {diffusive = diffusive + reflecFace[faceI]*R*mag(surfNorm & sweepdAve);  }  //
+					   
+                        }
+                        else
+                        {
+                            diffusive = diffusive + reflecFace[faceI] *mag(surfNorm & sweepdAve) ;  
+                        }
+
+                    }
+                }
+            }
+
+
+            for (label i = 1; i <= npTheta; i++)
+            {
+                scalar pxRayTheta = bdRayTheta - 0.5*deltaTheta + 0.5*(2*i -1)*deltaTheta/npTheta;
+				    
+                for (label j = 1; j <= npPhi; j++)
+                {
+                    scalar pxRayPhi = bdRayPhi - 0.5*deltaPhi + 0.5*(2*j -1)*deltaPhi/npPhi;
+					
+                    scalar sinTheta = Foam::sin(pxRayTheta);
+                    scalar cosTheta = Foam::cos(pxRayTheta);
+                    scalar sinPhi = Foam::sin(pxRayPhi);
+                    scalar cosPhi = Foam::cos(pxRayPhi);
+					
+                    vector  pixelDir = vector(sinTheta*cosPhi , sinTheta* sinPhi , cosTheta);
+					
+                    scalar cosB =  pixelDir & surfNorm;
+					
+                    if ( cosB > 0.0)   
+                    {
+						
+                        scalar  pixelOmega = 2.0*sinTheta*Foam::sin(deltaTheta/2.0/npTheta)*deltaPhi/npPhi;
+
+                        vector reflecIncidentDir = pixelDir - 2*cosB*surfNorm;		
+					
+                        label reflecIncidentRay = -1;
+                        dom.dirToRayId(reflecIncidentDir, iBand, reflecIncidentRay);
+                    
+                        const scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];                                	
+
+                    
+                        if( cosB*cosB > 1-1/(nRatio*nRatio) )      // 
+                        { 
+                    
+                            vector refracIncidentDir = (pixelDir - cosB * surfNorm )*nRatio 
+                                + Foam::sqrt(1 -(nRatio*nRatio)*(1- cosB*cosB))*surfNorm ;
+					
+                            scalar cosA = surfNorm& pixelDir; // / mag(d);                //    /mag(n[faceI])
+          
+                            scalar r1 = (nNbg_*cosB - nOwn_*cosA )
+                                /  (nNbg_*cosB + nOwn_*cosA );
+                            scalar r2 = (nNbg_*cosA - nOwn_*cosB )
+                                /  (nNbg_*cosA + nOwn_*cosB );
+            
+                            scalar R =  0.5*(r1*r1 + r2*r2);
           			
-          			if(nBands_ > 1)
-					{
+                            if(nBands_ > 1)
+                            {
 							
           			label refracIncidentRay = -1;  
-          		    dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	// this is important 
+                                dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	// this is important 
             
-					spectacular = spectacular 
-					+ (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
-					}
-				    else
-				    {
-						spectacular = spectacular + reflecFace[faceI]*R *pixelOmega;   
-					}
+                                spectacular = spectacular 
+                                    + (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
+                            }
+                            else
+                            {
+                                spectacular = spectacular + reflecFace[faceI]*R *pixelOmega;   
+                            }
 					
-					}					
-					else
-					{
-						spectacular = spectacular + reflecFace[faceI]*pixelOmega;   
-					}
-				}
-			}
-			}  
+                        }					
+                        else
+                        {
+                            spectacular = spectacular + reflecFace[faceI]*pixelOmega;   
+                        }
+                    }
+                }
+            }  
 		
-       //     label  i0 = label(Foam::acos(cosA)/deltaPhi);     
+            //     label  i0 = label(Foam::acos(cosA)/deltaPhi);     
             refValue()[faceI] = diffuseFraction_*diffusive/pi/2  //*angleDist[i0] 
                 + (1.0 - diffuseFraction_)*spectacular/bdOmega; 
                  
@@ -425,7 +425,7 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::write
     mixedFvPatchScalarField::write(os);
     os.writeKeyword("nNbg") << nNbg_ << token::END_STATEMENT << nl;
     os.writeKeyword("nOwn") << nOwn_ << token::END_STATEMENT << nl;
-     os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
+    os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
 
 }
 
@@ -434,14 +434,14 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::write
 
 namespace Foam
 {
-namespace optical
-{
-makePatchTypeField
-(
-    fvPatchScalarField,
-    multiBandTransInteriorCoupledFvPatchScalarField
-);
-}
+    namespace optical
+    {
+        makePatchTypeField
+        (
+            fvPatchScalarField,
+            multiBandTransInteriorCoupledFvPatchScalarField
+        );
+    }
 } // End namespace Foam
 
 // ************************************************************************* //

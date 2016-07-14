@@ -29,8 +29,8 @@ Foam::optical::opticalDOM::IRay(const label rayI) const
     return  IRay_[rayI];
 }
 
-/*
-inline const Foam::volScalarField&
+
+/*inline const Foam::volScalarField&		// previously commented out
 Foam::optical::opticalDOM::IRayLambda
 (
     const label rayI,

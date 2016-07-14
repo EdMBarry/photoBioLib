@@ -377,7 +377,7 @@ void Foam::optical::opticalDOM::updateG()
             
   //           Info << "Number of ray : " << rayI << endl;
              
-            GLambda_[iBand] += IRay_[rayI].I()*IRay_[rayI].omega();  // convert the radiance to irradiance
+            GLambda_[iBand] += IRay_[rayI].I()*IRay_[rayI].omega();  // convert radiance to irradiance
 		   }
 			G_ += GLambda_[iBand];
 	    }
