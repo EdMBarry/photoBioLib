@@ -199,13 +199,13 @@ updateCoeffs()
 		npTheta = 1; npPhi =1;
     }
     
-  	scalar spectacular = 0.0;
+  	scalar specular = 0.0;
 	scalar diffusive = 0.0;
 
 	
     forAll(Iw, faceI)
     {
-         spectacular = 0.0;
+         specular = 0.0;
 	     diffusive = 0.0;	
 	     vector surfNorm = -n[faceI];
          scalar cosA = surfNorm& bdRayDir; 
@@ -264,7 +264,7 @@ updateCoeffs()
                     
                     const  scalarField&  reflecFace = dom.IRay(reflecIncidentRay).I().boundaryField()[patchI];                                	
 
-					spectacular = spectacular + reflecFace[faceI]*pixelOmega;   
+					specular = specular + reflecFace[faceI]*pixelOmega;   
 				
 				}
 			}
@@ -272,7 +272,7 @@ updateCoeffs()
 
    //         label  i0 = label(Foam::acos(cosA)/deltaPhi);
             refValue()[faceI] = reflectionCoef_*
-					(diffuseFraction_*diffusive/pi/2  + (1.0 - diffuseFraction_)*spectacular/bdOmega); 
+					(diffuseFraction_*diffusive/pi/2  + (1.0 - diffuseFraction_)*specular/bdOmega); 
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;
         }

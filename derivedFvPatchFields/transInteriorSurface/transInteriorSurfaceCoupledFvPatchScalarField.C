@@ -215,7 +215,7 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
     
   
     
-  	scalar spectacular = 0.0;
+  	scalar specular = 0.0;
 	scalar diffusive = 0.0;
 
 	
@@ -234,7 +234,7 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
 	     
     forAll(Iw, faceI)
     {
-         spectacular = 0.0;
+         specular = 0.0;
 	     diffusive= 0.0;	
 	     
 	     vector surfNorm = -n[faceI] ;
@@ -339,13 +339,13 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
           			label refracIncidentRay = -1;  
           		    dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	// this is important 
  
-					spectacular = spectacular 
+					specular = specular 
 					+ (NbrRaySet[refracIncidentRay][faceI]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
 					
 					}
 					else
 					{
-						spectacular = spectacular + reflecFace[faceI]*pixelOmega;   
+						specular = specular + reflecFace[faceI]*pixelOmega;   
 					}
 				}
 			}
@@ -353,7 +353,7 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
 		
        //     label  i0 = label(Foam::acos(cosA)/deltaPhi);     
             refValue()[faceI] = diffuseFraction_*diffusive/pi/2 
-                + (1.0 - diffuseFraction_)*spectacular/bdOmega;   // be careful here, first 
+                + (1.0 - diffuseFraction_)*specular/bdOmega;   // be careful here, first 
                  
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;

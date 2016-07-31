@@ -178,7 +178,7 @@ updateCoeffs()
 
     const opticalDOM& dom(refCast<const opticalDOM>(optical));
     
-    if (dom.nBand() == 0  || dimensionedInternalField().mesh().nSolutionD() != 3)  // got rid of the hex mesh requirement
+    if (dom.nBand() == 0 )  // got rid of the hex mesh requirement
     {
         FatalErrorIn
             (
@@ -227,7 +227,7 @@ updateCoeffs()
     }
     angleDist[0] = 2*angleDist[0];
    
-    scalar spectacularReflection = 0.0;
+    scalar specularReflection = 0.0;
     scalar reflectionRefraction = 0.0;
     scalar  diffuseRefractionInside = 0.0;	
     autoPtr<scalarField>   diffusiveReflection;	   
@@ -284,7 +284,7 @@ updateCoeffs()
 		 
             if(reflectionOnSurface_)
             {
-                spectacularReflection = 0.0;
+                specularReflection = 0.0;
 
                 scalar pxRayTheta = bdRayTheta;
      
@@ -327,19 +327,19 @@ updateCoeffs()
      
                             scalar R =  0.5*(r1*r1 + r2*r2);
      
-                            spectacularReflection = spectacularReflection + reflecFace[faceI]*R*pixelOmega;
+                            specularReflection = specularReflection + reflecFace[faceI]*R*pixelOmega;
      
                         }   
                         else
                         {
-                            spectacularReflection = spectacularReflection + reflecFace[faceI]*pixelOmega;   
+                            specularReflection = specularReflection + reflecFace[faceI]*pixelOmega;   
                         }
                     }
                 }
      
                 reflectionRefraction =  diffuseRefractionInside/(2*pi*lampRadius_*height)/pi/2            
                     + (diffuseFraction_*diffusiveReflection()[faceI] /pi/2 
-                    + (1.0 - diffuseFraction_)*spectacularReflection/bdOmega) ;
+                    + (1.0 - diffuseFraction_)*specularReflection/bdOmega) ;
      
             }  
           

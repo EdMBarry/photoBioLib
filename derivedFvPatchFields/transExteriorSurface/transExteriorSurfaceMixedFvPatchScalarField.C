@@ -272,7 +272,7 @@ updateCoeffs()
      {	
 
 		  initFlag_ = 1;
-		  spectacularRefraction.set(new scalarField(patch().size(),0.0));
+		  specularRefraction.set(new scalarField(patch().size(),0.0));
 		  diffusiveRefraction.set(new scalarField(patch().size(),0.0));
 
 		 if(beamNormToSurf_ )
@@ -289,7 +289,7 @@ updateCoeffs()
 				dom.dirToRayId(-n[faceI], iBand, rayJ);
 				if(rayJ == rayId)
 				{
-					spectacularRefraction()[faceI] = spectacularRefraction()[faceI] + I0_*T*bdOmega;
+					specularRefraction()[faceI] = specularRefraction()[faceI] + I0_*T*bdOmega;
 				}   
 			} 
 	      }
@@ -444,7 +444,7 @@ updateCoeffs()
 					{
 
 						scalar refracOmega = 2.0*sinTheta*Foam::sin(deltaDivTheta/2.0)*deltaDivPhi;			 
-						spectacularRefraction()[faceI] = spectacularRefraction()[faceI] + I0_*T*refracOmega;
+						specularRefraction()[faceI] = specularRefraction()[faceI] + I0_*T*refracOmega;
 
 					}
 				}
@@ -585,7 +585,7 @@ updateCoeffs()
              
        //      label  i0 = label(Foam::acos(cosA)/deltaPhi);                   
            refValue()[faceI] = diffuseFraction_*(diffusiveRefraction()[faceI] + diffusiveReflection )/pi/2     //*angleDist[i0] 
-                        + (1.0 - diffuseFraction_)*(specularReflection + spectacularRefraction()[faceI])/bdOmega; 
+                        + (1.0 - diffuseFraction_)*(specularReflection + specularRefraction()[faceI])/bdOmega; 
                  
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;

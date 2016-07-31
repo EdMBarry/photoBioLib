@@ -377,7 +377,7 @@ void Foam::optical::opticalDOM::updateG()
             
   //           Info << "Number of ray : " << rayI << endl;
              
-            GLambda_[iBand] += IRay_[rayI].I()*IRay_[rayI].omega();  // convert radiance to irradiance
+            GLambda_[iBand] += IRay_[rayI].I()*IRay_[rayI].omega();  // convert the radiance to irradiance
 		   }
 			G_ += GLambda_[iBand];
 	    }
@@ -460,7 +460,7 @@ void Foam::optical::opticalDOM::dirToRayId
                     IOobject::NO_READ,
                     IOobject::NO_WRITE
                 ),
-                k_                      // changed  from a_
+                k_            
             )
         );
     }
@@ -480,7 +480,7 @@ void Foam::optical::opticalDOM::dirToRayId
                     IOobject::NO_READ,
                     IOobject::NO_WRITE
                 ),
-                k_                      // changed  from a_
+                s_           
             )
         );
     }

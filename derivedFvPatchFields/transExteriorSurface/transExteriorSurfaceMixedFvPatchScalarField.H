@@ -65,7 +65,7 @@ class transExteriorSurfaceMixedFvPatchScalarField
         bool beamNormToSurf_;
 		label  initFlag_ ; 
     	DynamicList<scalar,1,0>  opticalBandDist_;
-		autoPtr<scalarField>   spectacularRefraction;
+		autoPtr<scalarField>   specularRefraction;
 		autoPtr<scalarField>   diffusiveRefraction;	
 		
 	//	        DynamicList<scalar,1,0>  angleDist; 
