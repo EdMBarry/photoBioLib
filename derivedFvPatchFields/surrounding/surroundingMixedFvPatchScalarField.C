@@ -151,7 +151,7 @@ updateCoeffs()
  
     
     label rayId = -1;
-    dom.setRayId(dimensionedInternalField().name(), rayId);
+    dom.setRayId(internalField().name(), rayId);
 
     const  vectorField n = patch().Sf()/patch().magSf();
     

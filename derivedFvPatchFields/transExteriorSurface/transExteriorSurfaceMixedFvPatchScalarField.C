@@ -224,7 +224,7 @@ updateCoeffs()
     vectorField n = patch().Sf()/patch().magSf();
     
     label rayId = -1;
-    dom.setRayId(dimensionedInternalField().name(), rayId);
+    dom.setRayId(internalField().name(), rayId);
     
     const  label nAngle = dom.nAngle();    
     const  label iBand = dom.IRay(rayId).iBand();
@@ -299,7 +299,7 @@ updateCoeffs()
 			scalar  bwP = beamWidthPhi_/180*pi;	  
 			scalar  bwT = beamWidthTheta_/180*pi;
 			
-			if(dimensionedInternalField().mesh().nSolutionD() == 3)    //3D
+			if(internalField().mesh().nSolutionD() == 3)    //3D
 			{		
 				              
                 if(bwP > deltaPhi)  
@@ -340,7 +340,7 @@ updateCoeffs()
 		 }
 		 else
 		 {
-			if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+			if (internalField().mesh().nSolutionD() == 2)    //2D (X & Y)
 			{
 				
 			    if(bwP > deltaPhi)  
@@ -457,11 +457,11 @@ updateCoeffs()
 	scalar specularReflection = 0.0;
 	scalar diffusiveReflection =0.0;
 
-	if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+	if (internalField().mesh().nSolutionD() == 2)    //2D (X & Y)
 	{	
 		npTheta = 1;
     }
-    if (dimensionedInternalField().mesh().nSolutionD() == 1)    //2D (X & Y)
+    if (internalField().mesh().nSolutionD() == 1)    //2D (X & Y)
 	{	
 		npTheta = 1; npPhi =1;
     }

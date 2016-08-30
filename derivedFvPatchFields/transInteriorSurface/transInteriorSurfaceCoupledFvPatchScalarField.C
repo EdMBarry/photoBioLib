@@ -100,8 +100,8 @@ transInteriorSurfaceCoupledFvPatchScalarField
         )   << "\n    patch type '" << p.type()
             << "' not type '" << mappedPatchBase::typeName << "'"
             << "\n    for patch " << p.name()
-            << " of field " << dimensionedInternalField().name()
-            << " in file " << dimensionedInternalField().objectPath()
+            << " of field " << internalField().name()
+            << " in file " << internalField().objectPath()
             << exit(FatalError);
     }
     
@@ -175,7 +175,7 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
     const opticalDOM& dom(refCast<const opticalDOM>(optical));
     
     label BDrayId = -1;
-    dom.setRayId(dimensionedInternalField().name(), BDrayId);
+    dom.setRayId(internalField().name(), BDrayId);
 
     const label patchI = patch().index();
     vectorField n = patch().Sf()/patch().magSf();
@@ -220,11 +220,11 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
 
 	
 	
-	if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+	if (internalField().mesh().nSolutionD() == 2)    //2D (X & Y)
 	{	
 		npTheta = 1;
     }
-    if (dimensionedInternalField().mesh().nSolutionD() == 1)    //2D (X & Y)
+    if (internalField().mesh().nSolutionD() == 1)    //2D (X & Y)
 	{	
 		npTheta = 1; npPhi =1;
     }

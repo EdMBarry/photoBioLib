@@ -192,7 +192,7 @@ updateCoeffs()
     const  scalarField sfSize = patch().magSf();
     
     label rayId = -1;
-    dom.setRayId(dimensionedInternalField().name(), rayId);
+    dom.setRayId(internalField().name(), rayId);
     
     const  label nAngle = dom.nAngle();    
 

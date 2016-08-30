@@ -215,7 +215,7 @@ updateCoeffs()
     vectorField n = patch().Sf()/patch().magSf();
     
     label rayId = -1;
-    dom.setRayId(dimensionedInternalField().name(), rayId);
+    dom.setRayId(internalField().name(), rayId);
     
     const  label nAngle = dom.nAngle();    
     const  label iBand = dom.IRay(rayId).iBand();
@@ -251,11 +251,11 @@ updateCoeffs()
 	scalar R = 0.0;
 	
 
-	if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+	if (internalField().mesh().nSolutionD() == 2)    //2D (X & Y)
 	{	
 		npTheta = 1;
     }
-    if (dimensionedInternalField().mesh().nSolutionD() == 1)    //2D (X & Y)
+    if (internalField().mesh().nSolutionD() == 1)    //2D (X & Y)
 	{	
 		npTheta = 1; npPhi =1;
     }

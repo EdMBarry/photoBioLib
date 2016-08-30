@@ -72,7 +72,7 @@ Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
      phaseFunction_.setSize(nAngle_*nAngle_*nBands_);    
      
      
-    if (dimensionedInternalField().mesh().nSolutionD() == 3)    //3D 
+    if (internalField().mesh().nSolutionD() == 3)    //3D 
     {
 	scalar  dp = deltaPhi/subAngleNum;
 	scalar  dt = deltaTheta/subAngleNum;
@@ -113,7 +113,7 @@ Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
 	}
 	}
      
-    if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D 
+    if (internalField().mesh().nSolutionD() == 2)    //2D 
     {
 	scalar  dp = deltaPhi/subAngleNum;
 	

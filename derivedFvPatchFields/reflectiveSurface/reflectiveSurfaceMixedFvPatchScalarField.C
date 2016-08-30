@@ -169,7 +169,7 @@ updateCoeffs()
     }
     
     label rayId = -1;
-    dom.setRayId(dimensionedInternalField().name(), rayId);
+    dom.setRayId(internalField().name(), rayId);
 
     const label patchI = patch().index();
     const  vectorField n = patch().Sf()/patch().magSf();
@@ -190,11 +190,11 @@ updateCoeffs()
 
    // const fvPatchScalarField&  dsFace =  dom.diffusionScatter().boundaryField()[patchI];
     
-	if (dimensionedInternalField().mesh().nSolutionD() == 2)    //2D (X & Y)
+	if (internalField().mesh().nSolutionD() == 2)    //2D (X & Y)
 	{	
 		npTheta = 1;
     }
-    if (dimensionedInternalField().mesh().nSolutionD() == 1)    //2D (X & Y)
+    if (internalField().mesh().nSolutionD() == 1)    //2D (X & Y)
 	{	
 		npTheta = 1; npPhi =1;
     }
