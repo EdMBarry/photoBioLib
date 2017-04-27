@@ -1,1 +1,1 @@
-../opticalModel/opticalDOM/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
+../subModels/inScatterModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C

@@ -1,1 +1,1 @@
-../opticalModel/opticalDOM/phaseFunctionModel/userDefinedPhaseFunction/userDefinedPhaseFunction.C
+../subModels/inScatterModel/userDefinedPhaseFunctionv0/userDefinedPhaseFunction.C

@@ -113,7 +113,6 @@ $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/IndirectListI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/BiIndirectList.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/BiIndirectListI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/ListIO.C \
-$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Tuple2.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/HashTableIO.C \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/tokenI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/ILList.C \
@@ -470,6 +469,7 @@ $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/GeoMesh.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvMesh.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduMesh.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduAddressing.H \
+$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Tuple2.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduInterfacePtrsList.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduMeshTemplates.C \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/fvBoundaryMesh.H \

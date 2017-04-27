@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::optical::opticalDOM
+    Foam::photoBio::photoBioDOM
 
 Description
 
@@ -34,14 +34,14 @@ Description
         wideBandabsorptionEmissionEmission
 
     i.e. dictionary
-    opticalDOMCoeffs
+    photoBioDOMCoeffs
     {
         nPhi    1;          // azimuthal angles in PI/2 on X-Y.(from Y to X)
         nTheta  2;          // polar angles in PI (from Z to X-Y plane)
-        convergence 1e-4;   // convergence criteria for optical iteration
+        convergence 1e-4;   // convergence criteria for photoBio iteration
     }
 
-    solverFreq   1; // Number of flow iterations per optical iteration
+    solverFreq   1; // Number of flow iterations per photoBio iteration
 
     The total number of solid angles is  4*nPhi*nTheta.
 
@@ -50,15 +50,15 @@ Description
     In 3D (nPhi and nTheta are considered)
 
 SourceFiles
-    opticalDOM.C
+    photoBioDOM.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef opticalModelopticalDOM_H
-#define opticalModelopticalDOM_H
+#ifndef photoBioModelphotoBioDOM_H
+#define photoBioModelphotoBioDOM_H
 
-#include "opticalModel.H"
-#include "opticalIntensityRay.H"
+#include "photoBioModel.H"
+#include "photoBioIntensityRay.H"
 #include "phaseFunctionModel.H"
 
 
@@ -66,34 +66,34 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class opticalDOM Declaration
+                           Class photoBioDOM Declaration
 \*---------------------------------------------------------------------------*/
 
-class opticalDOM
+class photoBioDOM
 :
-    public opticalModel
+    public photoBioModel
 {
     // Private data
 
-        //- Incident optical  [lum]
-        label iRegion_ ; 
-        
+        //- Incident photoBio  [lum]
+        label iRegion_ ;
+
         volScalarField G_;
-        
+
         volScalarField diffusionScatter_;
-        
+
         //- Number of solid angles in theta
         label nTheta_;
 
         //- Number of solid angles in phi
         label nPhi_ ;
 
-        // - Number of solid angles 
-        label nAngle_; 
+        // - Number of solid angles
+        label nAngle_;
 
         //- Total number of rays (1 per direction)
         label nRay_;
@@ -101,70 +101,69 @@ class opticalDOM
         //- Number of wavelength bands
         label nBand_;
 
-         label NumPixelPhi_;
-         
-         label NumPixelTheta_;
+        label NumPixelPhi_;
 
+        label NumPixelTheta_;
 
-        PtrList<volScalarField> GLambda_; 
-         
+        PtrList<volScalarField> GLambda_;
+
         DynamicList<scalar, 1, 0>   aBand_;
-        
+
         DynamicList<scalar, 1, 0>   sBand_;
-        
+
         DynamicList<scalar, 1, 0>   pf0_;
-         
-           //- List of pointers to optical intensity rays
-        PtrList<opticalIntensityRay> IRay_;
-   
+
+           //- List of pointers to photoBio intensity rays
+        PtrList<photoBioIntensityRay> IRay_;
+
         //- Convergence criterion
         scalar convergence_;
 
         //- Maximum number of iterations
         scalar maxIter_;
-       
+
         scalar deltaPhi   ;
-        
+
         scalar deltaTheta ;
 
         autoPtr<phaseFunctionModel> phaseFunctionModel_;
-         
 
-        
+
+
     // Private member functions
 
         //- Disallow default bitwise copy construct
-        opticalDOM(const opticalDOM&);
+        photoBioDOM(const photoBioDOM&);
 
         //- Disallow default bitwise assignment
-        void operator=(const opticalDOM&);
+        void operator=(const photoBioDOM&);
 
 
 
 public:
 
     //- Runtime type information
-    TypeName("opticalDOM");
+    TypeName("photoBioDOM");
 
 
     // Constructors
 
         //- Construct from components
-        opticalDOM(const volScalarField& intensity);
+        photoBioDOM(const volScalarField& intensity);
 
 
     //- Destructor
-    virtual ~opticalDOM();
+    virtual ~photoBioDOM();
 
 
     // Member functions
 
         // Edit
 
-            //- Solve optical equation(s)
+            //- Solve photoBio equation(s)
             void calculate();
 
-            //- Read optical properties dictionary
+            //- Read photoBio properties dictionary
             bool read();
 
             //- Update G and calculate total heat flux on boundary
@@ -177,21 +176,21 @@ public:
                 const word& name,
                 label& rayId
             ) const;
-            
-            
+
+
             void dirToRayId
             (
                 const vector& dir,
                 const  label& iBand,
                 label& rayId
             ) const;
-            
+
 
             //- Ray intensity for rayI
-            inline const opticalIntensityRay& IRay(const label rayI) const;
+            inline const photoBioIntensityRay& IRay(const label rayI) const;
 
             inline label iRegion() const;
-            
+
             //- Number of angles in theta
             inline label nTheta() const;
 
@@ -207,33 +206,33 @@ public:
 
             //- Number of wavelengths
             inline label nBand() const;
-           
+
             inline label NumPixelPhi() const;
-                        
+
             inline label NumPixelTheta() const;
-            
+
             inline  scalar a(const label lambdaI) const;
-            
+
             inline  scalar s(const label lambdaI) const;
-            
+
             inline  scalar pf0(const label lambdaI) const;
-             
-            //- Const access to incident optical field
+
+            //- Const access to incident photoBio field
             inline const volScalarField& G() const;
-            
+
             inline const volScalarField& diffusionScatter() const;
-          
+
 
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "opticalDOMI.H"
+#include "photoBioDOMI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace optical
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

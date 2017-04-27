@@ -71,9 +71,8 @@ $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Xfer.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/XferI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/HashTableI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/HashTable.C \
-$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Tuple2.H \
-$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Istream.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/HashTableIO.C \
+$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Istream.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/tokenI.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/SLList.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/LList.H \
@@ -357,6 +356,7 @@ $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/cellZoneMeshFwd.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduMesh.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduAddressing.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduSchedule.H \
+$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/Tuple2.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduInterfacePtrsList.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduInterface.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/lduMeshTemplates.C \
