@@ -24,61 +24,43 @@ License
 \*---------------------------------------------------------------------------*/
 
 
- inline const Foam::volScalarField& Foam::optical::opticalIntensityRay::I() const
-// inline const Foam::volScalarField *Foam::optical::opticalIntensityRay::I() const
+ inline const Foam::volScalarField& Foam::photoBio::photoBioIntensityRay::I() const
+// inline const Foam::volScalarField *Foam::photoBio::photoBioIntensityRay::I() const
 {
     return I_;
 }
 
-
-/*
-inline const Foam::volScalarField& Foam::optical::opticalIntensityRay::Qr() const
-{
-    return Qr_;
-}
-
-
-inline Foam::volScalarField& Foam::optical::opticalIntensityRay::Qr()
-{
-    return Qr_;
-}
-*/
-
-inline const Foam::vector& Foam::optical::opticalIntensityRay::d() const
+inline const Foam::vector& Foam::photoBio::photoBioIntensityRay::d() const
 {
     return d_;
 }
 
-
-inline const Foam::vector& Foam::optical::opticalIntensityRay::dAve() const
+inline const Foam::vector& Foam::photoBio::photoBioIntensityRay::dAve() const
 {
     return dAve_;
 }
 
-
-inline Foam::label Foam::optical::opticalIntensityRay::iBand() const
+inline Foam::label Foam::photoBio::photoBioIntensityRay::iBand() const
 {
     return iBand_;
 }
 
-inline Foam::label Foam::optical::opticalIntensityRay::iAngle() const
+inline Foam::label Foam::photoBio::photoBioIntensityRay::iAngle() const
 {
     return iAngle_;
 }
 
-inline Foam::scalar Foam::optical::opticalIntensityRay::phi() const
+inline Foam::scalar Foam::photoBio::photoBioIntensityRay::phi() const
 {
     return phi_;
 }
 
-
-inline Foam::scalar Foam::optical::opticalIntensityRay::theta() const
+inline Foam::scalar Foam::photoBio::photoBioIntensityRay::theta() const
 {
     return theta_;
 }
 
-
-inline Foam::scalar Foam::optical::opticalIntensityRay::omega() const
+inline Foam::scalar Foam::photoBio::photoBioIntensityRay::omega() const
 {
     return omega_;
 }

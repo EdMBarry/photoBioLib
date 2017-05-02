@@ -23,15 +23,15 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-inline const Foam::optical::opticalIntensityRay&
-Foam::optical::opticalDOM::IRay(const label rayI) const
+inline const Foam::photoBio::photoBioIntensityRay&
+Foam::photoBio::photoBioDOM::IRay(const label rayI) const
 {
     return  IRay_[rayI];
 }
 
 
 /*inline const Foam::volScalarField&		// previously commented out
-Foam::optical::opticalDOM::IRayLambda
+Foam::photoBio::photoBioDOM::IRayLambda
 (
     const label rayI,
     const label lambdaI
@@ -41,60 +41,60 @@ Foam::optical::opticalDOM::IRayLambda
 }
 */
 
-inline Foam::label Foam::optical::opticalDOM::iRegion() const
+inline Foam::label Foam::photoBio::photoBioDOM::iRegion() const
 {
     return iRegion_;
 }
 
-inline Foam::label Foam::optical::opticalDOM::nTheta() const
+inline Foam::label Foam::photoBio::photoBioDOM::nTheta() const
 {
     return nTheta_;
 }
 
 
-inline Foam::label Foam::optical::opticalDOM::nPhi() const
+inline Foam::label Foam::photoBio::photoBioDOM::nPhi() const
 {
     return nPhi_;
 }
 
 
-inline Foam::label Foam::optical::opticalDOM::nAngle() const
+inline Foam::label Foam::photoBio::photoBioDOM::nAngle() const
 {
     return nAngle_;
 }
 
 
-inline Foam::label Foam::optical::opticalDOM::nRay() const
+inline Foam::label Foam::photoBio::photoBioDOM::nRay() const
 {
     return nRay_;
 }
 
 
-inline Foam::label Foam::optical::opticalDOM::nBand() const
+inline Foam::label Foam::photoBio::photoBioDOM::nBand() const
 {
     return nBand_;
 }
 
 
-inline Foam::label Foam::optical::opticalDOM::NumPixelPhi() const
+inline Foam::label Foam::photoBio::photoBioDOM::NumPixelPhi() const
 {
     return NumPixelPhi_;
 }
 
-inline Foam::label Foam::optical::opticalDOM::NumPixelTheta() const
+inline Foam::label Foam::photoBio::photoBioDOM::NumPixelTheta() const
 {
     return NumPixelTheta_;
 }
 
 
 /*
-inline const Foam::volScalarField& Foam::optical::opticalDOM::k() const            // changed  from a_
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::k() const            // changed  from a_
 {
     return k_;
 }
 
 
-inline const Foam::volScalarField& Foam::optical::opticalDOM::kLambda              // changed  from kLambda_
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::kLambda              // changed  from kLambda_
 (
     const label lambdaI
 ) const
@@ -102,7 +102,7 @@ inline const Foam::volScalarField& Foam::optical::opticalDOM::kLambda           
     return kLambda_[lambdaI];
 }
 
-inline const Foam::volScalarField& Foam::optical::opticalDOM::sLambda              // changed  from kLambda_
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::sLambda              // changed  from kLambda_
 (
     const label lambdaI
 ) const
@@ -112,7 +112,7 @@ inline const Foam::volScalarField& Foam::optical::opticalDOM::sLambda           
 
 */
 
-inline  Foam::scalar Foam::optical::opticalDOM::a              // changed  from kLambda_
+inline  Foam::scalar Foam::photoBio::photoBioDOM::a              // changed  from kLambda_
 (
     const label lambdaI
 ) const
@@ -121,7 +121,7 @@ inline  Foam::scalar Foam::optical::opticalDOM::a              // changed  from 
 }
 
 
-inline  Foam::scalar Foam::optical::opticalDOM::s              // changed  from kLambda_
+inline  Foam::scalar Foam::photoBio::photoBioDOM::s              // changed  from kLambda_
 (
     const label lambdaI
 ) const
@@ -129,7 +129,7 @@ inline  Foam::scalar Foam::optical::opticalDOM::s              // changed  from 
     return sBand_[lambdaI];
 }
 
-inline  Foam::scalar Foam::optical::opticalDOM::pf0              // changed  from kLambda_
+inline  Foam::scalar Foam::photoBio::photoBioDOM::pf0              // changed  from kLambda_
 (
     const label lambdaI
 ) const
@@ -137,13 +137,13 @@ inline  Foam::scalar Foam::optical::opticalDOM::pf0              // changed  fro
     return pf0_[lambdaI];
 }
 
-inline const Foam::volScalarField& Foam::optical::opticalDOM::G() const
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::G() const
 {
     return G_;
 }
 
 
-inline const Foam::volScalarField& Foam::optical::opticalDOM::diffusionScatter() const
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::diffusionScatter() const
 {
     return diffusionScatter_;
 }
@@ -152,7 +152,7 @@ inline const Foam::volScalarField& Foam::optical::opticalDOM::diffusionScatter()
 
 
 /*
-inline const Foam::volScalarField& Foam::optical::opticalDOM::Qr() const
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::Qr() const
 {
     return Qr_;
 }

@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::optical::constantScatter
+    Foam::photoBio::constantScatter
 
 Description
-    Constant optical scatter coefficient
+    Constant photoBio scatter coefficient
 
 SourceFiles
     scatterModel.C
@@ -47,10 +47,10 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
-class opticalDOM;
+class photoBioDOM;
 
 /*---------------------------------------------------------------------------*\
                            Class constantScatter Declaration
@@ -90,7 +90,7 @@ public:
         //- Construct from components
         userDefinedPhaseFunction
         (
-                const opticalDOM& dom,
+                const photoBioDOM& dom,
 				const 	dictionary& dict,
 				const label& nDim
         );
@@ -122,7 +122,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace optical
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

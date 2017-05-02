@@ -22,26 +22,26 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 \*---------------------------------------------------------------------------*/
 
-#include "opticalIntensityRay.H"
+#include "photoBioIntensityRay.H"
 #include "fvm.H"
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 #include "mathematicalConstants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-Foam::label Foam::optical::opticalIntensityRay::rayId(0);
+Foam::label Foam::photoBio::photoBioIntensityRay::rayId(0);
 
 const Foam::word
-Foam::optical::opticalIntensityRay::intensityPrefix("I");
+Foam::photoBio::photoBioIntensityRay::intensityPrefix("I");
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::opticalIntensityRay::opticalIntensityRay
+Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
 (
-    const opticalDOM& dom,
+    const photoBioDOM& dom,
     const fvMesh&   mesh,
     const label     iBand,
     const label     iAngle,
@@ -66,25 +66,25 @@ Foam::optical::opticalIntensityRay::opticalIntensityRay
     scalar sinPhi = Foam::sin(phi);
     scalar cosPhi = Foam::cos(phi);
 
-     
+
    omega_ = 2.0*sinTheta*Foam::sin(deltaTheta/2.0)*deltaPhi;
     //  omega_ = deltaPhi;
-     
+
     d_ = vector(sinTheta*cosPhi, sinTheta*sinPhi, cosTheta);
-   //   d_ = vector(cosPhi, sinPhi,0.0);  
-      
+   //   d_ = vector(cosPhi, sinPhi,0.0);
+
    dAve_ = vector
     (
-       cosPhi 
+       cosPhi
        *Foam::sin(0.5*deltaPhi)
        *(deltaTheta - Foam::cos(2.0*theta)
        *Foam::sin(deltaTheta)),
-       
+
         sinPhi
        *Foam::sin(0.5*deltaPhi)
        *(deltaTheta - Foam::cos(2.0*theta)
        *Foam::sin(deltaTheta)),
-       
+
         0.5*deltaPhi
         *Foam::sin(2.0*theta)*Foam::sin(deltaTheta)
     );
@@ -111,7 +111,7 @@ Foam::optical::opticalIntensityRay::opticalIntensityRay
         }
         else
         {
-			
+
             // Demand driven load the IDefault field
             if (!IDefaultPtr.valid())
             {
@@ -137,70 +137,54 @@ Foam::optical::opticalIntensityRay::opticalIntensityRay
             noReadHeader.readOpt() = IOobject::NO_READ;
 
 			I_.set(new volScalarField(noReadHeader, IDefaultPtr()));
-			
+
         }
-    
-    
+
+
     rayId++;
-    
+
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::opticalIntensityRay::~opticalIntensityRay()
+Foam::photoBio::photoBioIntensityRay::~photoBioIntensityRay()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-
-
-Foam::scalar Foam::optical::opticalIntensityRay::correct()  //(const volScalarField& inScTerm)
+Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()  //(const volScalarField& inScTerm)
 {
-    // reset boundary heat flux to zero
-    // Qr_ = dimensionedScalar("zero", dimMass/pow3(dimTime), 0.0);
-    //    Qr_.boundaryField() = 0.0;
-
     scalar maxResidual = -GREAT;
     scalar eqnResidual ;
 
-     dimensionedScalar k("k", dimless/dimLength, dom_.a(iBand_)+dom_.s(iBand_)*(1.0-dom_.pf0(iBand_)*omega_*0.5) );   // IT IS necessary /2  check the intergral part
-     dimensionedScalar s("s", dimless/dimLength, dom_.s(iBand_)); 
-     
-  //   Info << "k  " << k << " s  " << s << " omega  " << omega_ << endl;   
-     
+    dimensionedScalar k("k", dimless/dimLength, dom_.a(iBand_)+dom_.s(iBand_)*(1.0-dom_.pf0(iBand_)*omega_*0.5) );   // IT IS necessary /2  check the intergral part
+    dimensionedScalar s("s", dimless/dimLength, dom_.s(iBand_));
+
+  //   Info << "k  " << k << " s  " << s << " omega  " << omega_ << endl;
      const  volScalarField& ds = dom_.diffusionScatter();
-    
+
     // 	      const volScalarField& k = dom_.kLambda(iBand_);
     //	      const volScalarField& s = dom_.sLambda(iBand_);
-                         
-	    const surfaceScalarField Ji(dAve_ & mesh_.Sf());
 
+	   const surfaceScalarField Ji(dAve_ & mesh_.Sf());
        fvScalarMatrix IiEq
         (
             fvm::div(Ji, I_(), "div(Ji,Ii_h)")
-          + fvm::Sp(k*omega_, I_())            
-          == 0.5* s*ds*omega_  
+          + fvm::Sp(k*omega_, I_())
+          == 0.5* s*ds*omega_
         );
-
         IiEq.relax();
-
-     eqnResidual = solve(IiEq,mesh_.solver("Ii")).initialResidual();
-
-     maxResidual = max(eqnResidual, maxResidual);
- 
-     return maxResidual;
-    
-    
+        eqnResidual = solve(IiEq,mesh_.solver("Ii")).initialResidual();
+        maxResidual = max(eqnResidual, maxResidual);
+        return maxResidual;
 }
 
-
-
-void Foam::optical::opticalIntensityRay::updateBoundary()  
+void Foam::photoBio::photoBioIntensityRay::updateBoundary()
 {
 
-           I_->correctBoundaryConditions();
+   I_->correctBoundaryConditions();
 
 }
 // ************************************************************************* //

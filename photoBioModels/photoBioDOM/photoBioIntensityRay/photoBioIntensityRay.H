@@ -22,18 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::radiation::opticalIntensityRay
+    Foam::photoBio::photoBioIntensityRay
 
 Description
     Radiation intensity for a ray in a given direction
 
 SourceFiles
-    opticalIntensityRay.C
+    photoBioIntensityRay.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef opticalIntensityRay_H
-#define opticalIntensityRay_H
+#ifndef photoBioIntensityRay_H
+#define photoBioIntensityRay_H
 
 #include "extinctionModel.H"
 #include "phaseFunctionModel.H"
@@ -41,17 +41,17 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
 // Forward declaration of classes
-class opticalDOM;
+class photoBioDOM;
 
 /*---------------------------------------------------------------------------*\
-                    Class opticalIntensityRay Declaration
+                    Class photoBioIntensityRay Declaration
 \*---------------------------------------------------------------------------*/
 
-class opticalIntensityRay
+class photoBioIntensityRay
 {
 public:
 
@@ -62,19 +62,15 @@ private:
 
     // Private data
 
-        //- Refence to the owner opticalDOM object
-        const opticalDOM& dom_;
+        //- Refence to the owner photoBioDOM object
+        const photoBioDOM& dom_;
 
         //- Reference to the mesh
         const fvMesh& mesh_;
 
-        //-  optical ray intensity / [W/m2]
- //       volScalarField I_;
- 
+        //-  photoBio ray intensity / [W/m2]
+
         autoPtr<volScalarField>  I_;
- 
-         //- Total optical heat flux on boundary
-   //     volScalarField Qr_;
 
         //- Direction
         vector d_;
@@ -93,32 +89,32 @@ private:
 
         //- Number of wavelengths/bands
         label iBand_;
-        
+
         label iAngle_;
 
-        //- List of pointers to optical intensity fields for given wavelengths
+        //- List of pointers to photoBio intensity fields for given wavelengths
     //    PtrList<volScalarField> ILambda_;
 
         //- Global ray id - incremented in constructor
         static label rayId;
-        
+
     // Private member functions
 
         //- Disallow default bitwise copy construct
-        opticalIntensityRay(const opticalIntensityRay&);
+        photoBioIntensityRay(const photoBioIntensityRay&);
 
         //- Disallow default bitwise assignment
-        void operator=(const opticalIntensityRay&);
-  
- 
+        void operator=(const photoBioIntensityRay&);
+
+
 public:
 
     // Constructors
 
-        //- Construct form components
-        opticalIntensityRay
+        //- Construct from components
+        photoBioIntensityRay
         (
-            const opticalDOM& dom,
+            const photoBioDOM& dom,
             const fvMesh& mesh,
             const label  iBand,
             const label  iAngle,
@@ -131,14 +127,14 @@ public:
 
 
     // Destructor
-    ~opticalIntensityRay();
+    ~photoBioIntensityRay();
 
 
     // Member functions
 
         // Edit
 
-            //- Update optical intensity on i direction
+            //- Update photoBio intensity on i direction
             scalar correct();  //(const volScalarField& inScTerm)
 
             //- Initialise the ray in i direction
@@ -151,7 +147,7 @@ public:
                 const scalar lambda
             );
 
-            //- Add optical intensities from all the bands
+            //- Add photoBio intensities from all the bands
   //          void addIntensity();
 
 
@@ -175,10 +171,10 @@ public:
 
             //- Return the total number of bands
     //        inline scalar nBand() const;
-            
+
              //- Return the number of band
             inline  label iBand() const;
-            
+
             inline label iAngle() const;
 
             //- Return the phi angle
@@ -191,8 +187,8 @@ public:
             inline scalar omega() const;
 
             const  Foam::surfaceScalarField JiCal() const;
-            
-            //- Return the optical intensity for a given wavelength
+
+            //- Return the photoBio intensity for a given wavelength
      //       inline const volScalarField& ILambda(const label lambdaI) const;
 
            void updateBoundary() ;
@@ -201,12 +197,12 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace radiation
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "opticalIntensityRayI.H"
+#include "photoBioIntensityRayI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

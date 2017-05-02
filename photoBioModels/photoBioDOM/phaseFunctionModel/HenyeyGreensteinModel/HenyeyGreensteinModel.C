@@ -25,14 +25,14 @@ License
 
 #include "HenyeyGreensteinModel.H"
 #include "addToRunTimeSelectionTable.H"
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 
 using namespace Foam::constant::mathematical;
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(HenyeyGreensteinModel, 0);
 
@@ -48,9 +48,9 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
+Foam::photoBio::HenyeyGreensteinModel::HenyeyGreensteinModel
 (
-                const opticalDOM& dom,
+                const photoBioDOM& dom,
 				const 	dictionary& dict,
 				const label& nDim
 )
@@ -163,14 +163,14 @@ Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
+Foam::photoBio::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
- Foam::scalar  Foam::optical::HenyeyGreensteinModel::correct
+ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::correct
 (
           const   label rayI,
           const   label rayJ,
@@ -180,7 +180,7 @@ Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 	   return phaseFunction_[rayJ + rayI*nAngle_ +iBand*nAngle_*nAngle_];
 }
 
- Foam::scalar  Foam::optical::HenyeyGreensteinModel::hg3d
+ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::hg3d
 (
 	const scalar cosV,
 	const scalar g
@@ -190,7 +190,7 @@ Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 
 }
 
- Foam::scalar  Foam::optical::HenyeyGreensteinModel::hg2d
+ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::hg2d
 (
 	const scalar cosV,
 	const scalar g

@@ -25,13 +25,13 @@ License
 
 #include "userDefinedPhaseFunction.H"
 #include "addToRunTimeSelectionTable.H"
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 using namespace Foam::constant::mathematical;
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(userDefinedPhaseFunction, 0);
 
@@ -47,9 +47,9 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::userDefinedPhaseFunction::userDefinedPhaseFunction
+Foam::photoBio::userDefinedPhaseFunction::userDefinedPhaseFunction
 (
-                const opticalDOM& dom,
+                const photoBioDOM& dom,
 				const dictionary& dict,
 				const label& nDim
 )
@@ -185,7 +185,7 @@ Foam::optical::userDefinedPhaseFunction::userDefinedPhaseFunction
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::userDefinedPhaseFunction::~userDefinedPhaseFunction()
+Foam::photoBio::userDefinedPhaseFunction::~userDefinedPhaseFunction()
 {}
 
 
@@ -194,7 +194,7 @@ Foam::optical::userDefinedPhaseFunction::~userDefinedPhaseFunction()
 
 
 
- Foam::scalar  Foam::optical::userDefinedPhaseFunction::correct
+ Foam::scalar  Foam::photoBio::userDefinedPhaseFunction::correct
 (
           const   label rayI,
           const   label rayJ,
@@ -206,7 +206,7 @@ Foam::optical::userDefinedPhaseFunction::~userDefinedPhaseFunction()
 
 
 /*
- *  Foam::scalar  Foam::optical::userDefinedPhaseFunction::correct
+ *  Foam::scalar  Foam::photoBio::userDefinedPhaseFunction::correct
 (
           const   label rayI,
           const   label rayJ,

@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "opticalModel.H"
+#include "photoBioModel.H"
 #include "extinctionModel.H"
 #include "fvm.H"
 
@@ -31,23 +31,23 @@ License
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
-        defineTypeNameAndDebug(opticalModel, 0);
-        defineRunTimeSelectionTable(opticalModel, dictionary);
+        defineTypeNameAndDebug(photoBioModel, 0);
+        defineRunTimeSelectionTable(photoBioModel, dictionary);
     }
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::opticalModel::opticalModel(const volScalarField& intensity)
+Foam::photoBio::photoBioModel::photoBioModel(const volScalarField& intensity)
 :
     IOdictionary
     (
         IOobject
         (
-            "opticalProperties",
+            "photoBioProperties",
             intensity.time().constant(),
             intensity.mesh(),
             IOobject::MUST_READ,
@@ -56,14 +56,14 @@ Foam::optical::opticalModel::opticalModel(const volScalarField& intensity)
     ),
     mesh_(intensity.mesh()),
     time_(intensity.time()),
-    optical_(false),
+    photoBio_(false),
     coeffs_(dictionary::null),
     solverFreq_(0),
-    extinction_(NULL)     
+    extinction_(NULL)
 {}
 
 
-Foam::optical::opticalModel::opticalModel
+Foam::photoBio::photoBioModel::photoBioModel
 (
     const word& type,
     const volScalarField& intensity
@@ -73,7 +73,7 @@ Foam::optical::opticalModel::opticalModel
     (
         IOobject
         (
-            "opticalProperties",
+            "photoBioProperties",
             intensity.time().constant(),
             intensity.mesh(),
             IOobject::MUST_READ,
@@ -82,10 +82,10 @@ Foam::optical::opticalModel::opticalModel
     ),
     mesh_(intensity.mesh()),
     time_(intensity.time()),
-    optical_(lookup("optical")),
+    photoBio_(lookup("photoBio")),
     coeffs_(subDict(type + "Coeffs")),
     solverFreq_(readLabel(lookup("solverFreq"))),
-    extinction_(extinctionModel::New(*this))    
+    extinction_(extinctionModel::New(*this))
 {
     solverFreq_ = max(1, solverFreq_);
 }
@@ -93,17 +93,17 @@ Foam::optical::opticalModel::opticalModel
 
 // * * * * * * * * * * * * * * * * Destructor    * * * * * * * * * * * * * * //
 
-Foam::optical::opticalModel::~opticalModel()
+Foam::photoBio::photoBioModel::~photoBioModel()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-bool Foam::optical::opticalModel::read()
+bool Foam::photoBio::photoBioModel::read()
 {
     if (regIOobject::read())
     {
-        lookup("optical") >> optical_;
+        lookup("photoBio") >> photoBio_;
         coeffs_ = subDict(type() + "Coeffs");
 
         return true;
@@ -115,9 +115,9 @@ bool Foam::optical::opticalModel::read()
 }
 
 
-void Foam::optical::opticalModel::correct()
+void Foam::photoBio::photoBioModel::correct()
 {
-   if (!optical_)
+   if (!photoBio_)
     {
         return;
     }

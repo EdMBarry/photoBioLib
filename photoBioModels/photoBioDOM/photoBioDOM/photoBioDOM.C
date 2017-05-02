@@ -288,7 +288,7 @@ void Foam::photoBio::photoBioDOM::calculate()
 {
     scalar maxResidual = 0.0;
     label rayJ;
-	label iBand =0;
+	label iBand = 0;
     label iAngle = 0;
     label radIter = 0;
     scalar maxBandResidual = 0.0;
@@ -311,17 +311,13 @@ void Foam::photoBio::photoBioDOM::calculate()
 
 			    for (label jAngle = 0; jAngle < nAngle_; jAngle++)
 				{
-
 					rayJ = jAngle + iBand*nAngle_;
-
 					if(rayI != rayJ )       //rayCos = 1; 	//if(rayCos < -1) rayCos = -1;
                     {
 			     	    rayCos = IRay_[rayI].d() & IRay_[rayJ].d();
-
                         if(rayCos > 0 )
                         {
-		//				   diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*inScatter_->correct(rayCos, iBand)*IRay_[rayJ].omega();  //dimensionedScalar("diffusionScatter",dimMass/pow3(dimTime), 0.0) ;  //
-                           diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*phaseFunctionModel_->correct(rayI,rayJ, iBand)*IRay_[rayJ].omega();
+		                    diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*phaseFunctionModel_->correct(rayI,rayJ, iBand)*IRay_[rayJ].omega();
                         }
                     }
 				}

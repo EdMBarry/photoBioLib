@@ -22,26 +22,26 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 \*---------------------------------------------------------------------------*/
 
-#include "opticalIntensityRay.H"
+#include "photoBioIntensityRay.H"
 #include "fvm.H"
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 #include "mathematicalConstants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-Foam::label Foam::optical::opticalIntensityRay::rayId(0);
+Foam::label Foam::photoBio::photoBioIntensityRay::rayId(0);
 
 const Foam::word
-Foam::optical::opticalIntensityRay::intensityPrefix("I");
+Foam::photoBio::photoBioIntensityRay::intensityPrefix("I");
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::opticalIntensityRay::opticalIntensityRay
+Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
 (
-    const opticalDOM& dom,
+    const photoBioDOM& dom,
     const fvMesh&   mesh,
     const label     iBand,
     const label     iAngle,
@@ -66,28 +66,28 @@ Foam::optical::opticalIntensityRay::opticalIntensityRay
     scalar sinPhi = Foam::sin(phi);
     scalar cosPhi = Foam::cos(phi);
 
-     
+
    omega_ = 2.0*sinTheta*Foam::sin(deltaTheta/2.0)*deltaPhi;
 
-   
+
     d_ = vector(sinTheta*cosPhi, sinTheta*sinPhi, cosTheta);
    dAve_ = vector
     (
-       cosPhi 
+       cosPhi
        *Foam::sin(0.5*deltaPhi)
        *(deltaTheta - Foam::cos(2.0*theta)
        *Foam::sin(deltaTheta)),
-       
+
         sinPhi
        *Foam::sin(0.5*deltaPhi)
        *(deltaTheta - Foam::cos(2.0*theta)
        *Foam::sin(deltaTheta)),
-       
+
         0.5*deltaPhi
         *Foam::sin(2.0*theta)*Foam::sin(deltaTheta)
     );
 
- /* 
+ /*
     d_ = vector(sinTheta*sinPhi, sinTheta*cosPhi, cosTheta);
     dAve_ = vector
     (
@@ -122,7 +122,7 @@ Foam::optical::opticalIntensityRay::opticalIntensityRay
         }
         else
         {
-			
+
             // Demand driven load the IDefault field
             if (!IDefaultPtr.valid())
             {
@@ -148,18 +148,18 @@ Foam::optical::opticalIntensityRay::opticalIntensityRay
             noReadHeader.readOpt() = IOobject::NO_READ;
 
 			I_.set(new volScalarField(noReadHeader, IDefaultPtr()));
-			
+
         }
-    
-    
+
+
     rayId++;
-    
+
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::opticalIntensityRay::~opticalIntensityRay()
+Foam::photoBio::photoBioIntensityRay::~photoBioIntensityRay()
 {}
 
 
@@ -167,7 +167,7 @@ Foam::optical::opticalIntensityRay::~opticalIntensityRay()
 
 
 
-Foam::scalar Foam::optical::opticalIntensityRay::correct()  //(const volScalarField& inScTerm)
+Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()  //(const volScalarField& inScTerm)
 {
     // reset boundary heat flux to zero
     // Qr_ = dimensionedScalar("zero", dimMass/pow3(dimTime), 0.0);
@@ -175,22 +175,22 @@ Foam::scalar Foam::optical::opticalIntensityRay::correct()  //(const volScalarFi
 
     scalar maxResidual = -GREAT;
     scalar eqnResidual ;
-      
+
    //   scalar selfScat = 0.0;
-    //  if( dom_.s(iBand_) != 0.0 )  selfScat =  dom_.pf0(iAngle_ + iBand_*dom_.nAngle()) ;  
+    //  if( dom_.s(iBand_) != 0.0 )  selfScat =  dom_.pf0(iAngle_ + iBand_*dom_.nAngle()) ;
    //   dimensionedScalar k("k", dimless/dimLength, dom_.a(iBand_)+dom_.s(iBand_)*(1.0- selfScat*omega_) );  // 0.5
-     
-     dimensionedScalar k("k", dimless/dimLength, dom_.a(iBand_)+dom_.s(iBand_)); 
-     dimensionedScalar s("s", dimless/dimLength, dom_.s(iBand_)); 
-  
+
+     dimensionedScalar k("k", dimless/dimLength, dom_.a(iBand_)+dom_.s(iBand_));
+     dimensionedScalar s("s", dimless/dimLength, dom_.s(iBand_));
+
      const volScalarField& ds = dom_.diffusionScatter();
-     const surfaceScalarField& Ji = JiCal(); 
-      
+     const surfaceScalarField& Ji = JiCal();
+
      fvScalarMatrix IiEq
         (
             fvm::div(Ji, I_(), "div(Ji,Ii_h)")
-          + fvm::Sp(k*omega_, I_())            
-          == s*ds*omega_  
+          + fvm::Sp(k*omega_, I_())
+          == s*ds*omega_
         );
 
         IiEq.relax();
@@ -200,41 +200,41 @@ Foam::scalar Foam::optical::opticalIntensityRay::correct()  //(const volScalarFi
      maxResidual = max(eqnResidual, maxResidual);
 
      return maxResidual;
-    
-    
+
+
 }
 
-const Foam::surfaceScalarField  Foam::optical::opticalIntensityRay::JiCal()  const
+const Foam::surfaceScalarField  Foam::photoBio::photoBioIntensityRay::JiCal()  const
 {
 
      const label npP = dom_.NumPixelPhi();
      const label npT = dom_.NumPixelTheta();
-     
-      vector tV = vector(0,0,0);                 
+
+      vector tV = vector(0,0,0);
       surfaceScalarField Ji(tV & mesh_.Sf());
-	  
-	   const scalar  dp = pi /(2.0*dom_.nPhi())/npP ; 
+
+	   const scalar  dp = pi /(2.0*dom_.nPhi())/npP ;
 	   const scalar  dt = pi /dom_.nTheta()/npT;
 
       for(label m=0; m < npT;m++)
       {
 		  for(label n=0; n < npP;n++)
 		  {
-			  	scalar nP = (2.0*m -npP +1.0)*dp/2.0 + phi_; 
+			  	scalar nP = (2.0*m -npP +1.0)*dp/2.0 + phi_;
 				scalar nT = (2.0*n -npT +1.0)*dt/2.0 + theta_;
-				vector nD = vector (   
+				vector nD = vector (
 				Foam::cos(nP)*Foam::sin(0.5*dp)*(dt - Foam::cos(2.0*nT)*Foam::sin(dt)),
 				Foam::sin(nP)*Foam::sin(0.5*dp)*(dt - Foam::cos(2.0*nT)*Foam::sin(dt)),
 				0.5*dp*Foam::sin(2.0*nT)*Foam::sin(dt));
 				Ji = Ji + (nD & mesh_.Sf());
 			}
 		}
-		
+
 		return Ji;
-} 
+}
 
 
-void Foam::optical::opticalIntensityRay::updateBoundary()  
+void Foam::photoBio::photoBioIntensityRay::updateBoundary()
 {
 
            I_->correctBoundaryConditions();

@@ -27,9 +27,9 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::optical::phaseFunctionModel> Foam::optical::phaseFunctionModel::New
+Foam::autoPtr<Foam::photoBio::phaseFunctionModel> Foam::photoBio::phaseFunctionModel::New
 (
-                const opticalDOM& dom,
+                const photoBioDOM& dom,
 				const 	dictionary& dict,
 				const label& nDim
 )

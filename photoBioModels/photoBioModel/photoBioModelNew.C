@@ -24,68 +24,68 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "error.H"
-#include "opticalModel.H"
+#include "photoBioModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-autoPtr<opticalModel> opticalModel::New
+autoPtr<photoBioModel> photoBioModel::New
 (
-     const volScalarField& T
+     const volScalarField& Enu
 )
 {
-    word opticalModelTypeName;
+    word photoBioModelTypeName;
 
-    // Note: no need to register/keep opticalProperties since models read
+    // Note: no need to register/keep photoBioProperties since models read
     // it themselves.
     {
-        IOdictionary opticalPropertiesDict
+        IOdictionary photoBioPropertiesDict
         (
             IOobject
             (
-                "opticalProperties",
-                T.time().constant(),
-                T.mesh(),
+                "photoBioProperties",
+                Enu.time().constant(),
+                Enu.mesh(),
                 IOobject::MUST_READ,
                 IOobject::NO_WRITE,
                 false
             )
         );
 
-        opticalPropertiesDict.lookup("opticalModel")
-            >> opticalModelTypeName;
+        photoBioPropertiesDict.lookup("photoBioModel")
+            >> photoBioModelTypeName;
     }
 
-    Info<< "Selecting opticalModel " << opticalModelTypeName << endl;
+    Info<< "Selecting photoBioModel " << photoBioModelTypeName << endl;
 
     dictionaryConstructorTable::iterator cstrIter =
-        dictionaryConstructorTablePtr_->find(opticalModelTypeName);
+        dictionaryConstructorTablePtr_->find(photoBioModelTypeName);
 
     if (cstrIter == dictionaryConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
-            "opticalModel::New(const volScalarField&)"
-        )   << "Unknown opticalModel type " << opticalModelTypeName
+            "photoBioModel::New(const volScalarField&)"
+        )   << "Unknown photoBioModel type " << photoBioModelTypeName
             << nl << nl
-            << "Valid opticalModel types are:" << nl
+            << "Valid photoBioModel types are:" << nl
             << dictionaryConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
 
-    return autoPtr<opticalModel>(cstrIter()(T));
+    return autoPtr<photoBioModel>(cstrIter()(Enu));
 }
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End optical
+} // End photoBio
 } // End namespace Foam
 
 // ************************************************************************* //

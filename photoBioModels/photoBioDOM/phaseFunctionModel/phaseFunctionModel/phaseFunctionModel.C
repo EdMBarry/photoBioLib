@@ -25,13 +25,13 @@ License
 
 #include "error.H"
 #include "phaseFunctionModel.H"
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(phaseFunctionModel, 0);
         defineRunTimeSelectionTable(phaseFunctionModel, dictionary);
@@ -41,9 +41,9 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::phaseFunctionModel::phaseFunctionModel
+Foam::photoBio::phaseFunctionModel::phaseFunctionModel
 (
-                const opticalDOM& dom,
+                const photoBioDOM& dom,
 				const 	dictionary& dict,
 				const label& nDim
 )
@@ -57,20 +57,20 @@ Foam::optical::phaseFunctionModel::phaseFunctionModel
 
 // * * * * * * * * * * * * * * * * Destructor    * * * * * * * * * * * * * * //
 
-Foam::optical::phaseFunctionModel::~phaseFunctionModel()
+Foam::photoBio::phaseFunctionModel::~phaseFunctionModel()
 {}
 
 
 // ************************************************************************* //
 
 
-bool  Foam::optical::phaseFunctionModel::inScatter() const
+bool  Foam::photoBio::phaseFunctionModel::inScatter() const
 {
 return false;
 }
 
 
-Foam::scalar  Foam::optical::phaseFunctionModel::correct
+Foam::scalar  Foam::photoBio::phaseFunctionModel::correct
 (
           const  label  rayI,
           const   label  rayJ,
@@ -81,7 +81,7 @@ return 0.0;
 }
 
 /*
-Foam::scalar  Foam::optical::phaseFunctionModel::correct
+Foam::scalar  Foam::photoBio::phaseFunctionModel::correct
 (
           const  scalar  angle,
           const   label  iBand

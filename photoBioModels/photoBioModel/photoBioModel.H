@@ -22,24 +22,24 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Namespace
-    Foam::optical
+    Foam::photoBio
 
 Description
-    Namespace for optical modelling
+    Namespace for photoBio modelling
 
 Class
-    Foam::optical::opticalModel
+    Foam::photoBio::photoBioModel
 
 Description
-    Top level model for optical modelling
+    Top level model for photoBio modelling
 
 SourceFiles
-    opticalModel.C
+    photoBioModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef opticalModel_H
-#define opticalModel_H
+#ifndef photoBioModel_H
+#define photoBioModel_H
 
 #include "IOdictionary.H"
 #include "autoPtr.H"
@@ -52,17 +52,17 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
 // Forward declaration of classes
 class extinctionModel;
 
 /*---------------------------------------------------------------------------*\
-                       Class opticalModel Declaration
+                       Class photoBioModel Declaration
 \*---------------------------------------------------------------------------*/
 
-class opticalModel
+class photoBioModel
 :
     public IOdictionary
 {
@@ -77,21 +77,20 @@ protected:
         const Time& time_;
 
         //- Model specific dictionary input parameters
-        Switch optical_;
+        Switch photoBio_;
 
-        //- optical model dictionary
+        //- photoBio model dictionary
         dictionary coeffs_;
 
-        //- optical solver frequency - number flow solver iterations per
-        //  optical solver iteration
+        //- photoBio solver frequency - number flow solver iterations per
+        //  photoBio solver iteration
         label solverFreq_;
 
 
-        // References to the optical sub-models
-
-            //- Absorption/emission model
-         autoPtr<extinctionModel> extinction_;
-
+        // References to the photoBio sub-models
+            //- Extinction and inScatter models
+        autoPtr<extinctionModel> extinction_;
+        autoPtr<inScatterModel> inScatter_;
 
 
 private:
@@ -99,16 +98,16 @@ private:
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
-        opticalModel(const opticalModel&);
+        photoBioModel(const photoBioModel&);
 
         //- Disallow default bitwise assignment
-        void operator=(const opticalModel&);
+        void operator=(const photoBioModel&);
 
 
 public:
 
     //- Runtime type information
-    TypeName("opticalModel");
+    TypeName("photoBioModel");
 
 
     // Declare runtime constructor selection table
@@ -116,7 +115,7 @@ public:
          declareRunTimeSelectionTable
          (
              autoPtr,
-             opticalModel,
+             photoBioModel,
              dictionary,
              (
                  const volScalarField& intensity
@@ -128,20 +127,20 @@ public:
     // Constructors
 
         //- Null constructor
-        opticalModel(const volScalarField& intensity);
+        photoBioModel(const volScalarField& intensity);
 
         //- Construct from components
-        opticalModel(const word& type, const volScalarField& intensity);
+        photoBioModel(const word& type, const volScalarField& intensity);
 
 
     // Selectors
 
-         //- Return a reference to the selected optical model
-         static autoPtr<opticalModel> New(const volScalarField& intensity);
+         //- Return a reference to the selected photoBio model
+        static autoPtr<photoBioModel> New(const volScalarField& intensity);
 
 
     //- Destructor
-    virtual ~opticalModel();
+    virtual ~photoBioModel();
 
 
     // Member Functions
@@ -151,10 +150,10 @@ public:
             //- Main update/correction routine
             virtual void correct();
 
-            //- Solve optical equation(s)
+            //- Solve photoBio equation(s)
             virtual void calculate() = 0;
 
-            //- Read opticalProperties dictionary
+            //- Read photoBioProperties dictionary
             virtual bool read() = 0;
 
 
@@ -163,7 +162,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace optical
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
