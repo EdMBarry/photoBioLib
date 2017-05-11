@@ -1,2 +1,7 @@
+# Text editor files
+*.gch
+*~
+
+# Build files
 Make/linux*/
 */Make/linux*/
