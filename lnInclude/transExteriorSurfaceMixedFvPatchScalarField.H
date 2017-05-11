@@ -1,1 +1,0 @@
-../derivedFvPatchFields/transExteriorSurface/transExteriorSurfaceMixedFvPatchScalarField.H

@@ -1,1 +1,0 @@
-../derivedFvPatchFields/reflectiveSurface/reflectiveSurfaceMixedFvPatchScalarField.H

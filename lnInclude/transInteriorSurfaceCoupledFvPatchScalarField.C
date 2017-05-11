@@ -1,1 +1,0 @@
-../derivedFvPatchFields/transInteriorSurface/transInteriorSurfaceCoupledFvPatchScalarField.C

@@ -1,1 +1,0 @@
-../derivedFvPatchFields/solarSurface/solarSurfaceMixedFvPatchScalarField.C

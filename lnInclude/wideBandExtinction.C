@@ -1,1 +1,0 @@
-../subModels/extinctionModel/wideBandExtinction/wideBandExtinction.C

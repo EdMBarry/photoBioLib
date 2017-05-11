@@ -1,1 +1,0 @@
-../multiRegionOpticalFoam/createFields.H

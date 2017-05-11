@@ -1,1 +1,0 @@
-../derivedFvPatchFields/multiBandTransInterior/multiBandTransInteriorCoupledFvPatchScalarField.C
