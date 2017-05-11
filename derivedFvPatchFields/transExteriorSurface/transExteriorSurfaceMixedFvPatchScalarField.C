@@ -28,14 +28,14 @@ License
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -52,7 +52,7 @@ transExteriorSurfaceMixedFvPatchScalarField
     beamWidthTheta_(0.0),
     beamDir_(vector::zero),
     beamNormToSurf_(false),
- //   opticalBandDist_(null),
+ //   photoBioBandDist_(null),
     initFlag_(0)
 {
     refValue() = 0.0;
@@ -61,7 +61,7 @@ transExteriorSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const transExteriorSurfaceMixedFvPatchScalarField& ptf,
@@ -80,12 +80,12 @@ transExteriorSurfaceMixedFvPatchScalarField
     beamWidthTheta_(ptf.beamWidthTheta_),
     beamDir_(ptf.beamDir_),
     beamNormToSurf_(ptf.beamNormToSurf_),
- //   opticalBandDist_(ptf.opticalBandDist_),
+ //   photoBioBandDist_(ptf.photoBioBandDist_),
     initFlag_(ptf.initFlag_)
 {}
 
 
-Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -105,9 +105,9 @@ transExteriorSurfaceMixedFvPatchScalarField
     initFlag_(0)
 {
 	
-   opticalBandDist_.setSize(nBands_);   
+   photoBioBandDist_.setSize(nBands_);   
 
-   dict.lookup("opticalBandDist") >> opticalBandDist_;
+   dict.lookup("photoBioBandDist") >> photoBioBandDist_;
    dict.lookup("beamNormToSurf") >>beamNormToSurf_; 
 
  /*     Info << "\n nNbg_  \t" << nNbg_ << endl;
@@ -144,7 +144,7 @@ transExteriorSurfaceMixedFvPatchScalarField
 }
 
 
-Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const transExteriorSurfaceMixedFvPatchScalarField& ptf
@@ -160,12 +160,12 @@ transExteriorSurfaceMixedFvPatchScalarField
    beamWidthTheta_(ptf.beamWidthTheta_),
     beamDir_(ptf.beamDir_),
     beamNormToSurf_(ptf.beamNormToSurf_),
- //   opticalBandDist_(ptf.opticalBandDist_),
+ //   photoBioBandDist_(ptf.photoBioBandDist_),
     initFlag_(ptf.initFlag_)
 {}
 
 
-Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
+Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::
 transExteriorSurfaceMixedFvPatchScalarField
 (
     const transExteriorSurfaceMixedFvPatchScalarField& ptf,
@@ -182,7 +182,7 @@ transExteriorSurfaceMixedFvPatchScalarField
     beamWidthTheta_(ptf.beamWidthTheta_),
     beamDir_(ptf.beamDir_),
     beamNormToSurf_(ptf.beamNormToSurf_),
- //   opticalBandDist_(ptf.opticalBandDist_),
+ //   photoBioBandDist_(ptf.photoBioBandDist_),
     initFlag_(ptf.initFlag_)
 {}
 
@@ -193,7 +193,7 @@ transExteriorSurfaceMixedFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::
+void Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::
 updateCoeffs()
 {
 	if (this->updated())
@@ -207,15 +207,15 @@ updateCoeffs()
      	
     scalarField& Iw = *this;
    
-    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+    const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const opticalDOM& dom(refCast<const opticalDOM>(optical));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
  
     if (dom.nBand() == 0)
     {
         FatalErrorIn
         (
-            "Foam::optical::"
+            "Foam::photoBio::"
             "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
         )   << " a non-grey boundary condition is used with a grey "
             << "absorption model" << nl << exit(FatalError);
@@ -267,7 +267,7 @@ updateCoeffs()
 	         
 	 dirToAngle(beamDir_, beamAnglePhi_,beamAngleTheta_) ;
 	    
-     // calculate the refraction optical only once at the beginning
+     // calculate the refraction photoBio only once at the beginning
      if(initFlag_ == 0)
      {	
 
@@ -606,7 +606,7 @@ updateCoeffs()
     
 }
 
-void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::dirToAngle
+void Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::dirToAngle
 (
     const vector& dir,
     scalar&	tPhi,
@@ -632,7 +632,7 @@ void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::dirToAngle
 	
 }
 
-void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::write
+void Foam::photoBio::transExteriorSurfaceMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -654,7 +654,7 @@ void Foam::optical::transExteriorSurfaceMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
     makePatchTypeField
     (

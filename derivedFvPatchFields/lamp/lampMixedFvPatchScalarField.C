@@ -28,14 +28,14 @@
     #include "fvPatchFieldMapper.H"
     #include "volFields.H"
 
-    #include "opticalDOM.H"
+    #include "photoBioDOM.H"
     #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::lampMixedFvPatchScalarField::
+Foam::photoBio::lampMixedFvPatchScalarField::
 lampMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -49,7 +49,7 @@ lampMixedFvPatchScalarField
     reflectionOnSurface_(false),
     reflectionCoef_(0.0),
     diffuseFraction_(0.0)
-    //   opticalBandDist_(null),
+    //   photoBioBandDist_(null),
 {
     refValue() = 0.0;
     refGrad() = 0.0;
@@ -57,7 +57,7 @@ lampMixedFvPatchScalarField
 }
 
 
-Foam::optical::lampMixedFvPatchScalarField::
+Foam::photoBio::lampMixedFvPatchScalarField::
 lampMixedFvPatchScalarField
 (
     const lampMixedFvPatchScalarField& ptf,
@@ -73,11 +73,11 @@ lampMixedFvPatchScalarField
     reflectionOnSurface_(ptf.reflectionOnSurface_),
     reflectionCoef_(ptf.reflectionCoef_),
     diffuseFraction_(ptf.diffuseFraction_),
-    opticalBandDist_(ptf.opticalBandDist_)
+    photoBioBandDist_(ptf.photoBioBandDist_)
 {}
 
 
-Foam::optical::lampMixedFvPatchScalarField::
+Foam::photoBio::lampMixedFvPatchScalarField::
 lampMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -95,8 +95,8 @@ lampMixedFvPatchScalarField
 	
     dict.lookup("reflectionOnSurface") >>reflectionOnSurface_;  
    
-    opticalBandDist_.setSize(nBands_);   
-    dict.lookup("opticalBandDist") >> opticalBandDist_;
+    photoBioBandDist_.setSize(nBands_);   
+    dict.lookup("photoBioBandDist") >> photoBioBandDist_;
    
 	
     if (dict.found("value"))
@@ -122,7 +122,7 @@ lampMixedFvPatchScalarField
 }
 
 
-Foam::optical::lampMixedFvPatchScalarField::
+Foam::photoBio::lampMixedFvPatchScalarField::
 lampMixedFvPatchScalarField
 (
     const lampMixedFvPatchScalarField& ptf
@@ -135,11 +135,11 @@ lampMixedFvPatchScalarField
     reflectionOnSurface_(ptf.reflectionOnSurface_),
     reflectionCoef_(ptf.reflectionCoef_),
     diffuseFraction_(ptf.diffuseFraction_),
-    opticalBandDist_(ptf.opticalBandDist_)
+    photoBioBandDist_(ptf.photoBioBandDist_)
 {}
 
 
-Foam::optical::lampMixedFvPatchScalarField::
+Foam::photoBio::lampMixedFvPatchScalarField::
 lampMixedFvPatchScalarField
 (
     const lampMixedFvPatchScalarField& ptf,
@@ -153,14 +153,14 @@ lampMixedFvPatchScalarField
     reflectionOnSurface_(ptf.reflectionOnSurface_),
     reflectionCoef_(ptf.reflectionCoef_),
     diffuseFraction_(ptf.diffuseFraction_),
-    opticalBandDist_(ptf.opticalBandDist_)
+    photoBioBandDist_(ptf.photoBioBandDist_)
 {}
 
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::optical::lampMixedFvPatchScalarField::
+void Foam::photoBio::lampMixedFvPatchScalarField::
 updateCoeffs()
 {
     if (this->updated())
@@ -174,15 +174,15 @@ updateCoeffs()
      	
     scalarField& Iw = *this;
    
-    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+    const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const opticalDOM& dom(refCast<const opticalDOM>(optical));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
     
     if (dom.nBand() == 0 )  // got rid of the hex mesh requirement
     {
         FatalErrorIn
             (
-                "Foam::optical::"
+                "Foam::photoBio::"
                 "wideBandDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs"
             )   << " a non-grey boundary condition is used with a grey "
                 << "absorption model" << nl << exit(FatalError);
@@ -344,7 +344,7 @@ updateCoeffs()
             }  
           
      
-            refValue()[faceI] = reflectionCoef_*reflectionRefraction  + I0_*opticalBandDist_[iBand]*angleDist[i0]/bdOmega;  ///pi/2;  //
+            refValue()[faceI] = reflectionCoef_*reflectionRefraction  + I0_*photoBioBandDist_[iBand]*angleDist[i0]/bdOmega;  ///pi/2;  //
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;
      
@@ -363,7 +363,7 @@ updateCoeffs()
     
 }
 
-void Foam::optical::lampMixedFvPatchScalarField::dirToAngle
+void Foam::photoBio::lampMixedFvPatchScalarField::dirToAngle
 (
     const vector& dir,
     scalar&	tPhi,
@@ -389,7 +389,7 @@ void Foam::optical::lampMixedFvPatchScalarField::dirToAngle
 	
 }
 
-void Foam::optical::lampMixedFvPatchScalarField::write
+void Foam::photoBio::lampMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -402,7 +402,7 @@ void Foam::optical::lampMixedFvPatchScalarField::write
     os.writeKeyword("reflectionOnSurface") << reflectionOnSurface_ << token::END_STATEMENT << nl;
     os.writeKeyword("reflectionCoef") << reflectionCoef_ << token::END_STATEMENT << nl;
     os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
-    os.writeKeyword("opticalBandDist") << opticalBandDist_ << token::END_STATEMENT << nl;                
+    os.writeKeyword("photoBioBandDist") << photoBioBandDist_ << token::END_STATEMENT << nl;                
 }
 
 
@@ -410,7 +410,7 @@ void Foam::optical::lampMixedFvPatchScalarField::write
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         makePatchTypeField
         (

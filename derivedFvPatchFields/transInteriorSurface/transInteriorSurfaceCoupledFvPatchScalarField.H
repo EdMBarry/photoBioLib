@@ -56,7 +56,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 /*---------------------------------------------------------------------------*\
         Class transInteriorSurfaceCoupledFvPatchScalarField Declaration
@@ -154,7 +154,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-} // End namespace optical
+} // End namespace photoBio
 
 } // End namespace Foam
 

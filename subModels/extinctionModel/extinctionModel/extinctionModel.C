@@ -29,7 +29,7 @@ License
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(extinctionModel, 0);
         defineRunTimeSelectionTable(extinctionModel, dictionary);
@@ -38,7 +38,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::extinctionModel::extinctionModel
+Foam::photoBio::extinctionModel::extinctionModel
 (
     const dictionary& dict
 //    , const fvMesh& mesh
@@ -51,24 +51,24 @@ Foam::optical::extinctionModel::extinctionModel
 
 // * * * * * * * * * * * * * * * * Destructor    * * * * * * * * * * * * * * //
 
-Foam::optical::extinctionModel::~extinctionModel()
+Foam::photoBio::extinctionModel::~extinctionModel()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-Foam::scalar Foam::optical::extinctionModel::k(const label bandI) const
+Foam::scalar Foam::photoBio::extinctionModel::k(const label bandI) const
 {
     return  0.0  ;
 }
 
-Foam::scalar Foam::optical::extinctionModel::a(const label bandI) const
+Foam::scalar Foam::photoBio::extinctionModel::a(const label bandI) const
 {
     return  0.0  ;
 }
 
-Foam::scalar Foam::optical::extinctionModel::s(const label bandI) const
+Foam::scalar Foam::photoBio::extinctionModel::s(const label bandI) const
 {
     return   0.0 ;
 }

@@ -25,7 +25,7 @@
     Foam::lampMixedFvPatchScalarField
 
     Description
-    optical temperature specified
+    photoBio temperature specified
 
     SourceFiles
     lampMixedFvPatchScalarField.C
@@ -41,7 +41,7 @@
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         /*---------------------------------------------------------------------------*\
             Class lampMixedFvPatchScalarField Declaration
@@ -53,15 +53,15 @@ namespace Foam
         {
             // Private data
 
-            //- incident optical angle distribution
+            //- incident photoBio angle distribution
       
-            scalar  I0_;              // incident optical intensity
+            scalar  I0_;              // incident photoBio intensity
             label   nBands_;  
             scalar  lampRadius_;
             bool    reflectionOnSurface_;
             scalar  reflectionCoef_; 
 	    scalar  diffuseFraction_;   	
-            DynamicList<scalar,1,0>  opticalBandDist_;
+            DynamicList<scalar,1,0>  photoBioBandDist_;
             DynamicList<scalar,1,0>  angleDist; 
 	
 	

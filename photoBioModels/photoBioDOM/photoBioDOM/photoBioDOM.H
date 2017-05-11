@@ -101,6 +101,8 @@ class photoBioDOM
         //- Number of wavelength bands
         label nBand_;
 
+        label iDomain_;
+
         label NumPixelPhi_;
 
         label NumPixelTheta_;

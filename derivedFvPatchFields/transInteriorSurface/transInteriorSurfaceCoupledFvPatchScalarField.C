@@ -31,14 +31,14 @@ License
 #include "mappedPatchBase.H"
 #include "regionProperties.H"
 
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -56,7 +56,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 }
 
 
-Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const transInteriorSurfaceCoupledFvPatchScalarField& ptf,
@@ -72,7 +72,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 {}
 
 
-Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -129,7 +129,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 }
 
 
-Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::
+Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::
 transInteriorSurfaceCoupledFvPatchScalarField
 (
     const transInteriorSurfaceCoupledFvPatchScalarField& wtcsf,
@@ -145,7 +145,7 @@ transInteriorSurfaceCoupledFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs()
+void Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs()
 {
 	
     if (updated())
@@ -170,9 +170,9 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
     scalarField Ic(patchInternalField());
     scalarField& Iw = *this;
     
-    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+    const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const opticalDOM& dom(refCast<const opticalDOM>(optical));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
     
     label BDrayId = -1;
     dom.setRayId(internalField().name(), BDrayId);
@@ -377,7 +377,7 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs(
 
 
 
-void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::write
+void Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -394,7 +394,7 @@ void Foam::optical::transInteriorSurfaceCoupledFvPatchScalarField::write
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 makePatchTypeField
 (

@@ -31,7 +31,7 @@ License
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(anisotropicScattering, 0);
 
@@ -47,7 +47,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::anisotropicScattering::anisotropicScattering
+Foam::photoBio::anisotropicScattering::anisotropicScattering
 (
     const dictionary& dict
   //  , const fvMesh& mesh
@@ -88,14 +88,14 @@ Foam::optical::anisotropicScattering::anisotropicScattering
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::anisotropicScattering::~anisotropicScattering()
+Foam::photoBio::anisotropicScattering::~anisotropicScattering()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
- Foam::scalar  Foam::optical::anisotropicScattering::correct
+ Foam::scalar  Foam::photoBio::anisotropicScattering::correct
 (
           const  scalar  rayCos,
           const   label  iBand

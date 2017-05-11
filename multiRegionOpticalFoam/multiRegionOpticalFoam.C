@@ -32,7 +32,7 @@ Description
 #include "fvCFD.H"
 #include "fixedGradientFvPatchFields.H"
 #include "regionProperties.H"
-#include "opticalModel.H"
+#include "photoBioModel.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -61,9 +61,9 @@ int main(int argc, char *argv[])
                 
 		//	const fvMesh& mesh = calRegions[i];
     
-			optical::opticalModel& opticalM = opticalModels[i];
+			photoBio::photoBioModel& photoBioM = photoBioModels[i];
 			
-			opticalM.correct();
+			photoBioM.correct();
 
         }
 

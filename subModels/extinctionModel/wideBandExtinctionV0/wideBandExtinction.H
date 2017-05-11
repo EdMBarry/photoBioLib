@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::optical::bioMediaAbsorption
+    Foam::photoBio::bioMediaAbsorption
 
 Description
-    Constant optical absorption and emission coefficients for continuous
+    Constant photoBio absorption and emission coefficients for continuous
     phase
 
 SourceFiles
@@ -33,8 +33,8 @@ SourceFiles
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef opticalWideBandExtinction_H
-#define opticalWideBandExtinction_H
+#ifndef photoBioWideBandExtinction_H
+#define photoBioWideBandExtinction_H
 
 // #include "HashTable.H"
 #include "extinctionModel.H"
@@ -43,7 +43,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
@@ -126,7 +126,7 @@ public:
  /*        
         inline bool isGrey() const
         {
-              return false;                // this needs to be in the optical properties file
+              return false;                // this needs to be in the photoBio properties file
         }
 
         //- Number of bands
@@ -159,7 +159,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace optical
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

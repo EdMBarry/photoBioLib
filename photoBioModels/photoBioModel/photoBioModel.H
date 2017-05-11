@@ -47,6 +47,7 @@ SourceFiles
 #include "volFields.H"
 #include "fvMatrices.H"
 #include "extinctionModel.H"
+#include "inScatterModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -57,6 +58,7 @@ namespace photoBio
 
 // Forward declaration of classes
 class extinctionModel;
+class inScatterModel;
 
 /*---------------------------------------------------------------------------*\
                        Class photoBioModel Declaration

@@ -28,14 +28,14 @@ License
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 #include "mathematicalConstants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::surroundingMixedFvPatchScalarField::
+Foam::photoBio::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -51,7 +51,7 @@ surroundingMixedFvPatchScalarField
 }
 
 
-Foam::optical::surroundingMixedFvPatchScalarField::
+Foam::photoBio::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const surroundingMixedFvPatchScalarField& ptf,
@@ -65,7 +65,7 @@ surroundingMixedFvPatchScalarField
 {}
 
 
-Foam::optical::surroundingMixedFvPatchScalarField::
+Foam::photoBio::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const fvPatch& p,
@@ -105,7 +105,7 @@ surroundingMixedFvPatchScalarField
 }
 
 
-Foam::optical::surroundingMixedFvPatchScalarField::
+Foam::photoBio::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const surroundingMixedFvPatchScalarField& ptf
@@ -116,7 +116,7 @@ surroundingMixedFvPatchScalarField
 {}
 
 
-Foam::optical::surroundingMixedFvPatchScalarField::
+Foam::photoBio::surroundingMixedFvPatchScalarField::
 surroundingMixedFvPatchScalarField
 (
     const surroundingMixedFvPatchScalarField& ptf,
@@ -130,7 +130,7 @@ surroundingMixedFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::optical::surroundingMixedFvPatchScalarField::
+void Foam::photoBio::surroundingMixedFvPatchScalarField::
 updateCoeffs()
 {
     if (this->updated())
@@ -145,9 +145,9 @@ updateCoeffs()
       
     scalarField& Iw = *this;
     
-    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+    const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const opticalDOM& dom(refCast<const opticalDOM>(optical));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
  
     
     label rayId = -1;
@@ -183,7 +183,7 @@ updateCoeffs()
 }
 
 
-void Foam::optical::surroundingMixedFvPatchScalarField::write
+void Foam::photoBio::surroundingMixedFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -198,7 +198,7 @@ void Foam::optical::surroundingMixedFvPatchScalarField::write
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
     makePatchTypeField
     (

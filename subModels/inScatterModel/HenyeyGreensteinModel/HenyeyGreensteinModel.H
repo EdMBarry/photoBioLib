@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::optical::constantScatter
+    Foam::photoBio::constantScatter
 
 Description
-    Constant optical scatter coefficient
+    Constant photoBio scatter coefficient
 
 SourceFiles
     scatterModel.C
@@ -47,7 +47,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace optical
+namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
@@ -121,7 +121,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace optical
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

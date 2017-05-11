@@ -314,7 +314,7 @@ void Foam::photoBio::photoBioDOM::calculate()
 					rayJ = jAngle + iBand*nAngle_;
 					if(rayI != rayJ )       //rayCos = 1; 	//if(rayCos < -1) rayCos = -1;
                     {
-			     	    rayCos = IRay_[rayI].d() & IRay_[rayJ].d();
+			     	    scalar rayCos = IRay_[rayI].d() & IRay_[rayJ].d();
                         if(rayCos > 0 )
                         {
 		                    diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*phaseFunctionModel_->correct(rayI,rayJ, iBand)*IRay_[rayJ].omega();

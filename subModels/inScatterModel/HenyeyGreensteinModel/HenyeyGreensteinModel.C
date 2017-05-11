@@ -31,7 +31,7 @@ License
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(HenyeyGreensteinModel, 0);
 
@@ -47,7 +47,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
+Foam::photoBio::HenyeyGreensteinModel::HenyeyGreensteinModel
 (
     const dictionary& dict
   //  , const fvMesh& mesh
@@ -58,8 +58,8 @@ Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
 {
      coeffsDict_.lookup("subAngleNum") >> subAngleNum;
      
-     const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
-     const opticalDOM& dom(refCast<const opticalDOM>(optical));
+     const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
+     const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
      
      nBands_ = dom.nBands();   //    coeffsDict_.lookup("nBand") >> nBands_;
      asymmetryFactor_.setSize(nBands_);   
@@ -155,14 +155,14 @@ Foam::optical::HenyeyGreensteinModel::HenyeyGreensteinModel
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
+Foam::photoBio::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
- Foam::scalar  Foam::optical::HenyeyGreensteinModel::correct
+ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::correct
 (
           const   label rayI,
           const   label rayJ,
@@ -173,7 +173,7 @@ Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 
 }
 
- Foam::scalar  Foam::optical::HenyeyGreensteinModel::hg3d
+ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::hg3d
 (
 	const scalar cosV,
 	const scalar g
@@ -183,7 +183,7 @@ Foam::optical::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 
 }
 
- Foam::scalar  Foam::optical::HenyeyGreensteinModel::hg2d
+ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::hg2d
 (
 	const scalar cosV,
 	const scalar g

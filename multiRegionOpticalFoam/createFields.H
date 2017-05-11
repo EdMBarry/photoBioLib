@@ -2,7 +2,7 @@
     
     PtrList<volScalarField> I_cal(calRegions.size());
     
-    PtrList<optical::opticalModel> opticalModels(calRegions.size());
+    PtrList<photoBio::photoBioModel> photoBioModels(calRegions.size());
 
     // Populate solid field pointer lists
     forAll(calRegions, i)
@@ -27,10 +27,10 @@
             )
         );
 
-        opticalModels.set
+        photoBioModels.set
         (
             i,
-            optical::opticalModel::New(I_cal[i])
+            photoBio::photoBioModel::New(I_cal[i])
         );
     }
     

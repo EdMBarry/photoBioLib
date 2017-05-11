@@ -30,7 +30,7 @@ License
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         defineTypeNameAndDebug(wideBandExtinction, 0);
 
@@ -47,7 +47,7 @@ namespace Foam
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 
-Foam::optical::wideBandExtinction::wideBandExtinction
+Foam::photoBio::wideBandExtinction::wideBandExtinction
 (
     const dictionary& dict
  //   , const fvMesh& mesh
@@ -100,22 +100,22 @@ Foam::optical::wideBandExtinction::wideBandExtinction
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::optical::wideBandExtinction::~wideBandExtinction()
+Foam::photoBio::wideBandExtinction::~wideBandExtinction()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-Foam::scalar  Foam::optical::wideBandExtinction::k( const label bandI ) const
+Foam::scalar  Foam::photoBio::wideBandExtinction::k( const label bandI ) const
 {
 	return  kBand_[bandI];
 }
                  
-Foam::scalar Foam::optical::wideBandExtinction::a( const label bandI ) const
+Foam::scalar Foam::photoBio::wideBandExtinction::a( const label bandI ) const
 {        
 	return  aBand_[bandI];
 }
          
-Foam::scalar Foam::optical::wideBandExtinction::s( const label bandI ) const
+Foam::scalar Foam::photoBio::wideBandExtinction::s( const label bandI ) const
 {        
 	return  sBand_[bandI];
 }
@@ -123,7 +123,7 @@ Foam::scalar Foam::optical::wideBandExtinction::s( const label bandI ) const
 
 /*
 Foam::tmp<Foam::volScalarField>
-Foam::optical::wideBandExtinction::addIntensity
+Foam::photoBio::wideBandExtinction::addIntensity
 (
     const label i,
     const volScalarField& ILambda
@@ -134,7 +134,7 @@ Foam::optical::wideBandExtinction::addIntensity
 
 
 
-void Foam::optical::wideBandExtinction::correct
+void Foam::photoBio::wideBandExtinction::correct
 (
     volScalarField& k,
     PtrList<volScalarField>& kLambda

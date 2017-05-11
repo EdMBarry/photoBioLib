@@ -31,14 +31,14 @@ License
 #include "mappedPatchBase.H"
 #include "regionProperties.H"
 
-#include "opticalDOM.H"
+#include "photoBioDOM.H"
 #include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -50,7 +50,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(0.0),
     diffuseFraction_(0.0), 
     nBands_(1)
- //  , opticalBandDist_(null)
+ //  , photoBioBandDist_(null)
 {
     this->refValue() = 0.0;
     this->refGrad() = 0.0;
@@ -58,7 +58,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
 }
 
 
-Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const multiBandTransInteriorCoupledFvPatchScalarField& ptf,
@@ -72,11 +72,11 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(ptf.nOwn_),
     diffuseFraction_(ptf.diffuseFraction_),
     nBands_(ptf.nBands_),
-    opticalBandDist_(ptf.opticalBandDist_)
+    photoBioBandDist_(ptf.photoBioBandDist_)
 {}
 
 
-Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const fvPatch& p,
@@ -90,8 +90,8 @@ multiBandTransInteriorCoupledFvPatchScalarField
     diffuseFraction_(readScalar(dict.lookup("diffuseFraction"))),
     nBands_(readLabel(dict.lookup("nBands")))
 {
-    opticalBandDist_.setSize(nBands_);   
-    dict.lookup("opticalBandDist") >> opticalBandDist_;
+    photoBioBandDist_.setSize(nBands_);   
+    dict.lookup("photoBioBandDist") >> photoBioBandDist_;
    
     if (!isA<mappedPatchBase>(this->patch().patch()))
     {
@@ -136,7 +136,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
 }
 
 
-Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::
+Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::
 multiBandTransInteriorCoupledFvPatchScalarField
 (
     const multiBandTransInteriorCoupledFvPatchScalarField& wtcsf,
@@ -148,13 +148,13 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(wtcsf.nOwn_),
     diffuseFraction_(wtcsf.diffuseFraction_),
     nBands_(wtcsf.nBands_),
-    opticalBandDist_(wtcsf.opticalBandDist_)
+    photoBioBandDist_(wtcsf.photoBioBandDist_)
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs()
+void Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeffs()
 {
 	
     if (updated())
@@ -171,9 +171,9 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeff
     scalarField Ic(patchInternalField());
     scalarField& Iw = *this;
     
-    const opticalModel& optical = db().lookupObject<opticalModel>("opticalProperties");
+    const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const opticalDOM& dom(refCast<const opticalDOM>(optical));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
     
     label BDrayId = -1;
     dom.setRayId(internalField().name(), BDrayId);
@@ -307,7 +307,7 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeff
                                 dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	
           		    
                                 diffusive = diffusive
-                                    + (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
+                                    + (NbrRaySet[refracIncidentRay][faceI]*photoBioBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
                             }
                             else
                             {diffusive = diffusive + reflecFace[faceI]*R*mag(surfNorm & sweepdAve);  }  //
@@ -375,7 +375,7 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeff
                                 dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	// this is important 
             
                                 specular = specular 
-                                    + (NbrRaySet[refracIncidentRay][faceI]*opticalBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
+                                    + (NbrRaySet[refracIncidentRay][faceI]*photoBioBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
                             }
                             else
                             {
@@ -417,7 +417,7 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::updateCoeff
 
 
 
-void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::write
+void Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -434,7 +434,7 @@ void Foam::optical::multiBandTransInteriorCoupledFvPatchScalarField::write
 
 namespace Foam
 {
-    namespace optical
+    namespace photoBio
     {
         makePatchTypeField
         (
