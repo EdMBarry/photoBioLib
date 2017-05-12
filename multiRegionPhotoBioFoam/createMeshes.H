@@ -1,8 +1,10 @@
-    PtrList<fvMesh> calRegions(rp.regionNames().size());
+    const wordList regionNames(rp["fluid"]);
 
-    forAll(rp.regionNames(), i)
+    PtrList<fvMesh> calRegions(regionNames.size());
+
+    forAll(regionNames, i)
     {
-        Info<< "Create mesh for region " << rp.regionNames()[i]
+        Info<< "Create mesh for region " << regionNames[i]
             << " for time = " << runTime.timeName() << nl << endl;
 
         calRegions.set
@@ -12,7 +14,7 @@
             (
                 IOobject
                 (
-                    rp.regionNames()[i],
+                    regionNames[i],
                     runTime.timeName(),
                     runTime,
                     IOobject::MUST_READ

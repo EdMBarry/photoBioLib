@@ -3,7 +3,9 @@ EXE_INC = \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude   \
     -I$(LIB_SRC)/turbulenceModels/compressible/turbulenceModel/lnInclude \
+    -I$(LIB_SRC)/regionModels/regionModel/lnInclude
 
 LIB_LIBS = \
     -lfiniteVolume \
-    -lspecie
+    -lspecie \
+    -lregionModels 
