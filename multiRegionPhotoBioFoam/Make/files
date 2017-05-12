@@ -1,5 +1,5 @@
 regionProperties.C
 multiRegionPhotoBioFoam.C
 
-EXE = $(FOAM_USER_APPBIN)/multiRegionOpticalFoam
+EXE = $(FOAM_USER_APPBIN)/multiRegionPhotoBioFoam
 
