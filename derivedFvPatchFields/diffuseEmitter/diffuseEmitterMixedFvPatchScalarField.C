@@ -45,10 +45,7 @@ diffuseEmitterMixedFvPatchScalarField
 :
     mixedFvPatchScalarField(p, iF),
     I0_(0.0), 
-    nBands_(1),
-    reflectionOnSurface_(false),
-    reflectionCoef_(0.0),
-    diffuseFraction_(0.0)
+    nBands_(1)
 {}
 
 
@@ -64,9 +61,6 @@ diffuseEmitterMixedFvPatchScalarField
     mixedFvPatchScalarField(ptf, p, iF, mapper),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
-    reflectionOnSurface_(ptf.reflectionOnSurface_),
-    reflectionCoef_(ptf.reflectionCoef_),
-    diffuseFraction_(ptf.diffuseFraction_),
     bandDist_(ptf.bandDist_)
 {}
 
@@ -81,10 +75,7 @@ diffuseEmitterMixedFvPatchScalarField
 :
     mixedFvPatchScalarField(p, iF),
     I0_(readScalar(dict.lookup("irradiation"))),
-    nBands_(readLabel(dict.lookup("nBands"))),
-    reflectionOnSurface_(readBool(dict.lookup("reflectionOnSurface"))),
-    reflectionCoef_(readScalar(dict.lookup("reflectionCoef"))),
-    diffuseFraction_(readScalar(dict.lookup("diffuseFraction")))
+    nBands_(readLabel(dict.lookup("nBands")))
 {
     bandDist_.setSize(nBands_);
     dict.lookup("bandDist") >> bandDist_;
@@ -100,9 +91,6 @@ diffuseEmitterMixedFvPatchScalarField
     mixedFvPatchScalarField(ptf),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
-    reflectionOnSurface_(ptf.reflectionOnSurface_),
-    reflectionCoef_(ptf.reflectionCoef_),
-    diffuseFraction_(ptf.diffuseFraction_),
     bandDist_(ptf.bandDist_)
 {}
 
@@ -117,9 +105,6 @@ diffuseEmitterMixedFvPatchScalarField
     mixedFvPatchScalarField(ptf, iF),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
-    reflectionOnSurface_(ptf.reflectionOnSurface_),
-    reflectionCoef_(ptf.reflectionCoef_),
-    diffuseFraction_(ptf.diffuseFraction_),
     bandDist_(ptf.bandDist_)
 {}
 
@@ -201,10 +186,6 @@ void Foam::photoBio::diffuseEmitterMixedFvPatchScalarField::write
     mixedFvPatchScalarField::write(os);
     os.writeKeyword("irradiation") << I0_ << token::END_STATEMENT << nl;
     os.writeKeyword("nBands") << nBands_ << token::END_STATEMENT << nl;
-    os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
-    os.writeKeyword("reflectionOnSurface") << reflectionOnSurface_ << token::END_STATEMENT << nl;
-    os.writeKeyword("reflectionCoef") << reflectionCoef_ << token::END_STATEMENT << nl;
-    os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
     os.writeKeyword("bandDist") << bandDist_ << token::END_STATEMENT << nl;
 }
 

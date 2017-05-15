@@ -45,11 +45,7 @@ class diffuseEmitterMixedFvPatchScalarField : public mixedFvPatchScalarField
 
     scalar  I0_;
     label   nBands_;
-    bool    reflectionOnSurface_;
-    scalar  reflectionCoef_;
-    scalar  diffuseFraction_;
     DynamicList<scalar,1,0>  bandDist_;
-    DynamicList<scalar,1,0>  angleDist;
     DynamicList<Pair<scalar>,1,0>  bandLimits_;
 
 public:
