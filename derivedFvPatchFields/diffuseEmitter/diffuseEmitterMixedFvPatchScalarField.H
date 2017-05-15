@@ -23,8 +23,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef lampMixedFvPatchScalarField_H
-#define lampMixedFvPatchScalarField_H
+#ifndef diffuseEmitterMixedFvPatchScalarField_H
+#define diffuseEmitterMixedFvPatchScalarField_H
 
 #include "mixedFvPatchFields.H"
 
@@ -36,10 +36,10 @@ namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
-  Class lampMixedFvPatchScalarField Declaration
+  Class diffuseEmitterMixedFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class lampMixedFvPatchScalarField : public mixedFvPatchScalarField
+class diffuseEmitterMixedFvPatchScalarField : public mixedFvPatchScalarField
 {
     // Private data
 
@@ -55,38 +55,38 @@ class lampMixedFvPatchScalarField : public mixedFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("lamp");
+    TypeName("diffuseEmitter");
 
     // Constructors
 
     //- Construct from patch and internal field
-    lampMixedFvPatchScalarField
+    diffuseEmitterMixedFvPatchScalarField
     (
         const fvPatch&,
         const DimensionedField<scalar, volMesh>&
     );
 
     //- Construct from patch, internal field and dictionary
-    lampMixedFvPatchScalarField
+    diffuseEmitterMixedFvPatchScalarField
     (
         const fvPatch&,
         const DimensionedField<scalar, volMesh>&,
         const dictionary&
     );
 
-    //- Construct by mapping given a lampMixedFvPatchScalarField onto a new patch
-    lampMixedFvPatchScalarField
+    //- Construct by mapping given a diffuseEmitterMixedFvPatchScalarField onto a new patch
+    diffuseEmitterMixedFvPatchScalarField
     (
-        const lampMixedFvPatchScalarField&,
+        const diffuseEmitterMixedFvPatchScalarField&,
         const fvPatch&,
         const DimensionedField<scalar, volMesh>&,
         const fvPatchFieldMapper&
     );
 
     //- Construct as copy
-    lampMixedFvPatchScalarField
+    diffuseEmitterMixedFvPatchScalarField
     (
-        const lampMixedFvPatchScalarField&
+        const diffuseEmitterMixedFvPatchScalarField&
     );
 
     //- Construct and return a clone
@@ -94,14 +94,14 @@ public:
     {
         return tmp<fvPatchScalarField>
         (
-            new lampMixedFvPatchScalarField(*this)
+            new diffuseEmitterMixedFvPatchScalarField(*this)
         );
     }
 
     //- Construct as copy setting internal field reference
-    lampMixedFvPatchScalarField
+    diffuseEmitterMixedFvPatchScalarField
     (
-        const lampMixedFvPatchScalarField&,
+        const diffuseEmitterMixedFvPatchScalarField&,
         const DimensionedField<scalar, volMesh>&
     );
 
@@ -113,7 +113,7 @@ public:
     {
         return tmp<fvPatchScalarField>
         (
-            new lampMixedFvPatchScalarField(*this, iF)
+            new diffuseEmitterMixedFvPatchScalarField(*this, iF)
         );
     }
 
