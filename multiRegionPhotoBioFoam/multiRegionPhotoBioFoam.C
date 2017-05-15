@@ -27,10 +27,8 @@ Application
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "fixedGradientFvPatchFields.H"
 #include "regionProperties.H"
 #include "photoBioModel.H"
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,24 +42,15 @@ int main(int argc, char *argv[])
     #include "createMeshes.H"
     #include "createFields.H"
 
-    #include "initContinuityErrs.H"
-
     while (runTime.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-
         forAll(calRegions, i)
         {
-            Info<< "\nSolving for region "
-                << calRegions[i].name() << endl;
-                
-		//	const fvMesh& mesh = calRegions[i];
-    
-			photoBio::photoBioModel& photoBioM = photoBioModels[i];
-			
-			photoBioM.correct();
+            Info<< "\nSolving for region " << calRegions[i].name() << endl;
 
+            photoBioModels[i].correct();
         }
 
         runTime.write();
