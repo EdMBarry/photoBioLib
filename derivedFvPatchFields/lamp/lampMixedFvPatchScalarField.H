@@ -1,11 +1,11 @@
 /*---------------------------------------------------------------------------*\
     =========                 |
     \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2008-2010 OpenCFD Ltd.
-    \\/     M anipulation  |
-    -------------------------------------------------------------------------------
-    License
+     \\    /   O peration     |
+      \\  /    A nd           | Copyright (C) 2008-2010 OpenCFD Ltd.
+       \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
     This file is part of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
@@ -21,144 +21,119 @@
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-    Class
-    Foam::lampMixedFvPatchScalarField
+\*---------------------------------------------------------------------------*/
 
-    Description
-    photoBio temperature specified
+#ifndef lampMixedFvPatchScalarField_H
+#define lampMixedFvPatchScalarField_H
 
-    SourceFiles
-    lampMixedFvPatchScalarField.C
-
-    \*---------------------------------------------------------------------------*/
-
-    #ifndef lampMixedFvPatchScalarField_H
-    #define lampMixedFvPatchScalarField_H
-
-    #include "mixedFvPatchFields.H"
+#include "mixedFvPatchFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    namespace photoBio
+namespace photoBio
+{
+
+/*---------------------------------------------------------------------------*\
+  Class lampMixedFvPatchScalarField Declaration
+\*---------------------------------------------------------------------------*/
+
+class lampMixedFvPatchScalarField : public mixedFvPatchScalarField
+{
+    // Private data
+
+    scalar  I0_;
+    label   nBands_;
+    bool    reflectionOnSurface_;
+    scalar  reflectionCoef_;
+    scalar  diffuseFraction_;
+    DynamicList<scalar,1,0>  bandDist_;
+    DynamicList<scalar,1,0>  angleDist;
+    DynamicList<Pair<scalar>,1,0>  bandLimits_;
+
+public:
+
+    //- Runtime type information
+    TypeName("lamp");
+
+    // Constructors
+
+    //- Construct from patch and internal field
+    lampMixedFvPatchScalarField
+    (
+        const fvPatch&,
+        const DimensionedField<scalar, volMesh>&
+    );
+
+    //- Construct from patch, internal field and dictionary
+    lampMixedFvPatchScalarField
+    (
+        const fvPatch&,
+        const DimensionedField<scalar, volMesh>&,
+        const dictionary&
+    );
+
+    //- Construct by mapping given a lampMixedFvPatchScalarField onto a new patch
+    lampMixedFvPatchScalarField
+    (
+        const lampMixedFvPatchScalarField&,
+        const fvPatch&,
+        const DimensionedField<scalar, volMesh>&,
+        const fvPatchFieldMapper&
+    );
+
+    //- Construct as copy
+    lampMixedFvPatchScalarField
+    (
+        const lampMixedFvPatchScalarField&
+    );
+
+    //- Construct and return a clone
+    virtual tmp<fvPatchScalarField> clone() const
     {
-        /*---------------------------------------------------------------------------*\
-            Class lampMixedFvPatchScalarField Declaration
-            \*---------------------------------------------------------------------------*/
+        return tmp<fvPatchScalarField>
+        (
+            new lampMixedFvPatchScalarField(*this)
+        );
+    }
 
-        class lampMixedFvPatchScalarField
-        :
-        public mixedFvPatchScalarField
-        {
-            // Private data
+    //- Construct as copy setting internal field reference
+    lampMixedFvPatchScalarField
+    (
+        const lampMixedFvPatchScalarField&,
+        const DimensionedField<scalar, volMesh>&
+    );
 
-            //- incident photoBio angle distribution
-      
-            scalar  I0_;              // incident photoBio intensity
-            label   nBands_;  
-            scalar  lampRadius_;
-            bool    reflectionOnSurface_;
-            scalar  reflectionCoef_; 
-	    scalar  diffuseFraction_;   	
-            DynamicList<scalar,1,0>  photoBioBandDist_;
-            DynamicList<scalar,1,0>  angleDist; 
-	
-	
-        public:
+    //- Construct and return a clone setting internal field reference
+    virtual tmp<fvPatchScalarField> clone
+    (
+        const DimensionedField<scalar, volMesh>& iF
+    ) const
+    {
+        return tmp<fvPatchScalarField>
+        (
+            new lampMixedFvPatchScalarField(*this, iF)
+        );
+    }
 
-            //- Runtime type information
-            TypeName("lamp");
+    // Member functions
 
+    //- Update the coefficients associated with the patch field
+    virtual void updateCoeffs();
 
-            // Constructors
-
-            //- Construct from patch and internal field
-            lampMixedFvPatchScalarField
-            (
-                const fvPatch&,
-                const DimensionedField<scalar, volMesh>&
-            );
-
-            //- Construct from patch, internal field and dictionary
-            lampMixedFvPatchScalarField
-            (
-                const fvPatch&,
-                const DimensionedField<scalar, volMesh>&,
-                const dictionary&
-            );
-
-            //- Construct by mapping given a
-            //  lampMixedFvPatchScalarField onto a new patch
-            lampMixedFvPatchScalarField
-            (
-                const lampMixedFvPatchScalarField&,
-                const fvPatch&,
-                const DimensionedField<scalar, volMesh>&,
-                const fvPatchFieldMapper&
-            );
-
-            //- Construct as copy
-            lampMixedFvPatchScalarField
-            (
-                const lampMixedFvPatchScalarField&
-            );
-
-            //- Construct and return a clone
-            virtual tmp<fvPatchScalarField> clone() const
-                {
-                    return tmp<fvPatchScalarField>
-                        (
-                            new lampMixedFvPatchScalarField(*this)
-                        );
-                }
-
-            //- Construct as copy setting internal field reference
-            lampMixedFvPatchScalarField
-            (
-                const lampMixedFvPatchScalarField&,
-                const DimensionedField<scalar, volMesh>&
-            );
-
-            //- Construct and return a clone setting internal field reference
-            virtual tmp<fvPatchScalarField> clone
-            (
-                const DimensionedField<scalar, volMesh>& iF
-            ) const
-                {
-                    return tmp<fvPatchScalarField>
-                        (
-                            new lampMixedFvPatchScalarField(*this, iF)
-                        );
-                }
+    //- Write
+    virtual void write(Ostream&) const;
+};
 
 
-            // Member functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-            // Access
-
-
-            // Evaluation functions
-
-            //- Update the coefficients associated with the patch field
-            virtual void updateCoeffs();
-            
-	    virtual void dirToAngle(const vector& ,scalar&, scalar& ) const;
-			
-            // I-O
-
-            //- Write
-            virtual void write(Ostream&) const;
-        };
-
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-    } // End namespace Foam
+} // End namespace Foam
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    #endif
+#endif
 
 // ************************************************************************* //

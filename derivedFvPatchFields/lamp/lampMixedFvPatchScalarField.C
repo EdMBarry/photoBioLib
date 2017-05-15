@@ -1,11 +1,11 @@
 /*---------------------------------------------------------------------------*\
     =========                 |
     \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2008-2010 OpenCFD Ltd.
-    \\/     M anipulation  |
-    -------------------------------------------------------------------------------
-    License
+     \\    /   O peration     |
+      \\  /    A nd           | Copyright (C) 2008-2010 OpenCFD Ltd.
+       \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
     This file is part of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
@@ -21,19 +21,20 @@
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-    \*---------------------------------------------------------------------------*/
+\*---------------------------------------------------------------------------*/
 
-    #include "lampMixedFvPatchScalarField.H"
-    #include "addToRunTimeSelectionTable.H"
-    #include "fvPatchFieldMapper.H"
-    #include "volFields.H"
+#include "lampMixedFvPatchScalarField.H"
+#include "addToRunTimeSelectionTable.H"
+#include "fvPatchFieldMapper.H"
+#include "volFields.H"
 
-    #include "photoBioDOM.H"
-    #include "constants.H"
+#include "photoBioDOM.H"
+#include "constants.H"
 
 using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
 
 Foam::photoBio::lampMixedFvPatchScalarField::
 lampMixedFvPatchScalarField
@@ -41,20 +42,14 @@ lampMixedFvPatchScalarField
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
 )
-    :
+:
     mixedFvPatchScalarField(p, iF),
     I0_(0.0), 
     nBands_(1),
-    lampRadius_(0.0),
     reflectionOnSurface_(false),
     reflectionCoef_(0.0),
     diffuseFraction_(0.0)
-    //   photoBioBandDist_(null),
-{
-    refValue() = 0.0;
-    refGrad() = 0.0;
-    valueFraction() = 1.0;
-}
+{}
 
 
 Foam::photoBio::lampMixedFvPatchScalarField::
@@ -65,15 +60,14 @@ lampMixedFvPatchScalarField
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
-    :
+:
     mixedFvPatchScalarField(ptf, p, iF, mapper),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
-    lampRadius_(ptf.lampRadius_),
     reflectionOnSurface_(ptf.reflectionOnSurface_),
     reflectionCoef_(ptf.reflectionCoef_),
     diffuseFraction_(ptf.diffuseFraction_),
-    photoBioBandDist_(ptf.photoBioBandDist_)
+    bandDist_(ptf.bandDist_)
 {}
 
 
@@ -84,41 +78,16 @@ lampMixedFvPatchScalarField
     const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
-    :
+:
     mixedFvPatchScalarField(p, iF),
     I0_(readScalar(dict.lookup("irradiation"))),
-    nBands_(readLabel(dict.lookup("nBands"))), 
-    lampRadius_(readScalar(dict.lookup("lampRadius"))),
+    nBands_(readLabel(dict.lookup("nBands"))),
+    reflectionOnSurface_(readBool(dict.lookup("reflectionOnSurface"))),
     reflectionCoef_(readScalar(dict.lookup("reflectionCoef"))),
     diffuseFraction_(readScalar(dict.lookup("diffuseFraction")))
 {
-	
-    dict.lookup("reflectionOnSurface") >>reflectionOnSurface_;  
-   
-    photoBioBandDist_.setSize(nBands_);   
-    dict.lookup("photoBioBandDist") >> photoBioBandDist_;
-   
-	
-    if (dict.found("value"))
-    {
-        fvPatchScalarField::operator=
-            (
-                scalarField("value", dict, p.size())
-            );               
-        refValue() = scalarField("refValue", dict, p.size());
-        refGrad() = scalarField("refGradient", dict, p.size());
-        valueFraction() = scalarField("valueFraction", dict, p.size());
-              
-    }
-    else
-    {
-        // No value given. Restart as fixedValue b.c.
-        refValue() = 0.0;
-        refGrad() = 0.0;
-        valueFraction() = 1.0;
-        fvPatchScalarField::operator=(refValue());       
-    }
-    
+    bandDist_.setSize(nBands_);
+    dict.lookup("bandDist") >> bandDist_;
 }
 
 
@@ -127,15 +96,14 @@ lampMixedFvPatchScalarField
 (
     const lampMixedFvPatchScalarField& ptf
 )
-    :
+:
     mixedFvPatchScalarField(ptf),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
-    lampRadius_(ptf.lampRadius_),
     reflectionOnSurface_(ptf.reflectionOnSurface_),
     reflectionCoef_(ptf.reflectionCoef_),
     diffuseFraction_(ptf.diffuseFraction_),
-    photoBioBandDist_(ptf.photoBioBandDist_)
+    bandDist_(ptf.bandDist_)
 {}
 
 
@@ -145,18 +113,15 @@ lampMixedFvPatchScalarField
     const lampMixedFvPatchScalarField& ptf,
     const DimensionedField<scalar, volMesh>& iF
 )
-    :
+:
     mixedFvPatchScalarField(ptf, iF),
     I0_(ptf.I0_),
     nBands_(ptf.nBands_),
-    lampRadius_(ptf.lampRadius_),
     reflectionOnSurface_(ptf.reflectionOnSurface_),
     reflectionCoef_(ptf.reflectionCoef_),
     diffuseFraction_(ptf.diffuseFraction_),
-    photoBioBandDist_(ptf.photoBioBandDist_)
+    bandDist_(ptf.bandDist_)
 {}
-
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
@@ -337,6 +302,8 @@ updateCoeffs()
                     }
                 }
      
+                // TODO: fix lampRadius
+                scalar lampRadius_ = 1.0;
                 reflectionRefraction =  diffuseRefractionInside/(2*pi*lampRadius_*height)/pi/2            
                     + (diffuseFraction_*diffusiveReflection()[faceI] /pi/2 
                     + (1.0 - diffuseFraction_)*specularReflection/bdOmega) ;
@@ -344,7 +311,7 @@ updateCoeffs()
             }  
           
      
-            refValue()[faceI] = reflectionCoef_*reflectionRefraction  + I0_*photoBioBandDist_[iBand]*angleDist[i0]/bdOmega;  ///pi/2;  //
+            refValue()[faceI] = reflectionCoef_*reflectionRefraction  + I0_*bandDist_[iBand]*angleDist[i0]/bdOmega;  ///pi/2;  //
             refGrad()[faceI] = 0.0;
             valueFraction()[faceI] = 1.0;
      
@@ -363,31 +330,6 @@ updateCoeffs()
     
 }
 
-void Foam::photoBio::lampMixedFvPatchScalarField::dirToAngle
-(
-    const vector& dir,
-    scalar&	tPhi,
-    scalar& tTheta
-) const
-{
-
-    tTheta = Foam::acos(dir.z()/mag(dir));
-
-
-    if(dir.x() != 0 )
-    { 
-        tPhi = Foam::atan(dir.y()/dir.x());
-        if(dir.x() < 0 && dir.y() >= 0 ) tPhi = tPhi + pi;
-        if(dir.x() < 0 && dir.y() < 0 ) tPhi = tPhi + pi;
-        if(dir.x() > 0 && dir.y() < 0 ) tPhi = tPhi + 2*pi;
-    }
-    else
-    {
-        if(dir.y() > 0 ) tPhi = pi/2.0;
-        if(dir.y() < 0 ) tPhi = 3.0*pi/2.0;;
-    }
-	
-}
 
 void Foam::photoBio::lampMixedFvPatchScalarField::write
 (
@@ -398,11 +340,10 @@ void Foam::photoBio::lampMixedFvPatchScalarField::write
     os.writeKeyword("irradiation") << I0_ << token::END_STATEMENT << nl;
     os.writeKeyword("nBands") << nBands_ << token::END_STATEMENT << nl;
     os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
-    os.writeKeyword("lampRadius") << lampRadius_ << token::END_STATEMENT << nl;
     os.writeKeyword("reflectionOnSurface") << reflectionOnSurface_ << token::END_STATEMENT << nl;
     os.writeKeyword("reflectionCoef") << reflectionCoef_ << token::END_STATEMENT << nl;
     os.writeKeyword("diffuseFraction") << diffuseFraction_ << token::END_STATEMENT << nl;
-    os.writeKeyword("photoBioBandDist") << photoBioBandDist_ << token::END_STATEMENT << nl;                
+    os.writeKeyword("bandDist") << bandDist_ << token::END_STATEMENT << nl;
 }
 
 
