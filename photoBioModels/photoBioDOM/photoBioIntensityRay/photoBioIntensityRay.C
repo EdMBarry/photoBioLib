@@ -132,7 +132,7 @@ Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
                     (
                         IOobject
                         (
-                           "IDefault",
+                           "I",
                             mesh_.time().timeName(),
                             mesh_,
                             IOobject::MUST_READ,

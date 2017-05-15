@@ -1,10 +1,9 @@
     // Initialise field pointer lists
-    
+
     PtrList<volScalarField> I_cal(calRegions.size());
-    
     PtrList<photoBio::photoBioModel> photoBioModels(calRegions.size());
 
-    // Populate solid field pointer lists
+    // Populate fluid field pointer lists
     forAll(calRegions, i)
     {
         Info<< "*** Reading  properties for region "
@@ -17,7 +16,7 @@
             (
                 IOobject
                 (
-                    "IDefault",
+                    "I",
                     runTime.timeName(),
                     calRegions[i],
                     IOobject::MUST_READ,
