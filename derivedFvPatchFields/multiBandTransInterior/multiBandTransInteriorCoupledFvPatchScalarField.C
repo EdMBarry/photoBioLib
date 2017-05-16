@@ -50,7 +50,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(0.0),
     diffuseFraction_(0.0), 
     nBands_(1)
- //  , photoBioBandDist_(null)
+ //  , bandDist_(null)
 {
     this->refValue() = 0.0;
     this->refGrad() = 0.0;
@@ -72,7 +72,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(ptf.nOwn_),
     diffuseFraction_(ptf.diffuseFraction_),
     nBands_(ptf.nBands_),
-    photoBioBandDist_(ptf.photoBioBandDist_)
+    bandDist_(ptf.bandDist_)
 {}
 
 
@@ -90,8 +90,8 @@ multiBandTransInteriorCoupledFvPatchScalarField
     diffuseFraction_(readScalar(dict.lookup("diffuseFraction"))),
     nBands_(readLabel(dict.lookup("nBands")))
 {
-    photoBioBandDist_.setSize(nBands_);   
-    dict.lookup("photoBioBandDist") >> photoBioBandDist_;
+    bandDist_.setSize(nBands_);
+    dict.lookup("bandDist") >> bandDist_;
    
     if (!isA<mappedPatchBase>(this->patch().patch()))
     {
@@ -148,7 +148,7 @@ multiBandTransInteriorCoupledFvPatchScalarField
     nOwn_(wtcsf.nOwn_),
     diffuseFraction_(wtcsf.diffuseFraction_),
     nBands_(wtcsf.nBands_),
-    photoBioBandDist_(wtcsf.photoBioBandDist_)
+    bandDist_(wtcsf.bandDist_)
 {}
 
 
@@ -307,7 +307,7 @@ void Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::updateCoef
                                 dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	
           		    
                                 diffusive = diffusive
-                                    + (NbrRaySet[refracIncidentRay][faceI]*photoBioBandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
+                                    + (NbrRaySet[refracIncidentRay][faceI]*bandDist_[iBand]*(1-R) + reflecFace[faceI]*R) *mag(surfNorm & sweepdAve) ;    //
                             }
                             else
                             {diffusive = diffusive + reflecFace[faceI]*R*mag(surfNorm & sweepdAve);  }  //
@@ -375,7 +375,7 @@ void Foam::photoBio::multiBandTransInteriorCoupledFvPatchScalarField::updateCoef
                                 dom.dirToRayId(refracIncidentDir, 0, refracIncidentRay);	// this is important 
             
                                 specular = specular 
-                                    + (NbrRaySet[refracIncidentRay][faceI]*photoBioBandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
+                                    + (NbrRaySet[refracIncidentRay][faceI]*bandDist_[iBand]*(1-R) +  reflecFace[faceI]*R )*pixelOmega;   //
                             }
                             else
                             {

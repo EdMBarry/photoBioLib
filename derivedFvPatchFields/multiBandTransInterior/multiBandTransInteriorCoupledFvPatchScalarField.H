@@ -76,7 +76,7 @@ namespace Foam
             scalar  diffuseFraction_;     
             label   nBands_;  
             //     List<scalar> photoBioBandDist_(IStringStream("17 (  )")());
-            DynamicList<scalar,1,0>  photoBioBandDist_;  
+            DynamicList<scalar,1,0>  bandDist_;
         
         public:
 
