@@ -1,3 +1,4 @@
 wmake libso
 cd multiRegionPhotoBioFoam
+wclean
 wmake
