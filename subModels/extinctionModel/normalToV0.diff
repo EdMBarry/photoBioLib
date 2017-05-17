@@ -1,0 +1,82 @@
+58c58,59
+<     coeffsDict_((dict.subDict(typeName + "Coeffs")))
+---
+>     coeffsDict_((dict.subDict(typeName + "Coeffs"))),
+>     totalWaveLength_(0)
+60c61
+< 
+---
+>     label iBand = 0;
+63,66d63
+<     functionDicts.lookup("absorption") >> absorption_;
+<     
+<     functionDicts.lookup("scattering") >>  scattering_;
+<     
+69c66
+<     functionDicts.lookup("bioDensity") >> bioDensity_;       
+---
+>         iBands_.setSize(nBands_);  
+71,72c68,71
+<     aBand_.setSize(nBands_);  forAll(aBand_,i)  aBand_[i] = 0.0;
+<     sBand_.setSize(nBands_);  forAll(aBand_,i)  sBand_[i] = 0.0;
+---
+>     	aBand_.setSize(nBands_);  
+>     	sBand_.setSize(nBands_);  
+>     	kBand_.setSize(nBands_);  
+> 
+74c73
+<     if(absorption_)
+---
+>     forAllConstIter(dictionary, functionDicts, iter)
+76,78c75,96
+< 		functionDicts.lookup("absorptionCoeff") >> aBand_;
+< 		forAll(aBand_,i)  aBand_[i] = aBand_[i]*bioDensity_;
+< 	}
+---
+>         // safety:
+>         if (!iter().isDict())
+>         {
+>             continue;
+>         }
+> 
+>         const dictionary& dict = iter().dict();
+>         dict.lookup("bandLimits") >> iBands_[iBand];
+>         dict.lookup("absorptionCoeff") >> aBand_[iBand];
+>         dict.lookup("scatteringCoeff") >> sBand_[iBand];
+>         kBand_[iBand] = aBand_[iBand]+sBand_[iBand];
+>         totalWaveLength_ += iBands_[iBand][1] - iBands_[iBand][0];
+> 
+>         iBand++;
+>         
+>     }
+>     /*
+>         if (iBand == nBands_)
+>         {
+>             continue;
+>         }
+> 	*/
+80,85d97
+<     if(scattering_)
+<     {
+< 		functionDicts.lookup("scatteringCoeff") >> sBand_;
+< 		forAll(sBand_,i)  sBand_[i] = sBand_[i]*bioDensity_;
+< 	}
+<  
+96c108,112
+<       
+---
+> Foam::scalar  Foam::photoBio::wideBandExtinction::k( const label bandI ) const
+> {
+> 	return  kBand_[bandI];
+> }
+>                  
+108d123
+< 
+110,116d124
+<  * 
+<  * Foam::scalar  Foam::photoBio::wideBandExtinction::k( const label bandI ) const
+< {
+< 	return  kBand_[bandI];
+< }
+<            
+<            
