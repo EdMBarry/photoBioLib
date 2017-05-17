@@ -27,23 +27,7 @@ Class
 Description
 
     Finite Volume Discrete Ordinates Method. Solves the RTE equation for n
-    directions in a participating media, not including scatter.
-
-    Available absorptionEmission models:
-        greyMeanAbsoprtionEmission
-        wideBandabsorptionEmissionEmission
-
-    i.e. dictionary
-    photoBioDOMCoeffs
-    {
-        nPhi    1;          // azimuthal angles in PI/2 on X-Y.(from Y to X)
-        nTheta  2;          // polar angles in PI (from Z to X-Y plane)
-        convergence 1e-4;   // convergence criteria for photoBio iteration
-    }
-
-    solverFreq   1; // Number of flow iterations per photoBio iteration
-
-    The total number of solid angles is  4*nPhi*nTheta.
+    directions in a participating media.
 
     In 1D the direction of the rays is X (nPhi and nTheta are ignored)
     In 2D the direction of the rays is on X-Y plane (only nPhi is considered)
@@ -79,11 +63,10 @@ class photoBioDOM
 {
     // Private data
 
-        //- Incident photoBio  [lum]
-        label iRegion_ ;
-
+        //- Irradiance field  [W/m^2]
         volScalarField G_;
 
+        //- Inscattering field
         volScalarField diffusionScatter_;
 
         //- Number of solid angles in theta
@@ -101,21 +84,25 @@ class photoBioDOM
         //- Number of wavelength bands
         label nBand_;
 
-        label iDomain_;
+        //- Number of pixels in phi
+        label nPixelPhi_;
 
-        label NumPixelPhi_;
+        //- Number of pixels in theta
+        label nPixelTheta_;
 
-        label NumPixelTheta_;
-
+        //- List of pointers to irradiance fields (one per band)
         PtrList<volScalarField> GLambda_;
 
+        //- List of absorbtion coefficients (one per band)
         DynamicList<scalar, 1, 0>   aBand_;
 
+        //- List of scattering coefficients (one per band)
         DynamicList<scalar, 1, 0>   sBand_;
 
+        //- List of phase function values (one per band)
         DynamicList<scalar, 1, 0>   pf0_;
 
-           //- List of pointers to photoBio intensity rays
+        //- List of pointers to intensity rays
         PtrList<photoBioIntensityRay> IRay_;
 
         //- Convergence criterion
@@ -124,13 +111,14 @@ class photoBioDOM
         //- Maximum number of iterations
         scalar maxIter_;
 
-        scalar deltaPhi   ;
+        //- phi interval
+        scalar deltaPhi_;
 
-        scalar deltaTheta ;
+        //- theta interface
+        scalar deltaTheta_;
 
+        //- Pointer to phase function model
         autoPtr<phaseFunctionModel> phaseFunctionModel_;
-
-
 
     // Private member functions
 
@@ -140,19 +128,15 @@ class photoBioDOM
         //- Disallow default bitwise assignment
         void operator=(const photoBioDOM&);
 
-
-
 public:
 
     //- Runtime type information
     TypeName("photoBioDOM");
 
-
     // Constructors
 
         //- Construct from components
         photoBioDOM(const volScalarField& intensity);
-
 
     //- Destructor
     virtual ~photoBioDOM();
@@ -168,18 +152,17 @@ public:
             //- Read photoBio properties dictionary
             bool read();
 
-            //- Update G and calculate total heat flux on boundary
+            //- Update G
             void updateG();
 
-            //- Set the rayId and lambdaId from by decomposing an intensity
-            //  field name
+            //- Set the rayId by decomposing an intensity field name
             void setRayId
             (
                 const word& name,
                 label& rayId
             ) const;
 
-
+            //- Set the rayId by decomposing a direction and band id
             void dirToRayId
             (
                 const vector& dir,
@@ -187,11 +170,8 @@ public:
                 label& rayId
             ) const;
 
-
             //- Ray intensity for rayI
             inline const photoBioIntensityRay& IRay(const label rayI) const;
-
-            inline label iRegion() const;
 
             //- Number of angles in theta
             inline label nTheta() const;
@@ -202,31 +182,34 @@ public:
             //- Number of angles in phi
             inline label nAngle() const;
 
-
             //- Number of rays
             inline label nRay() const;
 
-            //- Number of wavelengths
+            //- Number of bands
             inline label nBand() const;
 
-            inline label NumPixelPhi() const;
+            //- Number of pixels in phi
+            inline label nPixelPhi() const;
 
-            inline label NumPixelTheta() const;
+            //- Number of pixels in theta
+            inline label nPixelTheta() const;
 
+            //- Absorbtion coefficient
             inline  scalar a(const label lambdaI) const;
 
+            //- Scattering coefficient
             inline  scalar s(const label lambdaI) const;
 
+            //- Phase function values
             inline  scalar pf0(const label lambdaI) const;
 
-            //- Const access to incident photoBio field
+            //- Const access to irradiance field
             inline const volScalarField& G() const;
 
+            //- Const access to
             inline const volScalarField& diffusionScatter() const;
 
-
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

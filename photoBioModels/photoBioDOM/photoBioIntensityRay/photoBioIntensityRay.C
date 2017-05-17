@@ -207,8 +207,8 @@ Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()  //(const volScalar
 const Foam::surfaceScalarField  Foam::photoBio::photoBioIntensityRay::JiCal()  const
 {
 
-     const label npP = dom_.NumPixelPhi();
-     const label npT = dom_.NumPixelTheta();
+     const label npP = dom_.nPixelPhi();
+     const label npT = dom_.nPixelTheta();
 
       vector tV = vector(0,0,0);
       surfaceScalarField Ji(tV & mesh_.Sf());

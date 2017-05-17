@@ -30,22 +30,6 @@ Foam::photoBio::photoBioDOM::IRay(const label rayI) const
 }
 
 
-/*inline const Foam::volScalarField&		// previously commented out
-Foam::photoBio::photoBioDOM::IRayLambda
-(
-    const label rayI,
-    const label lambdaI
-) const
-{
-    return IRay_[rayI].ILambda(lambdaI);
-}
-*/
-
-inline Foam::label Foam::photoBio::photoBioDOM::iRegion() const
-{
-    return iRegion_;
-}
-
 inline Foam::label Foam::photoBio::photoBioDOM::nTheta() const
 {
     return nTheta_;
@@ -76,63 +60,28 @@ inline Foam::label Foam::photoBio::photoBioDOM::nBand() const
 }
 
 
-inline Foam::label Foam::photoBio::photoBioDOM::NumPixelPhi() const
+inline Foam::label Foam::photoBio::photoBioDOM::nPixelPhi() const
 {
-    return NumPixelPhi_;
+    return nPixelPhi_;
 }
 
-inline Foam::label Foam::photoBio::photoBioDOM::NumPixelTheta() const
+inline Foam::label Foam::photoBio::photoBioDOM::nPixelTheta() const
 {
-    return NumPixelTheta_;
+    return nPixelTheta_;
 }
 
-
-/*
-inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::k() const            // changed  from a_
-{
-    return k_;
-}
-
-
-inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::kLambda              // changed  from kLambda_
-(
-    const label lambdaI
-) const
-{
-    return kLambda_[lambdaI];
-}
-
-inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::sLambda              // changed  from kLambda_
-(
-    const label lambdaI
-) const
-{
-    return sLambda_[lambdaI];
-}
-
-*/
-
-inline  Foam::scalar Foam::photoBio::photoBioDOM::a              // changed  from kLambda_
-(
-    const label lambdaI
-) const
+inline  Foam::scalar Foam::photoBio::photoBioDOM::a (const label lambdaI) const
 {
     return aBand_[lambdaI];
 }
 
 
-inline  Foam::scalar Foam::photoBio::photoBioDOM::s              // changed  from kLambda_
-(
-    const label lambdaI
-) const
+inline  Foam::scalar Foam::photoBio::photoBioDOM::s (const label lambdaI) const
 {
     return sBand_[lambdaI];
 }
 
-inline  Foam::scalar Foam::photoBio::photoBioDOM::pf0              // changed  from kLambda_
-(
-    const label lambdaI
-) const
+inline  Foam::scalar Foam::photoBio::photoBioDOM::pf0(const label lambdaI) const
 {
     return pf0_[lambdaI];
 }
@@ -147,18 +96,6 @@ inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::diffusionScatter
 {
     return diffusionScatter_;
 }
-
-
-
-
-/*
-inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::Qr() const
-{
-    return Qr_;
-}
-
-*/
-
 
 
 // ************************************************************************* //

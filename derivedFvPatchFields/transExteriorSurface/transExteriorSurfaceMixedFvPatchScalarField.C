@@ -239,8 +239,8 @@ updateCoeffs()
     const  scalar deltaPhi   =  pi /(2.0*nPhi);
     const  scalar deltaTheta =  pi  /nTheta;
     
-    label  npPhi  = dom.NumPixelPhi();    
-    label  npTheta = dom.NumPixelTheta();  
+    label  npPhi  = dom.nPixelPhi();
+    label  npTheta = dom.nPixelTheta();
 	
 	label  numDivPhi =1;
 	label  numDivTheta =1;

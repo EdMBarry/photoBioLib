@@ -157,7 +157,7 @@ updateCoeffs()
     const photoBioModel& photoBio = db().lookupObject<photoBioModel>("photoBioProperties");
 
     const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
- 
+
     if (dom.nBand() == 0)
     {
         FatalErrorIn
@@ -183,8 +183,8 @@ updateCoeffs()
     
     const scalar deltaPhi   =  pi /(2.0*nPhi);
     const scalar deltaTheta =  pi  /nTheta;
-    label  npPhi  = dom.NumPixelPhi();    
-    label  npTheta = dom.NumPixelTheta();  
+    label  npPhi  = dom.nPixelPhi();
+    label  npTheta = dom.nPixelTheta();
     const scalar bdRayPhi  = dom.IRay(rayId).phi();
     const scalar bdRayTheta  = dom.IRay(rayId).theta();
 

@@ -192,8 +192,8 @@ void Foam::photoBio::transInteriorSurfaceCoupledFvPatchScalarField::updateCoeffs
     const  label  nAngle  = dom.nAngle();    
     const  scalar bdRayPhi  = dom.IRay(BDrayId).phi();
     const  scalar bdRayTheta  = dom.IRay(BDrayId).theta();
-    label  npPhi  = dom.NumPixelPhi();    
-    label  npTheta = dom.NumPixelTheta();  
+    label  npPhi  = dom.nPixelPhi();
+    label  npTheta = dom.nPixelTheta();
     	 
 	PtrList<scalarField> NbrRaySet(nAngle);
 	

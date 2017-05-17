@@ -47,13 +47,11 @@ namespace Foam
     }
 }
 
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
+Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
 :
-    photoBioModel(typeName, Irr),
-    iDomain_(readLabel(coeffs_.lookup("iDomain"))),
+    photoBioModel(typeName, intensity),
     G_
     (
         IOobject
@@ -85,23 +83,23 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
     nAngle_(0),
     nRay_(0),
     nBand_(coeffs_.lookupOrDefault<label>("nBand", 1)),
-    NumPixelPhi_(coeffs_.lookupOrDefault<label>("NumPixelPhi", 1)),
-    NumPixelTheta_(coeffs_.lookupOrDefault<label>("NumPixelTheta", 1)),
+    nPixelPhi_(coeffs_.lookupOrDefault<label>("nPixelPhi", 1)),
+    nPixelTheta_(coeffs_.lookupOrDefault<label>("nPixelTheta", 1)),
     GLambda_(nBand_),
     IRay_(0),
     convergence_(coeffs_.lookupOrDefault<scalar>("convergence", 0.0)),
     maxIter_(coeffs_.lookupOrDefault<label>("maxIter", 50))
 {
-    Info<< "photoBioDOM number of Bands " << nBand_ << endl;
+    Info<< "Creating photoBioDOM model with " << nBand_ << " bands" << endl;
 
     // 3D
     if (mesh_.nSolutionD() == 3)
     {
-		nAngle_ = 4*nPhi_*nTheta_;
+        nAngle_ = 4*nPhi_*nTheta_;
         nRay_ = nAngle_*nBand_;
         IRay_.setSize(nRay_);
-        scalar deltaPhi   =  pi /(2.0*nPhi_);
-        scalar deltaTheta =  pi  /nTheta_;
+        deltaPhi_ = pi/(2.0*nPhi_);
+        deltaTheta_ = pi/nTheta_;
         label i = 0;
         for (label iBand = 0; iBand < nBand_; iBand++)
         {
@@ -109,9 +107,9 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
             {
                 for (label m = 1; m <= 4*nPhi_; m++)
                 {
-    				label iAngle = m-1 + (n-1)*4*nPhi_;
-                    scalar thetai = (2.0*n - 1.0)*deltaTheta/2.0;
-                    scalar phii = (2.0*m - 1.0)*deltaPhi/2.0;
+                    label iAngle = m-1 + (n-1)*4*nPhi_;
+                    scalar thetai = (2.0*n - 1.0)*deltaTheta_/2.0;
+                    scalar phii = (2.0*m - 1.0)*deltaPhi_/2.0;
                     IRay_.set
                     (
                         i,
@@ -123,14 +121,14 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
                             iAngle,
                             phii,
                             thetai,
-                            deltaPhi,
-                            deltaTheta
+                            deltaPhi_,
+                            deltaTheta_
                         )
                     );
                     i++;
                 }
             }
-		}
+        }
     }
     else if (mesh_.nSolutionD() == 2)    //2D (X & Y)
     {
@@ -141,57 +139,17 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
                 << exit(FatalError);
         }
         scalar thetai = piByTwo;
-        scalar deltaTheta = pi;
+        deltaTheta_ = pi;
         nAngle_ = 4*nPhi_;
         nRay_ = nAngle_*nBand_;
         IRay_.setSize(nRay_);
-        scalar deltaPhi = pi /(2.0*nPhi_);
-        label i = 0;
-        for (label iBand = 0; iBand < nBand_; iBand++)
-		{
-			for (label iAngle = 0; iAngle < 4*nPhi_; iAngle++)
-			{
-            scalar phii = (2.0*iAngle + 1.0)*deltaPhi/2.0;
-            IRay_.set
-            (
-                i,
-                new photoBioIntensityRay
-                (
-                    *this,
-                    mesh_,
-                    iBand,
-                    iAngle,
-                    phii,
-                    thetai,
-                    deltaPhi,
-                    deltaTheta
-                )
-            );
-            i++;
-			}
-		}
-    }
-    else    //1D (X)
-    {
-        if (mesh_.solutionD()[vector::X] != 1)
-        {
-            FatalErrorInFunction
-                << "Currently 1D solution is limited to the x-direction"
-                << exit(FatalError);
-        }
-        scalar thetai = piByTwo;
-        scalar deltaTheta = pi;
-        nAngle_ = 2;
-        nRay_ = nAngle_*nBand_;
-        IRay_.setSize(nRay_);
-        scalar deltaPhi = pi;
+        deltaPhi_ = pi /(2.0*nPhi_);
         label i = 0;
         for (label iBand = 0; iBand < nBand_; iBand++)
         {
-            for (label m = 1; m <= 2; m++)
+            for (label iAngle = 0; iAngle < 4*nPhi_; iAngle++)
             {
-			    label iAngle = m-1;
-                scalar phii = (2.0*m - 1.0)*deltaPhi/2.0;
+                scalar phii = (2.0*iAngle + 1.0)*deltaPhi_/2.0;
                 IRay_.set
                 (
                     i,
@@ -203,8 +161,48 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
                         iAngle,
                         phii,
                         thetai,
-                        deltaPhi,
-                        deltaTheta
+                        deltaPhi_,
+                        deltaTheta_
+                    )
+                );
+                i++;
+            }
+        }
+    }
+    else    //1D (X)
+    {
+        if (mesh_.solutionD()[vector::X] != 1)
+        {
+            FatalErrorInFunction
+                << "Currently 1D solution is limited to the x-direction"
+                << exit(FatalError);
+        }
+        scalar thetai = piByTwo;
+        deltaTheta_ = pi;
+        nAngle_ = 2;
+        nRay_ = nAngle_*nBand_;
+        IRay_.setSize(nRay_);
+        deltaPhi_ = pi;
+        label i = 0;
+        for (label iBand = 0; iBand < nBand_; iBand++)
+        {
+            for (label m = 1; m <= 2; m++)
+            {
+                label iAngle = m-1;
+                scalar phii = (2.0*m - 1.0)*deltaPhi_/2.0;
+                IRay_.set
+                (
+                    i,
+                    new photoBioIntensityRay
+                    (
+                        *this,
+                        mesh_,
+                        iBand,
+                        iAngle,
+                        phii,
+                        thetai,
+                        deltaPhi_,
+                        deltaTheta_
                     )
                 );
                 i++;
@@ -212,16 +210,15 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
         }
     }
 
-    Info<< "photoBioDOM : Allocated " << IRay_.size() << nl;
+    Info<< "photoBioDOM : Allocated " << IRay_.size() << " rays" <<endl;
 
-   	sBand_.setSize(nBand_);
-   	aBand_.setSize(nBand_);
+    sBand_.setSize(nBand_);
+    aBand_.setSize(nBand_);
     forAll(aBand_, iBand)
     {
-		aBand_[iBand] = extinction_->a(iBand);
-		sBand_[iBand] = extinction_->s(iBand);
-	}
-
+        aBand_[iBand] = extinction_->a(iBand);
+        sBand_[iBand] = extinction_->s(iBand);
+    }
 
     forAll(GLambda_, iBand)
     {
@@ -238,24 +235,24 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& Irr)
                     IOobject::NO_READ,
                     IOobject::AUTO_WRITE
                 ),
-                G_                      // changed  from a_
+                G_
             )
         );
     }
 
     phaseFunctionModel_ =  phaseFunctionModel::New(*this,coeffs_, mesh_.nSolutionD());
 
-	if(phaseFunctionModel_->inScatter())
+    if(phaseFunctionModel_->inScatter())
     {
         pf0_.setSize(nBand_ * nAngle_);
         for(label iBand = 0 ; iBand < nBand_; iBand++)
-	    {
+	{
             for( label iAngle = 0 ; iAngle < nAngle_; iAngle++)
             {
                 pf0_[iAngle+iBand*nAngle_] = phaseFunctionModel_->correct(iAngle,iAngle,iBand);
             }
         }
-	}
+    }
 
     Info<< endl;
 }
@@ -288,7 +285,7 @@ void Foam::photoBio::photoBioDOM::calculate()
 {
     scalar maxResidual = 0.0;
     label rayJ;
-	label iBand = 0;
+    label iBand = 0;
     label iAngle = 0;
     label radIter = 0;
     scalar maxBandResidual = 0.0;
@@ -296,36 +293,39 @@ void Foam::photoBio::photoBioDOM::calculate()
     do
     {
         radIter++;
-        forAll(IRay_, rayI)  //		label	rayI = 0;
-		{
-			maxResidual = 0.0;
-			iBand = IRay_[rayI].iBand();
-			iAngle = IRay_[rayI].iAngle();
+        forAll(IRay_, rayI)
+	{
+            maxResidual = 0.0;
+            iBand = IRay_[rayI].iBand();
+            iAngle = IRay_[rayI].iAngle();
 
-            Info << "photoBio solver iDomain:  " << iDomain_ << "    iter: " << radIter << "    iBand: "<< iBand << "    iAngle  : "<< iAngle << endl;
-            Info<< endl;
+            Info << endl;
+            Info << "photoBio solver: " << "     iter: " << radIter
+                                        << "    iBand: "<< iBand
+                                        << "    iAngle  : "<< iAngle;
+            Info << endl;
 
-			if(phaseFunctionModel_->inScatter())
+            if(phaseFunctionModel_->inScatter())
             {
                 diffusionScatter_ = dimensionedScalar("diffusionScatter",dimMass/pow3(dimTime), 0.0) ;
 
-			    for (label jAngle = 0; jAngle < nAngle_; jAngle++)
-				{
-					rayJ = jAngle + iBand*nAngle_;
-					if(rayI != rayJ )       //rayCos = 1; 	//if(rayCos < -1) rayCos = -1;
+                for (label jAngle = 0; jAngle < nAngle_; jAngle++)
+                {
+                    rayJ = jAngle + iBand*nAngle_;
+                    if(rayI != rayJ )
                     {
-			     	    scalar rayCos = IRay_[rayI].d() & IRay_[rayJ].d();
+                        scalar rayCos = IRay_[rayI].d() & IRay_[rayJ].d();
                         if(rayCos > 0 )
                         {
-		                    diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*phaseFunctionModel_->correct(rayI,rayJ, iBand)*IRay_[rayJ].omega();
+                            diffusionScatter_ = diffusionScatter_ + IRay_[rayJ].I()*phaseFunctionModel_->correct(rayI,rayJ, iBand)*IRay_[rayJ].omega();
                         }
                     }
-				}
-			}
+                }
+            }
 
             IRay_[rayI].updateBoundary();
-            maxBandResidual = IRay_[rayI].correct();            // solve the RTE equation
-			maxResidual = max(maxBandResidual, maxResidual);
+            maxBandResidual = IRay_[rayI].correct(); // solve the RTE equation
+            maxResidual = max(maxBandResidual, maxResidual);
         }
     } while(maxResidual > convergence_ && radIter < maxIter_);
 
@@ -339,15 +339,14 @@ void Foam::photoBio::photoBioDOM::updateG()
     label rayI;
     forAll(GLambda_, iBand)
     {
-	//		Info << "iBand: " << iBand << endl;
         GLambda_[iBand] = dimensionedScalar("zero",dimMass/pow3(dimTime), 0.0);
         for (label iAngle = 0; iAngle < nAngle_; iAngle++)
-	    {
+        {
             rayI = iAngle + iBand*nAngle_;
             GLambda_[iBand] += IRay_[rayI].I()*IRay_[rayI].omega();  // convert the radiance to irradiance
         }
-			G_ += GLambda_[iBand];
-	}
+        G_ += GLambda_[iBand];
+    }
 }
 
 
@@ -370,80 +369,31 @@ void Foam::photoBio::photoBioDOM::setRayId
 
 }
 
+
 void Foam::photoBio::photoBioDOM::dirToRayId
 (
     const vector& dir,
-    const  label& iBand,
+    const label& iBand,
     label& rayId
 ) const
 {
-	scalar tTheta = Foam::acos(dir.z()/mag(dir));
-	scalar tPhi;
-	if(dir.x() != 0 )
-	{
-	tPhi = Foam::atan(dir.y()/dir.x());
-	if(dir.x() < 0 && dir.y() > 0 ) tPhi = tPhi + pi;
-	if(dir.x() < 0 && dir.y() < 0 ) tPhi = tPhi + pi;
-	if(dir.x() > 0 && dir.y() < 0 ) tPhi = tPhi + 2*pi;
-	}
-	else
-	{
-		if(dir.y() > 0 ) tPhi = pi/2.0;
-		if(dir.y() < 0 ) tPhi = 3*pi/2.0;;
-	}
-
-
-    label iPhi = label(tPhi/deltaPhi);
-    label iTheta = label(tTheta/deltaTheta);
-
+    scalar tTheta = Foam::acos(dir.z()/mag(dir));
+    scalar tPhi;
+    if (dir.x() != 0)
+    {
+        tPhi = Foam::atan(dir.y()/dir.x());
+        if (dir.x() < 0 && dir.y() > 0 ) tPhi = tPhi + pi;
+        if (dir.x() < 0 && dir.y() < 0 ) tPhi = tPhi + pi;
+        if (dir.x() > 0 && dir.y() < 0 ) tPhi = tPhi + 2*pi;
+    }
+    else
+    {
+        if (dir.y() > 0) tPhi = pi/2.0;
+        if (dir.y() < 0) tPhi = 3*pi/2.0;;
+    }
+    label iPhi = label(tPhi/deltaPhi_);
+    label iTheta = label(tTheta/deltaTheta_);
     rayId = nAngle_*iBand + iTheta*4*nPhi_ + iPhi;
-
-
-
 }
 
-
-
-/*
-    // Construct extinction field for each wavelength
-    forAll(kLambda_, iBand)     // changed  from aLambda
-    {
-        kLambda_.set
-        (
-            iBand,
-            new volScalarField
-            (
-                IOobject
-                (
-                    "kLambda_" + Foam::name(iBand) ,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::NO_WRITE
-                ),
-                k_                      // changed  from a_
-            )
-        );
-    }
-
-    forAll(sLambda_, iBand)     // changed  from aLambda
-    {
-        sLambda_.set
-        (
-            iBand,
-            new volScalarField
-            (
-                IOobject
-                (
-                    "sLambda_" + Foam::name(iBand) ,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::NO_WRITE
-                ),
-                k_                      // changed  from a_
-            )
-        );
-    }
-*/
 // ************************************************************************* //
