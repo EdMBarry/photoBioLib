@@ -179,7 +179,7 @@ public:
             //- Number of angles in phi
             inline label nPhi() const;
 
-            //- Number of angles in phi
+            //- Number of angles in total
             inline label nAngle() const;
 
             //- Number of rays
