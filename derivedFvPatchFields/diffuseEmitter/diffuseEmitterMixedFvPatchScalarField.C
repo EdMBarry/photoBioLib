@@ -148,7 +148,6 @@ updateCoeffs()
     // Get the band index, ray direction, and solid angle from the ray
     const label iBand = dom.IRay(rayId).iBand();
     const vector& rayDir = dom.IRay(rayId).d();
-    const scalar dOmega = dom.IRay(rayId).omega();
    
     // Calculate boundary values for all faces
     forAll(Iw, iFace)
@@ -158,9 +157,10 @@ updateCoeffs()
 
         if (cosA > 0) // Away from the boundary
         {  
-            // Emissive power is distributed by the angle distribution
-            // TODO: Check that this is correct
-            refValue()[iFace] = I0_*bandDist_[iBand]*dOmega/(2.0*pi);
+            // Boundary value is irradiation per unit solid angle.
+            // Since irradiation is specified only away from boundary,
+            // value is divided by 2*pi (solid angle for half sphere).
+            refValue()[iFace] = I0_*bandDist_[iBand]/(2.0*pi);
             refGrad()[iFace] = 0.0;
             valueFraction()[iFace] = 1.0;
         }
