@@ -22,21 +22,19 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::photoBio::bioMediaAbsorption
+    Foam::photoBio::wideBandExtinction
 
 Description
-    Constant photoBio absorption and emission coefficients for continuous
-    phase
+    Model for constant absorption and scattering coefficients
 
 SourceFiles
-
+    wideBandExtinction.C
 
 \*---------------------------------------------------------------------------*/
 
 #ifndef photoBioWideBandExtinction_H
 #define photoBioWideBandExtinction_H
 
-// #include "HashTable.H"
 #include "extinctionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -56,42 +54,25 @@ class wideBandExtinction
 {
 	
     // Private data
-    
-        //- Maximum number of bands
         
         //- Extinction model dictionary
         dictionary coeffsDict_;
         
+        //- Switch for absorption model
         Switch absorption_;
         
+        //- Switch of scattering model
         Switch scattering_;   
         
+        //- Number of bands
         label nBands_;
+
+        //- Absorption coefficients (one per band)
+        DynamicList<scalar, 1, 0> aBand_;
         
-        scalar bioDensity_;
-        
-        DynamicList<scalar, 1, 0>   aBand_;
-        
-        DynamicList<scalar, 1, 0>   sBand_;
-        
-        
-       //- Extinction coefficient / [1/m]       //     dimensionedScalar a_;
+        //- Scattering coefficients (one per band)
+        DynamicList<scalar, 1, 0> sBand_;
        
- //       DynamicList<scalar, 1, 0>   kBand_;
-               
-
-        //- Bands
- //       DynamicList<Vector2D<scalar>, 1,0> iBands_;
-
-        //- Proportion of the heat released rate emitted
-   //     FixedList<scalar, maxBands_> iEhrrCoeffs_;
-        
-        // Total wave length covered by the bands
-
-        
-  //      mutable interpolationLookUpTable<scalar> lookUpTable_;
-
-        
 public:
 
     //- Runtime type information
@@ -104,68 +85,19 @@ public:
         wideBandExtinction
         (
             const dictionary& dict
-//            , const fvMesh& mesh
         );
-
 
     // Destructor
     virtual ~wideBandExtinction();
 
-
     // Member Operators
-                 
-          scalar a( const label bandI ) const;
 
-		  scalar s( const label bandI ) const;
- /*  		  
-        inline scalar totalWaveLength() const
-        {
-            return totalWaveLength_;
-        }
-        
-        // Access
+        //- Absorption coefficient for iBand
+        scalar a(const label iBand) const;
 
-        //- Extinction coefficient for continuous phase
-        scalar k( const label bandI ) const;
+        //- Scattering coefficient for iBand
+        scalar s(const label iBand) const;
 
-       tmp<volScalarField> s( label bandI ) const;
-         
-         
-        inline const Vector2D<scalar>& bands(const label i) const
-        {
-              return iBands_[i];
-        }         
-      
-        inline bool isGrey() const
-        {
-              return false;                // this needs to be in the photoBio properties file
-        }
-
-        //- Number of bands
-        inline label nBands() const
-        {
-              return nBands_;
-        }
-*/
-         //- Lower and upper limit of band i
-
-
-        //- Add contribution of ILambda to the total radiative intensity in
-        //  direction i
- /*       tmp<volScalarField> addIntensity
-        (
-              const label i,
-              const volScalarField& ILambda
-        ) const;
-
-
-        void correct
-        (
-              volScalarField& k_,
-              PtrList<volScalarField>& kLambda
-        ) const;
-
-*/
 };
 
 

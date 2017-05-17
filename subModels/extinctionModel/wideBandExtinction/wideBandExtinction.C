@@ -46,109 +46,61 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-
 Foam::photoBio::wideBandExtinction::wideBandExtinction
 (
     const dictionary& dict
- //   , const fvMesh& mesh
 )
 :
- //   extinctionModel(dict, mesh),
-      extinctionModel(dict),
-    coeffsDict_((dict.subDict(typeName + "Coeffs")))
+    extinctionModel(dict),
+    coeffsDict_((dict.subDict(typeName + "Coeffs"))),
+    absorption_(readBool(coeffsDict_.lookup("absorption"))),
+    scattering_(readBool(coeffsDict_.lookup("scattering"))),
+    nBands_(readLabel(coeffsDict_.lookup("nBands")))
 {
-
-    const dictionary& functionDicts = dict.subDict(typeName +"Coeffs");
-    
-    functionDicts.lookup("absorption") >> absorption_;
-    
-    functionDicts.lookup("scattering") >>  scattering_;
-    
-    functionDicts.lookup("nBand") >> nBands_;
-    
-    functionDicts.lookup("bioDensity") >> bioDensity_;       
-    
-    aBand_.setSize(nBands_);  forAll(aBand_,i)  aBand_[i] = 0.0;
-    sBand_.setSize(nBands_);  forAll(aBand_,i)  sBand_[i] = 0.0;
-    
-    if(absorption_)
+    // Allocate absorption coefficient list (and initialize in case
+    // absorption is turned off)
+    aBand_.setSize(nBands_);
+    forAll(aBand_, i)
     {
-		functionDicts.lookup("absorptionCoeff") >> aBand_;
-		forAll(aBand_,i)  aBand_[i] = aBand_[i]*bioDensity_;
-	}
-
-    if(scattering_)
+        aBand_[i] = 0.0;
+    }
+    
+    // Allocate scattering coefficient list (and initialize in case
+    // scattering is turned off)
+    sBand_.setSize(nBands_);
+    forAll(aBand_, i)
     {
-		functionDicts.lookup("scatteringCoeff") >> sBand_;
-		forAll(sBand_,i)  sBand_[i] = sBand_[i]*bioDensity_;
-	}
- 
+        sBand_[i] = 0.0;
+    }
+
+    // Read the coefficients
+    if (absorption_) coeffsDict_.lookup("absorptionCoeff") >> aBand_;
+    if (scattering_) coeffsDict_.lookup("scatteringCoeff") >> sBand_;
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
 
 Foam::photoBio::wideBandExtinction::~wideBandExtinction()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-      
+
+
 Foam::scalar Foam::photoBio::wideBandExtinction::a( const label bandI ) const
 {        
 	return  aBand_[bandI];
 }
-         
+
+
 Foam::scalar Foam::photoBio::wideBandExtinction::s( const label bandI ) const
 {        
 	return  sBand_[bandI];
 }
 
 
-
-/*
- * 
- * Foam::scalar  Foam::photoBio::wideBandExtinction::k( const label bandI ) const
-{
-	return  kBand_[bandI];
-}
-           
-           
-Foam::tmp<Foam::volScalarField>
-Foam::photoBio::wideBandExtinction::addIntensity
-(
-    const label i,
-    const volScalarField& ILambda
-) const
-{
-    return ILambda*(iBands_[i][1] - iBands_[i][0])/totalWaveLength_;
-}
-
-
-
-void Foam::photoBio::wideBandExtinction::correct
-(
-    volScalarField& k,
-    PtrList<volScalarField>& kLambda
-) const
-{
-    k = dimensionedScalar("zero", dimless/dimLength, 0.0);
-
-    for (label j=0; j<nBands_; j++)
-    {
-        Info<< "Calculating extinction in band: " << j << endl;
-        
-        kLambda[j].internalField() = this->k(j);
-        
-        k.internalField() +=
-            kLambda[j].internalField()
-           *(iBands_[j][1] - iBands_[j][0])
-           /totalWaveLength_;
-    }
-
-}
-
-*/
-
+// ************************************************************************* //
 
 
