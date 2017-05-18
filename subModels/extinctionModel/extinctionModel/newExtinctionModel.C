@@ -31,8 +31,8 @@ License
 Foam::autoPtr<Foam::photoBio::extinctionModel>
 Foam::photoBio::extinctionModel::New
 (
-    const dictionary& dict
- //   , const fvMesh& mesh
+    const dictionary& dict,
+    const fvMesh& mesh
 )
 {
     word extinctionModelType(dict.lookup("extinctionModel"));
@@ -55,8 +55,7 @@ Foam::photoBio::extinctionModel::New
             << dictionaryConstructorTablePtr_->sortedToc() << exit(FatalError);
     }
 
- //   return autoPtr<extinctionModel>(cstrIter()(dict, mesh));
-        return autoPtr<extinctionModel>(cstrIter()(dict));
+   return autoPtr<extinctionModel>(cstrIter()(dict, mesh));
 }
 
 

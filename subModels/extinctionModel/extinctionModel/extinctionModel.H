@@ -60,8 +60,7 @@ protected:
         const dictionary dict_;
 
         //- Reference to the fvMesh
- //       const fvMesh& mesh_;
-
+        const fvMesh& mesh_;
 
 public:
 
@@ -76,96 +75,56 @@ public:
             extinctionModel,
             dictionary,
             (
-                const dictionary& dict
-  // ,            const fvMesh& mesh
+                const dictionary& dict,
+                const fvMesh& mesh
             ),
-            (dict)
-   //         (dict, mesh)
+            (dict, mesh)
         );
-
 
     // Constructors
 
         //- Construct from components
         extinctionModel
         (
-            const dictionary& dict
-  //          , const fvMesh& mesh
+            const dictionary& dict,
+            const fvMesh& mesh
         );
-
 
     //- Selector
     static autoPtr<extinctionModel> New
     (
-        const dictionary& dict
-      //  ,const fvMesh& mesh
+        const dictionary& dict,
+        const fvMesh& mesh
     );
-
 
     //- Destructor
     virtual ~extinctionModel();
-
 
     // Member Functions
 
         // Access
 
             //- Reference to the mesh
-  /*          inline const fvMesh& mesh() const
+            inline const fvMesh& mesh() const
             {
                 return mesh_;
             }
-*/
+
             //- Reference to the dictionary
             inline const dictionary& dict() const
             {
                 return dict_;
             }
 
-
-            // Extinction coefficient
-
-   //         virtual tmp<volScalarField> k( label bandI ) const;
- 
+            //- Absorption coefficient
             virtual scalar a(const label bandI) const = 0;
-                       
+
+            //- Scattering coefficient
             virtual scalar s(const label bandI) const = 0;
             
-            // Absorption coefficient
-  //          virtual tmp<volScalarField> a(const label bandI = 0) const;
-            
-            // Scattering coefficient
- //           virtual tmp<volScalarField> s( label bandI ) const;
-
- /*           //- Const access to the number of bands - defaults to 1 for grey
-            //  Extinction
-//            virtual label nBands() const;
-
-            //- Const access to the bands - defaults to Vector2D::one for grey
-            //  Extinction
- //           virtual const Vector2D<scalar>& bands(const label n) const;
-
-            //- Flag for whether the Extinction/emission is for a grey gas
- //           virtual bool isGrey() const;
-
-            //- Add radiative intensity for ray i
-            virtual tmp<volScalarField> addIntensity
-            (
-                const label rayI,
-                const volScalarField& ILambda
-            ) const;
-
             //- Correct Extinction coefficients
-            virtual void correct
-            (
-                volScalarField& a,
-                PtrList<volScalarField>& aj
-            ) const;
-            
-*/
-
+            virtual void correct() = 0;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

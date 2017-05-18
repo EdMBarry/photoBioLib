@@ -84,7 +84,8 @@ public:
         //- Construct from components
         wideBandExtinction
         (
-            const dictionary& dict
+            const dictionary& dict,
+            const fvMesh& mesh,
         );
 
     // Destructor
@@ -98,6 +99,8 @@ public:
         //- Scattering coefficient for iBand
         scalar s(const label iBand) const;
 
+        //- Correct the extinction coefficients
+        void correct();
 };
 
 
