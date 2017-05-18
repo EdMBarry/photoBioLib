@@ -92,76 +92,33 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
 {
     Info<< "Creating photoBioDOM model with " << nBand_ << " bands" << endl;
 
-    // 3D
-    if (mesh_.nSolutionD() == 3)
+    // Check that dimension of mesh is compatible with settings
+    checkDim_();
+
+    // Set the number of angles (=4*nPhi*nTheta for 2D/3D, =2 for 1D)
+    nAngle_ = mesh_.nSolutionD() > 1 ? 4*nPhi_*nTheta_ : 2;
+
+    // Set the number of rays, and allocate pointer list
+    nRay_ = nAngle_*nBand_;
+    IRay_.setSize(nRay_);
+
+    // Set deltaTheta (=pi/nTheta for 3D; =pi for 1D/2D)
+    deltaTheta_ = mesh_.nSolutionD() == 3 ? pi/nTheta_ : pi;
+
+    // Set deltaPhi (=pi/(2*nPhi) for 2D/3D, =pi for 1D)
+    deltaPhi_ = mesh_.nSolutionD() > 1 ? pi/(2.0*nPhi_) : pi;
+
+    // Set up all of the rays
+    label i = 0;
+    for (label iBand = 0; iBand < nBand_; iBand++)
     {
-        nAngle_ = 4*nPhi_*nTheta_;
-        nRay_ = nAngle_*nBand_;
-        IRay_.setSize(nRay_);
-        deltaPhi_ = pi/(2.0*nPhi_);
-        deltaTheta_ = pi/nTheta_;
-        label i = 0;
-        for (label iBand = 0; iBand < nBand_; iBand++)
+        for (label iTheta = 0; iTheta < nTheta_; iTheta++)
         {
-            for (label n = 1; n <= nTheta_; n++)
+            for (label iPhi = 0; iPhi < 4*nPhi_; iPhi++)
             {
-                for (label m = 1; m <= 4*nPhi_; m++)
-                {
-                    label iAngle = m-1 + (n-1)*4*nPhi_;
-                    scalar theta = (2.0*n - 1.0)*deltaTheta_/2.0;
-                    scalar phi = (2.0*m - 1.0)*deltaPhi_/2.0;
-                    setRay_(i, iBand, iAngle, phi, theta);
-                    i++;
-                }
-            }
-        }
-    }
-    else if (mesh_.nSolutionD() == 2)    //2D (X & Y)
-    {
-        if (mesh_.solutionD()[vector::Z] != -1)
-        {
-            FatalErrorInFunction
-                << "Currently 2D solution is limited to the x-y plane"
-                << exit(FatalError);
-        }
-        scalar theta = piByTwo;
-        deltaTheta_ = pi;
-        nAngle_ = 4*nPhi_;
-        nRay_ = nAngle_*nBand_;
-        IRay_.setSize(nRay_);
-        deltaPhi_ = pi /(2.0*nPhi_);
-        label i = 0;
-        for (label iBand = 0; iBand < nBand_; iBand++)
-        {
-            for (label iAngle = 0; iAngle < 4*nPhi_; iAngle++)
-            {
-                scalar phi = (2.0*iAngle + 1.0)*deltaPhi_/2.0;
-                setRay_(i, iBand, iAngle, phi, theta);
-                i++;
-            }
-        }
-    }
-    else    //1D (X)
-    {
-        if (mesh_.solutionD()[vector::X] != 1)
-        {
-            FatalErrorInFunction
-                << "Currently 1D solution is limited to the x-direction"
-                << exit(FatalError);
-        }
-        scalar theta = piByTwo;
-        deltaTheta_ = pi;
-        nAngle_ = 2;
-        nRay_ = nAngle_*nBand_;
-        IRay_.setSize(nRay_);
-        deltaPhi_ = pi;
-        label i = 0;
-        for (label iBand = 0; iBand < nBand_; iBand++)
-        {
-            for (label m = 1; m <= 2; m++)
-            {
-                label iAngle = m-1;
-                scalar phi = (2.0*m - 1.0)*deltaPhi_/2.0;
+                label iAngle = iPhi + 4*iTheta*nPhi_;
+                scalar theta = (2.0*iTheta + 1.0)*deltaTheta_/2.0;
+                scalar phi = (2.0*iPhi + 1.0)*deltaPhi_/2.0;
                 setRay_(i, iBand, iAngle, phi, theta);
                 i++;
             }
@@ -347,6 +304,48 @@ void Foam::photoBio::photoBioDOM::dirToRayId
     label iTheta = label(tTheta/deltaTheta_);
     rayId = nAngle_*iBand + iTheta*4*nPhi_ + iPhi;
 }
+
+
+void Foam::photoBio::photoBioDOM::checkDim_()
+{
+    if (mesh_.nSolutionD() == 2) // 2D (X & Y)
+    {
+        if (mesh_.solutionD()[vector::Z] != -1)
+        {
+            FatalErrorInFunction
+                << "Currently 2D solution is limited to the x-y plane"
+                << exit(FatalError);
+        }
+        if (nTheta_ != 1)
+        {
+            FatalErrorInFunction
+                << "There must be one theta angle for 2D simulations"
+                << exit(FatalError);
+        }
+    }
+    if (mesh_.nSolutionD() == 1) // 1D (X)
+    {
+        if (mesh_.solutionD()[vector::X] != 1)
+        {
+            FatalErrorInFunction
+                << "Currently 1D solution is limited to the x-direction"
+                << exit(FatalError);
+        }
+        if (nTheta_ != 1)
+        {
+            FatalErrorInFunction
+                << "There must be one theta angle for 1D simulations"
+                << exit(FatalError);
+        }
+        if (nPhi_ != 2)
+        {
+            FatalErrorInFunction
+                << "There must be two phi angles for 1D simulations"
+                << exit(FatalError);
+        }
+    }
+}
+
 
 void Foam::photoBio::photoBioDOM::setRay_
 (

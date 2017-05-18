@@ -122,6 +122,9 @@ class photoBioDOM
         //- Disallow default bitwise assignment
         void operator=(const photoBioDOM&);
 
+        //- Check that dimension of the mesh is valid for simulation
+        void checkDim_();
+
         //- Set up an intensity ray
         void setRay_(const label i,
                      const label iBand,
