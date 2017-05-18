@@ -86,8 +86,6 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
     nPixelPhi_(coeffs_.lookupOrDefault<label>("nPixelPhi", 1)),
     nPixelTheta_(coeffs_.lookupOrDefault<label>("nPixelTheta", 1)),
     GLambda_(nBand_),
-    ALambda_(nBand_),
-    SLambda_(nBand_),
     IRay_(0),
     convergence_(coeffs_.lookupOrDefault<scalar>("convergence", 0.0)),
     maxIter_(coeffs_.lookupOrDefault<label>("maxIter", 50))
@@ -234,49 +232,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
         );
     }
 
-    forAll(ALambda_, iBand)
-    {
-        ALambda_.set
-        (
-            iBand,
-            new volScalarField
-            (
-                IOobject
-                (
-                    "ALambda_" + Foam::name(iBand) ,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_,
-                dimless/dimLength
-            )
-        );
-    }
-
-    forAll(SLambda_, iBand)
-    {
-        SLambda_.set
-        (
-            iBand,
-            new volScalarField
-            (
-                IOobject
-                (
-                    "SLambda_" + Foam::name(iBand) ,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_,
-                dimless/dimLength
-            )
-        );
-    }
-
-    phaseFunctionModel_ =  phaseFunctionModel::New(*this,coeffs_, mesh_.nSolutionD());
+    phaseFunctionModel_ = phaseFunctionModel::New(*this,coeffs_, mesh_.nSolutionD());
 
     if(phaseFunctionModel_->inScatter())
     {
@@ -326,9 +282,8 @@ void Foam::photoBio::photoBioDOM::calculate()
     label radIter = 0;
     scalar maxBandResidual = 0.0;
 
-    // Update absorption and scattering coefficients
-    updateA_();
-    updateS_();
+    // Correct the extinction model
+    extinction_->correct();
 
     do
     {
@@ -370,24 +325,6 @@ void Foam::photoBio::photoBioDOM::calculate()
     } while(maxResidual > convergence_ && radIter < maxIter_);
 
     updateG();
-}
-
-
-void Foam::photoBio::photoBioDOM::updateA_()
-{
-    forAll(ALambda_, iBand)
-    {
-        ALambda_[iBand] = dimensionedScalar("A", dimless/dimLength, extinction_->A(iBand));
-    }
-}
-
-
-void Foam::photoBio::photoBioDOM::updateS_()
-{
-    forAll(SLambda_, iBand)
-    {
-        SLambda_[iBand] = dimensionedScalar("S", dimless/dimLength, extinction_->S(iBand));
-    }
 }
 
 

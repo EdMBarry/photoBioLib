@@ -40,7 +40,8 @@ namespace Foam
 
 Foam::photoBio::extinctionModel::extinctionModel
 (
-    const dictionary& dict, const fvMesh& mesh
+    const dictionary& dict,
+    const fvMesh& mesh
 )
 :
     dict_(dict),
@@ -52,6 +53,61 @@ Foam::photoBio::extinctionModel::extinctionModel
 
 Foam::photoBio::extinctionModel::~extinctionModel()
 {}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::photoBio::extinctionModel::init(const label nBands)
+{
+  // Set the number of bands and size of pointer lists
+  nBands_ = nBands;
+  ALambda_.setSize(nBands_);
+  SLambda_.setSize(nBands_);
+
+  // Create absorption coefficient fields
+  forAll(ALambda_, iBand)
+  {
+      ALambda_.set
+      (
+          iBand,
+          new volScalarField
+          (
+              IOobject
+              (
+                  "ALambda_" + Foam::name(iBand) ,
+                  mesh_.time().timeName(),
+                  mesh_,
+                  IOobject::NO_READ,
+                  IOobject::AUTO_WRITE
+              ),
+              mesh_,
+              dimless/dimLength
+          )
+      );
+  }
+
+  // Create scattering coefficient fields
+  forAll(SLambda_, iBand)
+  {
+      SLambda_.set
+      (
+          iBand,
+          new volScalarField
+          (
+              IOobject
+              (
+                  "SLambda_" + Foam::name(iBand) ,
+                  mesh_.time().timeName(),
+                  mesh_,
+                  IOobject::NO_READ,
+                  IOobject::AUTO_WRITE
+              ),
+              mesh_,
+              dimless/dimLength
+          )
+      );
+  }
+}
 
 
 // ************************************************************************* //

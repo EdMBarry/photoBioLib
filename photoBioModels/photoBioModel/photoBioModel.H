@@ -88,7 +88,6 @@ protected:
         //  photoBio solver iteration
         label solverFreq_;
 
-
         //- References to the photoBio sub-models
          autoPtr<extinctionModel> extinction_;
          autoPtr<inScatterModel> inScatter_;
@@ -107,7 +106,6 @@ public:
 
     //- Runtime type information
     TypeName("photoBioModel");
-
 
     // Declare runtime constructor selection table
 

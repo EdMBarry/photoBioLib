@@ -46,7 +46,7 @@ namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
-                   Class absorptionEmissionModel Declaration
+                   Class extinctionModel Declaration
 \*---------------------------------------------------------------------------*/
 
 class extinctionModel
@@ -56,11 +56,20 @@ protected:
 
     // Protected data
 
-        //- photoBio model dictionary
+        //- Model dictionary
         const dictionary dict_;
 
         //- Reference to the fvMesh
         const fvMesh& mesh_;
+
+        //- Number of bands
+        label nBands_;
+
+        //- List of pointers to absorption coefficient fields (one per band)
+        PtrList<volScalarField> ALambda_;
+
+        //- List of pointers to scattering coefficient fields (one per band)
+        PtrList<volScalarField> SLambda_;
 
 public:
 
@@ -102,6 +111,11 @@ public:
 
     // Member Functions
 
+        // Initialization
+
+            //- Initialize extinction coefficients based on number of bands
+            void init(const label nBands);
+
         // Access
 
             //- Reference to the mesh
@@ -116,13 +130,21 @@ public:
                 return dict_;
             }
 
-            //- Absorption coefficient
-            virtual scalar A(const label bandI) const = 0;
+            //- Absorbtion coefficient
+            inline const volScalarField& A(const label iLambda) const
+            {
+                return ALambda_[iLambda];
+            }
 
             //- Scattering coefficient
-            virtual scalar S(const label bandI) const = 0;
-            
-            //- Correct Extinction coefficients
+            inline const volScalarField& S(const label iLambda) const
+            {
+                return SLambda_[iLambda];
+            }
+
+        // Edit
+
+            //- Correct extinction coefficients
             virtual void correct() = 0;
 };
 

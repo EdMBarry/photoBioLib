@@ -93,12 +93,6 @@ class photoBioDOM
         //- List of pointers to irradiance fields (one per band)
         PtrList<volScalarField> GLambda_;
 
-        //- List of pointers to absorption coefficient fields (one per band)
-        PtrList<volScalarField> ALambda_;
-
-        //- List of pointers to scattering coefficient fields (one per band)
-        PtrList<volScalarField> SLambda_;
-
         //- List of phase function values (one per band)
         DynamicList<scalar, 1, 0> pf0_;
 
@@ -127,12 +121,6 @@ class photoBioDOM
 
         //- Disallow default bitwise assignment
         void operator=(const photoBioDOM&);
-
-        //- Update absorption coefficient field
-        void updateA_();
-
-        //- Update scattering coefficient field
-        void updateS_();
 
 public:
 

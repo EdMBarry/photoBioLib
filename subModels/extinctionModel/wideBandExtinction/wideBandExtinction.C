@@ -56,19 +56,20 @@ Foam::photoBio::wideBandExtinction::wideBandExtinction
     coeffsDict_((dict.subDict(typeName + "Coeffs"))),
     absorption_(readBool(coeffsDict_.lookup("absorption"))),
     scattering_(readBool(coeffsDict_.lookup("scattering"))),
-    nBands_(readLabel(coeffsDict_.lookup("nBands")))
+    nBands_(readLabel(coeffsDict_.lookup("nBands"))),
+    ABand_(nBands_),
+    SBand_(nBands_)
 {
-    // Allocate absorption coefficient list (and initialize in case
-    // absorption is turned off)
-    ABand_.setSize(nBands_);
+    // Initialize the extinction model
+    init(nBands_);
+
+    // Initialize absorption coefficients
     forAll(ABand_, i)
     {
         ABand_[i] = 0.0;
     }
     
-    // Allocate scattering coefficient list (and initialize in case
-    // scattering is turned off)
-    SBand_.setSize(nBands_);
+    // Initialize scattering coefficients
     forAll(SBand_, i)
     {
         SBand_[i] = 0.0;
@@ -77,6 +78,18 @@ Foam::photoBio::wideBandExtinction::wideBandExtinction
     // Read the coefficients
     if (absorption_) coeffsDict_.lookup("absorptionCoeff") >> ABand_;
     if (scattering_) coeffsDict_.lookup("scatteringCoeff") >> SBand_;
+
+    // Set the absorption coefficient field
+    forAll(ALambda_, iBand)
+    {
+        ALambda_[iBand] = dimensionedScalar("A", dimless/dimLength, ABand_(iBand));
+    }
+
+    // Set the scattering coefficient field
+    forAll(SLambda_, iBand)
+    {
+        SLambda_[iBand] = dimensionedScalar("S", dimless/dimLength, SBand_(iBand));
+    }
 }
 
 
@@ -90,20 +103,9 @@ Foam::photoBio::wideBandExtinction::~wideBandExtinction()
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-Foam::scalar Foam::photoBio::wideBandExtinction::A(const label iBand) const
-{        
-    return  ABand_[iBand];
-}
-
-
-Foam::scalar Foam::photoBio::wideBandExtinction::S(const label iBand) const
-{        
-    return  SBand_[iBand];
-}
-
-
 void Foam::photoBio::wideBandExtinction::correct()
 {
+    // Nothing to be done for constant coefficients
     return;
 }
 

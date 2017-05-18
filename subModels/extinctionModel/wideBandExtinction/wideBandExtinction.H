@@ -93,12 +93,6 @@ public:
 
     // Member Operators
 
-        //- Absorption coefficient for iBand
-        scalar A(const label iBand) const;
-
-        //- Scattering coefficient for iBand
-        scalar S(const label iBand) const;
-
         //- Correct the extinction coefficients
         void correct();
 };
