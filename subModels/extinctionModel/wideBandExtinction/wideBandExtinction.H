@@ -68,10 +68,10 @@ class wideBandExtinction
         label nBands_;
 
         //- Absorption coefficients (one per band)
-        DynamicList<scalar, 1, 0> aBand_;
+        DynamicList<scalar, 1, 0> ABand_;
         
         //- Scattering coefficients (one per band)
-        DynamicList<scalar, 1, 0> sBand_;
+        DynamicList<scalar, 1, 0> SBand_;
        
 public:
 
@@ -85,7 +85,7 @@ public:
         wideBandExtinction
         (
             const dictionary& dict,
-            const fvMesh& mesh,
+            const fvMesh& mesh
         );
 
     // Destructor
@@ -94,10 +94,10 @@ public:
     // Member Operators
 
         //- Absorption coefficient for iBand
-        scalar a(const label iBand) const;
+        scalar A(const label iBand) const;
 
         //- Scattering coefficient for iBand
-        scalar s(const label iBand) const;
+        scalar S(const label iBand) const;
 
         //- Correct the extinction coefficients
         void correct();

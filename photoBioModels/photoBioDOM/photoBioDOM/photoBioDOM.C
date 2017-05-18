@@ -377,7 +377,7 @@ void Foam::photoBio::photoBioDOM::updateA_()
 {
     forAll(ALambda_, iBand)
     {
-        ALambda_[iBand] = dimensionedScalar("A", dimless/dimLength, extinction_->a(iBand));
+        ALambda_[iBand] = dimensionedScalar("A", dimless/dimLength, extinction_->A(iBand));
     }
 }
 
@@ -386,7 +386,7 @@ void Foam::photoBio::photoBioDOM::updateS_()
 {
     forAll(SLambda_, iBand)
     {
-        SLambda_[iBand] = dimensionedScalar("S", dimless/dimLength, extinction_->s(iBand));
+        SLambda_[iBand] = dimensionedScalar("S", dimless/dimLength, extinction_->S(iBand));
     }
 }
 

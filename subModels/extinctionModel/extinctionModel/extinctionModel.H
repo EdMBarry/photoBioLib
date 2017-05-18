@@ -117,10 +117,10 @@ public:
             }
 
             //- Absorption coefficient
-            virtual scalar a(const label bandI) const = 0;
+            virtual scalar A(const label bandI) const = 0;
 
             //- Scattering coefficient
-            virtual scalar s(const label bandI) const = 0;
+            virtual scalar S(const label bandI) const = 0;
             
             //- Correct Extinction coefficients
             virtual void correct() = 0;

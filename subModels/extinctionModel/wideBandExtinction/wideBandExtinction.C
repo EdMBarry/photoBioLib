@@ -60,23 +60,23 @@ Foam::photoBio::wideBandExtinction::wideBandExtinction
 {
     // Allocate absorption coefficient list (and initialize in case
     // absorption is turned off)
-    aBand_.setSize(nBands_);
-    forAll(aBand_, i)
+    ABand_.setSize(nBands_);
+    forAll(ABand_, i)
     {
-        aBand_[i] = 0.0;
+        ABand_[i] = 0.0;
     }
     
     // Allocate scattering coefficient list (and initialize in case
     // scattering is turned off)
-    sBand_.setSize(nBands_);
-    forAll(aBand_, i)
+    SBand_.setSize(nBands_);
+    forAll(SBand_, i)
     {
-        sBand_[i] = 0.0;
+        SBand_[i] = 0.0;
     }
 
     // Read the coefficients
-    if (absorption_) coeffsDict_.lookup("absorptionCoeff") >> aBand_;
-    if (scattering_) coeffsDict_.lookup("scatteringCoeff") >> sBand_;
+    if (absorption_) coeffsDict_.lookup("absorptionCoeff") >> ABand_;
+    if (scattering_) coeffsDict_.lookup("scatteringCoeff") >> SBand_;
 }
 
 
@@ -90,19 +90,19 @@ Foam::photoBio::wideBandExtinction::~wideBandExtinction()
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-Foam::scalar Foam::photoBio::wideBandExtinction::a(const label bandI) const
+Foam::scalar Foam::photoBio::wideBandExtinction::A(const label iBand) const
 {        
-    return  aBand_[bandI];
+    return  ABand_[iBand];
 }
 
 
-Foam::scalar Foam::photoBio::wideBandExtinction::s(const label bandI) const
+Foam::scalar Foam::photoBio::wideBandExtinction::S(const label iBand) const
 {        
-    return  sBand_[bandI];
+    return  SBand_[iBand];
 }
 
 
-void Foam::photoBio::::wideBandExtinction::correct()
+void Foam::photoBio::wideBandExtinction::correct()
 {
     return;
 }
