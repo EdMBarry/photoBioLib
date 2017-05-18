@@ -108,23 +108,9 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
                 for (label m = 1; m <= 4*nPhi_; m++)
                 {
                     label iAngle = m-1 + (n-1)*4*nPhi_;
-                    scalar thetai = (2.0*n - 1.0)*deltaTheta_/2.0;
-                    scalar phii = (2.0*m - 1.0)*deltaPhi_/2.0;
-                    IRay_.set
-                    (
-                        i,
-                        new photoBioIntensityRay
-                        (
-                            *this,
-                            mesh_,
-                            iBand,
-                            iAngle,
-                            phii,
-                            thetai,
-                            deltaPhi_,
-                            deltaTheta_
-                        )
-                    );
+                    scalar theta = (2.0*n - 1.0)*deltaTheta_/2.0;
+                    scalar phi = (2.0*m - 1.0)*deltaPhi_/2.0;
+                    setRay_(i, iBand, iAngle, phi, theta);
                     i++;
                 }
             }
@@ -138,7 +124,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
                 << "Currently 2D solution is limited to the x-y plane"
                 << exit(FatalError);
         }
-        scalar thetai = piByTwo;
+        scalar theta = piByTwo;
         deltaTheta_ = pi;
         nAngle_ = 4*nPhi_;
         nRay_ = nAngle_*nBand_;
@@ -149,22 +135,8 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
         {
             for (label iAngle = 0; iAngle < 4*nPhi_; iAngle++)
             {
-                scalar phii = (2.0*iAngle + 1.0)*deltaPhi_/2.0;
-                IRay_.set
-                (
-                    i,
-                    new photoBioIntensityRay
-                    (
-                        *this,
-                        mesh_,
-                        iBand,
-                        iAngle,
-                        phii,
-                        thetai,
-                        deltaPhi_,
-                        deltaTheta_
-                    )
-                );
+                scalar phi = (2.0*iAngle + 1.0)*deltaPhi_/2.0;
+                setRay_(i, iBand, iAngle, phi, theta);
                 i++;
             }
         }
@@ -177,7 +149,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
                 << "Currently 1D solution is limited to the x-direction"
                 << exit(FatalError);
         }
-        scalar thetai = piByTwo;
+        scalar theta = piByTwo;
         deltaTheta_ = pi;
         nAngle_ = 2;
         nRay_ = nAngle_*nBand_;
@@ -189,22 +161,8 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
             for (label m = 1; m <= 2; m++)
             {
                 label iAngle = m-1;
-                scalar phii = (2.0*m - 1.0)*deltaPhi_/2.0;
-                IRay_.set
-                (
-                    i,
-                    new photoBioIntensityRay
-                    (
-                        *this,
-                        mesh_,
-                        iBand,
-                        iAngle,
-                        phii,
-                        thetai,
-                        deltaPhi_,
-                        deltaTheta_
-                    )
-                );
+                scalar phi = (2.0*m - 1.0)*deltaPhi_/2.0;
+                setRay_(i, iBand, iAngle, phi, theta);
                 i++;
             }
         }
@@ -388,6 +346,32 @@ void Foam::photoBio::photoBioDOM::dirToRayId
     label iPhi = label(tPhi/deltaPhi_);
     label iTheta = label(tTheta/deltaTheta_);
     rayId = nAngle_*iBand + iTheta*4*nPhi_ + iPhi;
+}
+
+void Foam::photoBio::photoBioDOM::setRay_
+(
+    const label i,
+    const label iBand,
+    const label iAngle,
+    const scalar phi,
+    const scalar theta
+)
+{
+    IRay_.set
+    (
+        i,
+        new photoBioIntensityRay
+        (
+            *this,
+            mesh_,
+            iBand,
+            iAngle,
+            phi,
+            theta,
+            deltaPhi_,
+            deltaTheta_
+        )
+    );
 }
 
 // ************************************************************************* //

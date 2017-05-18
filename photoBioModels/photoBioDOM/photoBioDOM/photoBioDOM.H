@@ -122,6 +122,13 @@ class photoBioDOM
         //- Disallow default bitwise assignment
         void operator=(const photoBioDOM&);
 
+        //- Set up an intensity ray
+        void setRay_(const label i,
+                     const label iBand,
+                     const label iAngle,
+                     const scalar phi,
+                     const scalar theta);
+
 public:
 
     //- Runtime type information
