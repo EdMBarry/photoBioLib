@@ -25,46 +25,50 @@ License
 
 
  inline const Foam::volScalarField& Foam::photoBio::photoBioIntensityRay::I() const
-// inline const Foam::volScalarField *Foam::photoBio::photoBioIntensityRay::I() const
 {
     return I_;
 }
+
 
 inline const Foam::vector& Foam::photoBio::photoBioIntensityRay::d() const
 {
     return d_;
 }
 
+
 inline const Foam::vector& Foam::photoBio::photoBioIntensityRay::dAve() const
 {
     return dAve_;
 }
+
 
 inline Foam::label Foam::photoBio::photoBioIntensityRay::iBand() const
 {
     return iBand_;
 }
 
+
 inline Foam::label Foam::photoBio::photoBioIntensityRay::iAngle() const
 {
     return iAngle_;
 }
+
 
 inline Foam::scalar Foam::photoBio::photoBioIntensityRay::phi() const
 {
     return phi_;
 }
 
+
 inline Foam::scalar Foam::photoBio::photoBioIntensityRay::theta() const
 {
     return theta_;
 }
 
+
 inline Foam::scalar Foam::photoBio::photoBioIntensityRay::omega() const
 {
     return omega_;
 }
-
-
 
 // ************************************************************************* //

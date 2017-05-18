@@ -93,14 +93,14 @@ class photoBioDOM
         //- List of pointers to irradiance fields (one per band)
         PtrList<volScalarField> GLambda_;
 
-        //- List of absorbtion coefficients (one per band)
-        DynamicList<scalar, 1, 0>   aBand_;
+        //- List of pointers to absorption coefficient fields (one per band)
+        PtrList<volScalarField> ALambda_;
 
-        //- List of scattering coefficients (one per band)
-        DynamicList<scalar, 1, 0>   sBand_;
+        //- List of pointers to scattering coefficient fields (one per band)
+        PtrList<volScalarField> SLambda_;
 
         //- List of phase function values (one per band)
-        DynamicList<scalar, 1, 0>   pf0_;
+        DynamicList<scalar, 1, 0> pf0_;
 
         //- List of pointers to intensity rays
         PtrList<photoBioIntensityRay> IRay_;
@@ -127,6 +127,12 @@ class photoBioDOM
 
         //- Disallow default bitwise assignment
         void operator=(const photoBioDOM&);
+
+        //- Update absorption coefficient field
+        void updateA_();
+
+        //- Update scattering coefficient field
+        void updateS_();
 
 public:
 
@@ -195,13 +201,13 @@ public:
             inline label nPixelTheta() const;
 
             //- Absorbtion coefficient
-            inline  scalar a(const label lambdaI) const;
+            inline const volScalarField& A(const label iLambda) const;
 
             //- Scattering coefficient
-            inline  scalar s(const label lambdaI) const;
+            inline const volScalarField& S(const label iLambda) const;
 
             //- Phase function values
-            inline  scalar pf0(const label lambdaI) const;
+            inline scalar pf0(const label iLambda) const;
 
             //- Const access to irradiance field
             inline const volScalarField& G() const;

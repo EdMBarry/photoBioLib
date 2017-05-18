@@ -58,20 +58,20 @@ Foam::photoBio::extinctionModel::~extinctionModel()
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-Foam::scalar Foam::photoBio::extinctionModel::k(const label bandI) const
-{
-    return  0.0  ;
-}
+//Foam::scalar Foam::photoBio::extinctionModel::k(const label bandI) const
+//{
+//    return  0.0  ;
+//}
 
-Foam::scalar Foam::photoBio::extinctionModel::a(const label bandI) const
-{
-    return  0.0  ;
-}
+//Foam::scalar Foam::photoBio::extinctionModel::a(const label bandI) const
+//{
+//    return  0.0  ;
+//}
 
-Foam::scalar Foam::photoBio::extinctionModel::s(const label bandI) const
-{
-    return   0.0 ;
-}
+//Foam::scalar Foam::photoBio::extinctionModel::s(const label bandI) const
+//{
+//    return   0.0 ;
+//}
 
 
 // ************************************************************************* //

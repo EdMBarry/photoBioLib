@@ -25,8 +25,7 @@ Class
     Foam::photoBio::extinctionModel
 
 Description
-    Model to supply absorption and emission coefficients for photoBio
-    modelling
+    Model to supply absorption and scattering coefficients
 
 \*---------------------------------------------------------------------------*/
 
@@ -127,12 +126,10 @@ public:
             // Extinction coefficient
 
    //         virtual tmp<volScalarField> k( label bandI ) const;
-
-            virtual scalar k(const label bandI ) const;
  
-            virtual scalar a(const label bandI ) const;
+            virtual scalar a(const label bandI) const = 0;
                        
-            virtual scalar s(const label bandI ) const;
+            virtual scalar s(const label bandI) const = 0;
             
             // Absorption coefficient
   //          virtual tmp<volScalarField> a(const label bandI = 0) const;

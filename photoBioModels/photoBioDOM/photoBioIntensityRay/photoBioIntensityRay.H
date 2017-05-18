@@ -57,7 +57,6 @@ public:
 
     static const word intensityPrefix;
 
-
 private:
 
     // Private data
@@ -68,8 +67,7 @@ private:
         //- Reference to the mesh
         const fvMesh& mesh_;
 
-        //-  photoBio ray intensity / [W/m2]
-
+        //- Ray intensity [W/m^2]
         autoPtr<volScalarField>  I_;
 
         //- Direction
@@ -87,13 +85,11 @@ private:
         //- Solid angle
         scalar omega_;
 
-        //- Number of wavelengths/bands
+        //- Wavelength band index
         label iBand_;
 
+        //- Angle index
         label iAngle_;
-
-        //- List of pointers to photoBio intensity fields for given wavelengths
-    //    PtrList<volScalarField> ILambda_;
 
         //- Global ray id - incremented in constructor
         static label rayId;
@@ -105,7 +101,6 @@ private:
 
         //- Disallow default bitwise assignment
         void operator=(const photoBioIntensityRay&);
-
 
 public:
 
@@ -125,17 +120,21 @@ public:
 
         );
 
-
     // Destructor
     ~photoBioIntensityRay();
-
 
     // Member functions
 
         // Edit
 
             //- Update photoBio intensity on i direction
-            scalar correct();  //(const volScalarField& inScTerm)
+            scalar correct();
+
+            //- Calculate Ji
+            const Foam::surfaceScalarField JiCal() const;
+
+            //- Update boundaries
+            void updateBoundary();
 
             //- Initialise the ray in i direction
             void init
@@ -147,21 +146,10 @@ public:
                 const scalar lambda
             );
 
-            //- Add photoBio intensities from all the bands
-  //          void addIntensity();
-
-
         // Access
 
             //- Return intensity
-             inline  const volScalarField&  I() const;
-         //        inline const volScalarField& I() const;
-
-            //- Return const access to the boundary heat flux
-//            inline const volScalarField& Qr() const;
-
-            //- Return non-const access to the boundary heat flux
-//            inline volScalarField& Qr();
+             inline const volScalarField& I() const;
 
             //- Return direction
             inline const vector& d() const;
@@ -169,12 +157,10 @@ public:
             //- Return the average vector inside the solid angle
             inline const vector& dAve() const;
 
-            //- Return the total number of bands
-    //        inline scalar nBand() const;
-
-             //- Return the number of band
+             //- Return the index of band
             inline  label iBand() const;
 
+            //- Return the index of the angle
             inline label iAngle() const;
 
             //- Return the phi angle
@@ -185,13 +171,6 @@ public:
 
             //- Return the solid angle
             inline scalar omega() const;
-
-            const  Foam::surfaceScalarField JiCal() const;
-
-            //- Return the photoBio intensity for a given wavelength
-     //       inline const volScalarField& ILambda(const label lambdaI) const;
-
-           void updateBoundary() ;
 };
 
 

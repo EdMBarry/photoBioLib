@@ -86,6 +86,8 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
     nPixelPhi_(coeffs_.lookupOrDefault<label>("nPixelPhi", 1)),
     nPixelTheta_(coeffs_.lookupOrDefault<label>("nPixelTheta", 1)),
     GLambda_(nBand_),
+    ALambda_(nBand_),
+    SLambda_(nBand_),
     IRay_(0),
     convergence_(coeffs_.lookupOrDefault<scalar>("convergence", 0.0)),
     maxIter_(coeffs_.lookupOrDefault<label>("maxIter", 50))
@@ -212,14 +214,6 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
 
     Info<< "photoBioDOM : Allocated " << IRay_.size() << " rays" <<endl;
 
-    sBand_.setSize(nBand_);
-    aBand_.setSize(nBand_);
-    forAll(aBand_, iBand)
-    {
-        aBand_[iBand] = extinction_->a(iBand);
-        sBand_[iBand] = extinction_->s(iBand);
-    }
-
     forAll(GLambda_, iBand)
     {
         GLambda_.set
@@ -236,6 +230,48 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
                     IOobject::AUTO_WRITE
                 ),
                 G_
+            )
+        );
+    }
+
+    forAll(ALambda_, iBand)
+    {
+        ALambda_.set
+        (
+            iBand,
+            new volScalarField
+            (
+                IOobject
+                (
+                    "ALambda_" + Foam::name(iBand) ,
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimless/dimLength
+            )
+        );
+    }
+
+    forAll(SLambda_, iBand)
+    {
+        SLambda_.set
+        (
+            iBand,
+            new volScalarField
+            (
+                IOobject
+                (
+                    "SLambda_" + Foam::name(iBand) ,
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimless/dimLength
             )
         );
     }
@@ -290,6 +326,10 @@ void Foam::photoBio::photoBioDOM::calculate()
     label radIter = 0;
     scalar maxBandResidual = 0.0;
 
+    // Update absorption and scattering coefficients
+    updateA_();
+    updateS_();
+
     do
     {
         radIter++;
@@ -300,7 +340,7 @@ void Foam::photoBio::photoBioDOM::calculate()
             iAngle = IRay_[rayI].iAngle();
 
             Info << endl;
-            Info << "photoBio solver: " << "     iter: " << radIter
+            Info << "photoBio solver: " << "    iter: " << radIter
                                         << "    iBand: "<< iBand
                                         << "    iAngle  : "<< iAngle;
             Info << endl;
@@ -330,6 +370,24 @@ void Foam::photoBio::photoBioDOM::calculate()
     } while(maxResidual > convergence_ && radIter < maxIter_);
 
     updateG();
+}
+
+
+void Foam::photoBio::photoBioDOM::updateA_()
+{
+    forAll(ALambda_, iBand)
+    {
+        ALambda_[iBand] = dimensionedScalar("A", dimless/dimLength, extinction_->a(iBand));
+    }
+}
+
+
+void Foam::photoBio::photoBioDOM::updateS_()
+{
+    forAll(SLambda_, iBand)
+    {
+        SLambda_[iBand] = dimensionedScalar("S", dimless/dimLength, extinction_->s(iBand));
+    }
 }
 
 
@@ -366,7 +424,6 @@ void Foam::photoBio::photoBioDOM::setRayId
     label ia = readLabel(IStringStream(name.substr(i2+1, name.size()-1))());
 
     rayId = nAngle_*ib + ia;
-
 }
 
 

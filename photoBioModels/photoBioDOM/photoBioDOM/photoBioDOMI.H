@@ -65,26 +65,30 @@ inline Foam::label Foam::photoBio::photoBioDOM::nPixelPhi() const
     return nPixelPhi_;
 }
 
+
 inline Foam::label Foam::photoBio::photoBioDOM::nPixelTheta() const
 {
     return nPixelTheta_;
 }
 
-inline  Foam::scalar Foam::photoBio::photoBioDOM::a (const label lambdaI) const
+
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::A(const label iLambda) const
 {
-    return aBand_[lambdaI];
+    return ALambda_[iLambda];
 }
 
 
-inline  Foam::scalar Foam::photoBio::photoBioDOM::s (const label lambdaI) const
+inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::S(const label iLambda) const
 {
-    return sBand_[lambdaI];
+    return SLambda_[iLambda];
 }
 
-inline  Foam::scalar Foam::photoBio::photoBioDOM::pf0(const label lambdaI) const
+
+inline Foam::scalar Foam::photoBio::photoBioDOM::pf0(const label iLambda) const
 {
-    return pf0_[lambdaI];
+    return pf0_[iLambda];
 }
+
 
 inline const Foam::volScalarField& Foam::photoBio::photoBioDOM::G() const
 {

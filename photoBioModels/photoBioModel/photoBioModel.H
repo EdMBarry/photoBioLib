@@ -89,11 +89,9 @@ protected:
         label solverFreq_;
 
 
-        // References to the photoBio sub-models
-            //- Extinction and inScatter models
-        autoPtr<extinctionModel> extinction_;
-        autoPtr<inScatterModel> inScatter_;
-
+        //- References to the photoBio sub-models
+         autoPtr<extinctionModel> extinction_;
+         autoPtr<inScatterModel> inScatter_;
 
 private:
 
@@ -104,7 +102,6 @@ private:
 
         //- Disallow default bitwise assignment
         void operator=(const photoBioModel&);
-
 
 public:
 
