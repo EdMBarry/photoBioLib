@@ -155,7 +155,6 @@ public:
             //- Read photoBioProperties dictionary
             virtual bool read() = 0;
 
-
 };
 
 

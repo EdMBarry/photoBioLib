@@ -85,7 +85,7 @@ Foam::photoBio::photoBioModel::photoBioModel
     photoBio_(lookup("photoBio")),
     coeffs_(subDict(type + "Coeffs")),
     solverFreq_(readLabel(lookup("solverFreq"))),
-    extinction_(extinctionModel::New(*this))
+    extinction_(extinctionModel::New(*this, mesh_))
 {
     solverFreq_ = max(1, solverFreq_);
 }

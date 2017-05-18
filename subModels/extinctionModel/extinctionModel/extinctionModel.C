@@ -40,12 +40,11 @@ namespace Foam
 
 Foam::photoBio::extinctionModel::extinctionModel
 (
-    const dictionary& dict
-//    , const fvMesh& mesh
+    const dictionary& dict, const fvMesh& mesh
 )
 :
-    dict_(dict)
- //   , mesh_(mesh)
+    dict_(dict),
+    mesh_(mesh)
 {}
 
 
@@ -53,25 +52,6 @@ Foam::photoBio::extinctionModel::extinctionModel
 
 Foam::photoBio::extinctionModel::~extinctionModel()
 {}
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-
-//Foam::scalar Foam::photoBio::extinctionModel::k(const label bandI) const
-//{
-//    return  0.0  ;
-//}
-
-//Foam::scalar Foam::photoBio::extinctionModel::a(const label bandI) const
-//{
-//    return  0.0  ;
-//}
-
-//Foam::scalar Foam::photoBio::extinctionModel::s(const label bandI) const
-//{
-//    return   0.0 ;
-//}
 
 
 // ************************************************************************* //

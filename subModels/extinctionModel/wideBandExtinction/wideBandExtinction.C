@@ -48,10 +48,11 @@ namespace Foam
 
 Foam::photoBio::wideBandExtinction::wideBandExtinction
 (
-    const dictionary& dict
+    const dictionary& dict,
+    const fvMesh& mesh
 )
 :
-    extinctionModel(dict),
+    extinctionModel(dict, mesh),
     coeffsDict_((dict.subDict(typeName + "Coeffs"))),
     absorption_(readBool(coeffsDict_.lookup("absorption"))),
     scattering_(readBool(coeffsDict_.lookup("scattering"))),
@@ -89,15 +90,21 @@ Foam::photoBio::wideBandExtinction::~wideBandExtinction()
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-Foam::scalar Foam::photoBio::wideBandExtinction::a( const label bandI ) const
+Foam::scalar Foam::photoBio::wideBandExtinction::a(const label bandI) const
 {        
-	return  aBand_[bandI];
+    return  aBand_[bandI];
 }
 
 
-Foam::scalar Foam::photoBio::wideBandExtinction::s( const label bandI ) const
+Foam::scalar Foam::photoBio::wideBandExtinction::s(const label bandI) const
 {        
-	return  sBand_[bandI];
+    return  sBand_[bandI];
+}
+
+
+void Foam::photoBio::::wideBandExtinction::correct()
+{
+    return;
 }
 
 
