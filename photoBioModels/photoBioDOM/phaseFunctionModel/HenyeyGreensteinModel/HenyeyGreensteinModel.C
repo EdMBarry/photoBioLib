@@ -187,6 +187,7 @@ Foam::photoBio::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 ) const 
 {
 	   return 	Foam::pow((1-g*g)/(1+g*g-2*g*cosV),1.5);
+	   // this is just fucking wrong
 
 }
 
@@ -197,6 +198,8 @@ Foam::photoBio::HenyeyGreensteinModel::~HenyeyGreensteinModel()
 ) const
 {
 	   return 0.5/pi*(1-g*g)/(1+g*g-2*g*cosV);
+
+	   // same as this one 
 
 }
 
