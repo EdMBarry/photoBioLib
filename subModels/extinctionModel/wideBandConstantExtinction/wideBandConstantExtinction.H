@@ -22,13 +22,13 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::photoBio::wideBandExtinction
+    Foam::photoBio::wideBandConstantExtinction
 
 Description
     Model for constant absorption and scattering coefficients
 
 SourceFiles
-    wideBandExtinction.C
+    wideBandConstantExtinction.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -45,10 +45,10 @@ namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
-                  Class wideBandExtinction Declaration
+                  Class wideBandConstantExtinction Declaration
 \*---------------------------------------------------------------------------*/
 
-class wideBandExtinction
+class wideBandConstantExtinction
 :
     public extinctionModel
 {
@@ -76,20 +76,20 @@ class wideBandExtinction
 public:
 
     //- Runtime type information
-    TypeName("wideBandExtinction");
+    TypeName("wideBandConstantExtinction");
 
 
     // Constructors
 
         //- Construct from components
-        wideBandExtinction
+        wideBandConstantExtinction
         (
             const dictionary& dict,
             const fvMesh& mesh
         );
 
     // Destructor
-    virtual ~wideBandExtinction();
+    virtual ~wideBandConstantExtinction();
 
     // Member Operators
 

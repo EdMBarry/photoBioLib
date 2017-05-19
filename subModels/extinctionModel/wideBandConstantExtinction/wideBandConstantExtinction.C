@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "wideBandExtinction.H"
+#include "wideBandConstantExtinction.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -32,12 +32,12 @@ namespace Foam
 {
     namespace photoBio
     {
-        defineTypeNameAndDebug(wideBandExtinction, 0);
+        defineTypeNameAndDebug(wideBandConstantExtinction, 0);
 
         addToRunTimeSelectionTable
         (
             extinctionModel,
-            wideBandExtinction,
+            wideBandConstantExtinction,
             dictionary
         );
     }
@@ -46,7 +46,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::photoBio::wideBandExtinction::wideBandExtinction
+Foam::photoBio::wideBandConstantExtinction::wideBandConstantExtinction
 (
     const dictionary& dict,
     const fvMesh& mesh
@@ -96,14 +96,14 @@ Foam::photoBio::wideBandExtinction::wideBandExtinction
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 
-Foam::photoBio::wideBandExtinction::~wideBandExtinction()
+Foam::photoBio::wideBandConstantExtinction::~wideBandConstantExtinction()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-void Foam::photoBio::wideBandExtinction::correct()
+void Foam::photoBio::wideBandConstantExtinction::correct()
 {
     // Nothing to be done for constant coefficients
     return;
