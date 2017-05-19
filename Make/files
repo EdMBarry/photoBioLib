@@ -13,7 +13,7 @@ photoBioModels/photoBioDOM/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreens
 
 subModels/extinctionModel/extinctionModel/extinctionModel.C
 subModels/extinctionModel/extinctionModel/newExtinctionModel.C
-subModels/extinctionModel/wideBandExtinction/wideBandExtinction.C
+subModels/extinctionModel/wideBandConstantExtinction/wideBandConstantExtinction.C
 
 derivedFvPatchFields/diffuseEmitter/diffuseEmitterMixedFvPatchScalarField.C
 derivedFvPatchFields/reflectiveSurface/reflectiveSurfaceMixedFvPatchScalarField.C
