@@ -84,10 +84,6 @@ protected:
         //- photoBio model dictionary
         dictionary coeffs_;
 
-        //- photoBio solver frequency - number flow solver iterations per
-        //  photoBio solver iteration
-        label solverFreq_;
-
         //- References to the photoBio sub-models
          autoPtr<extinctionModel> extinction_;
          autoPtr<inScatterModel> inScatter_;

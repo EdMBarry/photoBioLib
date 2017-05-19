@@ -58,7 +58,6 @@ Foam::photoBio::photoBioModel::photoBioModel(const volScalarField& intensity)
     time_(intensity.time()),
     photoBio_(false),
     coeffs_(dictionary::null),
-    solverFreq_(0),
     extinction_(NULL)
 {}
 
@@ -84,11 +83,8 @@ Foam::photoBio::photoBioModel::photoBioModel
     time_(intensity.time()),
     photoBio_(lookup("photoBio")),
     coeffs_(subDict(type + "Coeffs")),
-    solverFreq_(readLabel(lookup("solverFreq"))),
     extinction_(extinctionModel::New(*this, mesh_))
-{
-    solverFreq_ = max(1, solverFreq_);
-}
+{}
 
 
 // * * * * * * * * * * * * * * * * Destructor    * * * * * * * * * * * * * * //
@@ -121,11 +117,7 @@ void Foam::photoBio::photoBioModel::correct()
     {
         return;
     }
-
-    if (time_.timeIndex() % solverFreq_ == 0)
-    {
-        calculate();
-    }
+    calculate();
 }
 
 
