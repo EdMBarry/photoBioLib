@@ -6,10 +6,9 @@ photoBioModels/photoBioModel/photoBioModelNew.C
 photoBioModels/photoBioDOM/photoBioDOM/photoBioDOM.C  
 photoBioModels/photoBioDOM/photoBioIntensityRay/photoBioIntensityRay.C 
 
-photoBioModels/photoBioDOM/phaseFunctionModel/phaseFunctionModel/phaseFunctionModel.C 
-photoBioModels/photoBioDOM/phaseFunctionModel/phaseFunctionModel/newPhaseFunctionModel.C 
-photoBioModels/photoBioDOM/phaseFunctionModel/userDefinedPhaseFunction/userDefinedPhaseFunction.C
-photoBioModels/photoBioDOM/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
+subModels/phaseFunctionModel/phaseFunctionModel/phaseFunctionModel.C 
+subModels/phaseFunctionModel/phaseFunctionModel/newPhaseFunctionModel.C 
+subModels/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
 
 subModels/extinctionModel/extinctionModel/extinctionModel.C
 subModels/extinctionModel/extinctionModel/newExtinctionModel.C
