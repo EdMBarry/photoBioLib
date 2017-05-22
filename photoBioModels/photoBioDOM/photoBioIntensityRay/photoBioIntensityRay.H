@@ -130,9 +130,6 @@ public:
             //- Update photoBio intensity on i direction
             scalar correct();
 
-            //- Calculate Ji
-            const Foam::surfaceScalarField JiCal() const;
-
             //- Update boundaries
             void updateBoundary();
 
