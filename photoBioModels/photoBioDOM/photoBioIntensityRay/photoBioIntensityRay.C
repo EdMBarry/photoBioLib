@@ -149,7 +149,7 @@ Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()
     const volScalarField K = A + S;
 
     const volScalarField& ds = dom_.diffusionScatter();
-    const surfaceScalarField& Ji = dAve_ & mesh_.Sf();
+    const surfaceScalarField Ji = dAve_ & mesh_.Sf();
 
     fvScalarMatrix IiEq
     (
