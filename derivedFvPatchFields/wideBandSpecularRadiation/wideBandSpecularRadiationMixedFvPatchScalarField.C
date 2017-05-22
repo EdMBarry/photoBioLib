@@ -23,8 +23,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "radiationModel.H"
-#include "fvDOM.H"
+#include "photoBioModel.H"
+#include "photoBioDOM.H"
 #include "wideBandSpecularRadiationMixedFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
 
@@ -32,7 +32,7 @@ License
 
 namespace Foam
 {
-namespace radiation
+namespace photoBio
 {
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
@@ -52,21 +52,15 @@ calcReceivedRayIDs() const
     receivedRayIDPtr_ = new labelListList(this->size());
     labelListList& receivedRayID = *receivedRayIDPtr_;
 
-    // Get access to radiation model, and recast as fvDOM
-    const radiationModel& radiation =
-        this->db().lookupObject<radiationModel>("radiationProperties");
+    // Get access to photoBio model, and recast as photoBioDOM
+    const photoBioModel& photoBio =
+        this->db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const fvDOM& dom(refCast<const fvDOM>(radiation));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
 
-    // Get rayId and lambda Id for this ray
+    // Get rayId for this ray
     label rayId = -1;
-    label lambdaId = -1;
-    dom.setRayIdLambdaId(dimensionedInternalField().name(), rayId, lambdaId);
-
-    // Get index of active ray
-    word rayAndBand = this->dimensionedInternalField().name();
-    rayAndBand =
-        rayAndBand.substr(rayAndBand.find("_")+1, rayAndBand.size()-1);
+    dom.setRayId(internalField().name(), rayId);
 
     // Get all ray directions
     List<vector> dAve(dom.nRay());
@@ -77,7 +71,6 @@ calcReceivedRayIDs() const
 
     // Get face normal vectors
     vectorField nHat = this->patch().nf();
-
 
     // For each face, and for each reflected ray, try to find another
     // ray that is better suited to pick it up.
@@ -93,7 +86,6 @@ calcReceivedRayIDs() const
             receivedRayIDs.setSize(0);
             continue;
         }
-
 
         // For each face, initialize list of picked up
         // rays to maximum possible size
@@ -171,11 +163,10 @@ calcReceivedRayIDs() const
                         const wideBandSpecularRadiationMixedFvPatchScalarField
                     >
                     (
-                        dom.IRayLambda
+                        dom.IRay
                         (
-                            rayI,
-                            lambdaId
-                        ).boundaryField()[patch().index()]
+                            rayI
+                        ).I().boundaryField()[patch().index()]
                     );
 
                 const labelListList& receivedRaysList = rayBC.receivedRayIDs();
@@ -317,16 +308,15 @@ void wideBandSpecularRadiationMixedFvPatchScalarField::updateCoeffs()
 
     vectorField nHat = this->patch().nf();
 
-    // Get access to radiation model, and recast as fvDOM
-    const radiationModel& radiation =
-        this->db().lookupObject<radiationModel>("radiationProperties");
+    // Get access to photoBio model, and recast as photoBioDOM
+    const photoBioModel& photoBio =
+        this->db().lookupObject<photoBioModel>("photoBioProperties");
 
-    const fvDOM& dom(refCast<const fvDOM>(radiation));
+    const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
 
-    // Get rayId and lambda Id for this ray
+    // Get rayId afor this ray
     label rayId = -1;
-    label lambdaId = -1;
-    dom.setRayIdLambdaId(dimensionedInternalField().name(), rayId, lambdaId);
+    dom.setRayId(internalField().name(), rayId);
 
     const labelListList& receivedRayIDs = this->receivedRayIDs();
 
@@ -352,11 +342,10 @@ void wideBandSpecularRadiationMixedFvPatchScalarField::updateCoeffs()
             {
                 // Get ray from object registry
                 IValue[faceI] +=
-                    dom.IRayLambda
+                    dom.IRay
                     (
-                        receivedRayIDs[faceI][receivedRayI],
-                        lambdaId
-                    ).internalField()[faceCellIDs[faceI]];
+                        receivedRayIDs[faceI][receivedRayI]
+                    ).I().internalField()[faceCellIDs[faceI]];
             }
         }
     }
@@ -410,7 +399,7 @@ makePatchTypeField
 );
 
 
-} // End namespace radiation
+} // End namespace photoBio
 } // End namespace Foam
 
 // ************************************************************************* //

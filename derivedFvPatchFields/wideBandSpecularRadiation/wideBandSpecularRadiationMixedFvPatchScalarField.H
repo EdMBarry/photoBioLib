@@ -32,6 +32,7 @@ SourceFiles
 
 Author
     Dominik Christ, Wikki Ltd. All rights reserved.
+    (Adapted by Chris DeGroot and Ed Barry)
 
 \*---------------------------------------------------------------------------*/
 
@@ -44,7 +45,7 @@ Author
 
 namespace Foam
 {
-namespace radiation
+namespace photoBio
 {
 
 /*---------------------------------------------------------------------------*\
@@ -151,7 +152,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace radiation
+} // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
