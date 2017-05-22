@@ -42,13 +42,13 @@ Foam::photoBio::photoBioIntensityRay::intensityPrefix("I");
 Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
 (
     const photoBioDOM& dom,
-    const fvMesh&   mesh,
-    const label     iBand,
-    const label     iAngle,
-    const scalar    phi,
-    const scalar    theta,
-    const scalar    deltaPhi,
-    const scalar    deltaTheta
+    const fvMesh& mesh,
+    const label iBand,
+    const label iAngle,
+    const scalar phi,
+    const scalar theta,
+    const scalar deltaPhi,
+    const scalar deltaTheta
 )
 :
     dom_(dom),
@@ -75,12 +75,10 @@ Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
        *Foam::sin(0.5*deltaPhi)
        *(deltaTheta - Foam::cos(2.0*theta)
        *Foam::sin(deltaTheta)),
-
         sinPhi
        *Foam::sin(0.5*deltaPhi)
        *(deltaTheta - Foam::cos(2.0*theta)
        *Foam::sin(deltaTheta)),
-
         0.5*deltaPhi
         *Foam::sin(2.0*theta)*Foam::sin(deltaTheta)
     );
@@ -89,7 +87,7 @@ Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
 
     IOobject IHeader
     (
-        intensityPrefix + "_" + name(iBand)+ "_" + name(iAngle),
+        intensityPrefix + "_" + name(iBand) + "_" + name(iAngle),
         mesh_.time().timeName(),
         mesh_,
         IOobject::MUST_READ,
@@ -141,7 +139,7 @@ Foam::photoBio::photoBioIntensityRay::~photoBioIntensityRay()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()  //(const volScalarField& inScTerm)
+Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()
 {
     scalar maxResidual = -GREAT;
     scalar eqnResidual;
@@ -151,7 +149,7 @@ Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()  //(const volScalar
     const volScalarField K = A + S;
 
     const volScalarField& ds = dom_.diffusionScatter();
-    const surfaceScalarField& Ji = JiCal();
+    const surfaceScalarField& Ji = dAve_ & mesh_.Sf();
 
     fvScalarMatrix IiEq
     (
@@ -161,40 +159,10 @@ Foam::scalar Foam::photoBio::photoBioIntensityRay::correct()  //(const volScalar
     );
 
     IiEq.relax();
-
-    eqnResidual = solve(IiEq,mesh_.solver("Ii")).initialResidual();
-
+    eqnResidual = solve(IiEq, mesh_.solver("Ii")).initialResidual();
     maxResidual = max(eqnResidual, maxResidual);
 
     return maxResidual;
-}
-
-
-const Foam::surfaceScalarField  Foam::photoBio::photoBioIntensityRay::JiCal()  const
-{
-    const label npP = dom_.nPixelPhi();
-    const label npT = dom_.nPixelTheta();
-
-    vector tV = vector(0,0,0);
-    surfaceScalarField Ji(tV & mesh_.Sf());
-
-    const scalar  dp = pi /(2.0*dom_.nPhi())/npP ;
-    const scalar  dt = pi /dom_.nTheta()/npT;
-
-    for(label m = 0; m < npT; m++)
-    {
-        for(label n=0; n < npP;n++)
-        {
-            scalar nP = (2.0*m -npP +1.0)*dp/2.0 + phi_;
-            scalar nT = (2.0*n -npT +1.0)*dt/2.0 + theta_;
-            vector nD = vector(
-                Foam::cos(nP)*Foam::sin(0.5*dp)*(dt - Foam::cos(2.0*nT)*Foam::sin(dt)),
-                Foam::sin(nP)*Foam::sin(0.5*dp)*(dt - Foam::cos(2.0*nT)*Foam::sin(dt)),
-                0.5*dp*Foam::sin(2.0*nT)*Foam::sin(dt));
-            Ji = Ji + (nD & mesh_.Sf());
-        }
-    }
-    return Ji;
 }
 
 

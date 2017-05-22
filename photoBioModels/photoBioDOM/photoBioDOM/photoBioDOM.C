@@ -215,7 +215,7 @@ void Foam::photoBio::photoBioDOM::calculate()
                                         << "    iAngle  : "<< iAngle;
             Info << endl;
 
-            if(phaseFunctionModel_->inScatter())
+            if (phaseFunctionModel_->inScatter())
             {
                 diffusionScatter_ = dimensionedScalar("diffusionScatter",dimMass/pow3(dimTime), 0.0) ;
 
