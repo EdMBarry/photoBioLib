@@ -30,7 +30,7 @@ License
 Foam::autoPtr<Foam::photoBio::phaseFunctionModel> Foam::photoBio::phaseFunctionModel::New
 (
     const photoBioDOM& dom,
-    const 	dictionary& dict,
+    const dictionary& dict,
     const label& nDim
 )
 {
