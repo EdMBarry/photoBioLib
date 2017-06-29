@@ -44,7 +44,7 @@ namespace Foam
 Foam::photoBio::phaseFunctionModel::phaseFunctionModel
 (
     const photoBioDOM& dom,
-    const 	dictionary& dict,
+    const dictionary& dict,
     const label& nDim
 )
 :
@@ -62,13 +62,13 @@ Foam::photoBio::phaseFunctionModel::~phaseFunctionModel()
 // ************************************************************************* //
 
 
-bool  Foam::photoBio::phaseFunctionModel::inScatter() const
+bool Foam::photoBio::phaseFunctionModel::inScatter() const
 {
     return false;
 }
 
 
-Foam::scalar  Foam::photoBio::phaseFunctionModel::correct
+Foam::scalar Foam::photoBio::phaseFunctionModel::correct
 (
     const label rayI,
     const label rayJ,

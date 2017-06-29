@@ -22,20 +22,16 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
-
 #include "photoBioModel.H"
 #include "photoBioDOM.H"
 #include "wideBandSpecularRadiationMixedFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 namespace Foam
 {
 namespace photoBio
 {
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
-
 void wideBandSpecularRadiationMixedFvPatchScalarField::
 calcReceivedRayIDs() const
 {
@@ -48,14 +44,12 @@ calcReceivedRayIDs() const
         )   << "receivedRayIDPtr already calculated"
             << abort(FatalError);
     }
-
     receivedRayIDPtr_ = new labelListList(this->size());
     labelListList& receivedRayID = *receivedRayIDPtr_;
 
     // Get access to photoBio model, and recast as photoBioDOM
     const photoBioModel& photoBio =
         this->db().lookupObject<photoBioModel>("photoBioProperties");
-
     const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
 
     // Get rayId for this ray
@@ -68,7 +62,6 @@ calcReceivedRayIDs() const
     {
         dAve[rayI] = dom.IRay(rayI).dAve()/mag(dom.IRay(rayI).dAve());
     }
-
     // Get face normal vectors
     vectorField nHat = this->patch().nf();
 
@@ -380,8 +373,6 @@ void wideBandSpecularRadiationMixedFvPatchScalarField::write(Ostream& os) const
     fvPatchScalarField::write(os);
     this->writeEntry("value", os);
 }
-
-
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
 void wideBandSpecularRadiationMixedFvPatchScalarField::operator=
@@ -395,8 +386,6 @@ void wideBandSpecularRadiationMixedFvPatchScalarField::operator=
         + (1 - this->valueFraction())*ptf
     );
 }
-
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 makePatchTypeField
@@ -405,8 +394,6 @@ makePatchTypeField
    wideBandSpecularRadiationMixedFvPatchScalarField
 );
 
-
 } // End namespace photoBio
 } // End namespace Foam
-
 // ************************************************************************* //

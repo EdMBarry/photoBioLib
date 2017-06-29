@@ -53,33 +53,22 @@ class photoBioDOM;
                            Class constantScatter Declaration
 \*---------------------------------------------------------------------------*/
 
-class schlickModel
-:
-    public phaseFunctionModel
+class schlickModel : public phaseFunctionModel
 {
-public:
-
 private:
-
+    
     // Private data
-
     Switch inScatter_;
-    
     dictionary coeffsDict_;
-    
     label subAngleNum_ ;
-    
     DynamicList<scalar, 1, 0> g_;
     DynamicList<scalar, 1, 0> phaseFunction_;
-    
         
 public:
-
     //- Runtime type information
     TypeName("schlickModel");
 
     // Constructors
-
         //- Construct from components
     schlickModel
     (
@@ -87,41 +76,34 @@ public:
         const dictionary& dict,
         const label& nDim
     );
-
+    
     // Destructor
-
+    
     virtual ~schlickModel();
-
+    
     // Member Operators
-
+    
     Foam::scalar correct
     (
-        const  label  rayI,
-        const  label  rayJ,
-        const label  iBand
+        const label rayI,
+        const label rayJ,
+        const label iBand
     ) const;
     
-    Foam::scalar hg3d
+    Foam::scalar schlick3d
     (
         const scalar cosV,
         const scalar g
     ) const;
         
-    Foam::scalar hg2d
+    Foam::scalar schlick2d
     (
         const scalar cosV,
         const scalar g
     ) const;    
 };
 
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 } // End namespace photoBio
 } // End namespace Foam
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 #endif
-
-// ************************************************************************* //

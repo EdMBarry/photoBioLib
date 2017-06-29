@@ -44,8 +44,6 @@ namespace Foam
 {
 namespace photoBio
 {
-	
-
 class photoBioDOM;
 
 /*---------------------------------------------------------------------------*\
@@ -54,32 +52,25 @@ class photoBioDOM;
 
 class phaseFunctionModel
 {
-
-
 protected:
-    
     // Protected data
-    
     const photoBioDOM& dom_;
     
     //- photoBio model dictionary
     const dictionary dict_;
-    
+
+    //- number of dimensions
     label nDim_;
     
     label nBand_;
     
     label nAngle_;
-                
-        
         
 public:
-
     //- Runtime type information
     TypeName("phaseFunctionModel");
 
     //- Declare runtime constructor selection table
-
     declareRunTimeSelectionTable
     (
 	autoPtr,
@@ -104,26 +95,21 @@ public:
 	const label& nDim
     );
 
-
     // Selector
-
     static autoPtr<phaseFunctionModel> New
     (
 	const photoBioDOM& dom,
-	const 	dictionary& dict,
+	const dictionary& dict,
 	const label& nDim
         );
     
-    
     // Destructor
-    
     virtual ~phaseFunctionModel();
-    
     
     // Member Functions
     
     // Access
-    
+
     //- Reference to the dictionary
     inline const dictionary& dict() const
     {
@@ -135,9 +121,9 @@ public:
     
     virtual scalar correct
     (
-	label  rayI,
-	label  rayJ,
-	label  iBand
+	label rayI,
+	label rayJ,
+	label iBand
 	) const;
 
 };

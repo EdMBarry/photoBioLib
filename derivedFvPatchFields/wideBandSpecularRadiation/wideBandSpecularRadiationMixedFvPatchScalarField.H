@@ -71,82 +71,82 @@ public:
 
     // Constructors
 
-        //- Construct from patch and internal field
-        wideBandSpecularRadiationMixedFvPatchScalarField
-        (
-            const fvPatch&,
-            const DimensionedField<scalar, volMesh>&
-        );
+    //- Construct from patch and internal field
+    wideBandSpecularRadiationMixedFvPatchScalarField
+    (
+        const fvPatch&,
+        const DimensionedField<scalar, volMesh>&
+    );
 
-        //- Construct from patch, internal field and dictionary
-        wideBandSpecularRadiationMixedFvPatchScalarField
-        (
-            const fvPatch&,
-            const DimensionedField<scalar, volMesh>&,
-            const dictionary&
-        );
+    //- Construct from patch, internal field and dictionary
+    wideBandSpecularRadiationMixedFvPatchScalarField
+    (
+        const fvPatch&,
+        const DimensionedField<scalar, volMesh>&,
+        const dictionary&
+    );
+    
+    //- Construct by mapping given wideBandSpecularRadiationMixedFvPatchScalarField onto a new patch
+    wideBandSpecularRadiationMixedFvPatchScalarField
+    (
+        const wideBandSpecularRadiationMixedFvPatchScalarField&,
+        const fvPatch&,
+        const DimensionedField<scalar, volMesh>&,
+        const fvPatchFieldMapper&
+    );
 
-        //- Construct by mapping given wideBandSpecularRadiationMixedFvPatchScalarField onto a new patch
-        wideBandSpecularRadiationMixedFvPatchScalarField
-        (
-            const wideBandSpecularRadiationMixedFvPatchScalarField&,
-            const fvPatch&,
-            const DimensionedField<scalar, volMesh>&,
-            const fvPatchFieldMapper&
-        );
-
-        //- Construct as copy
-        wideBandSpecularRadiationMixedFvPatchScalarField
-        (
-            const wideBandSpecularRadiationMixedFvPatchScalarField&
-        );
-
-        //- Construct and return a clone
-        virtual tmp<fvPatchField<scalar> > clone() const
+    //- Construct as copy
+    wideBandSpecularRadiationMixedFvPatchScalarField
+    (
+        const wideBandSpecularRadiationMixedFvPatchScalarField&
+    );
+    
+    //- Construct and return a clone
+    virtual tmp<fvPatchField<scalar> > clone() const
         {
             return tmp<fvPatchField<scalar> >
-            (
-                new wideBandSpecularRadiationMixedFvPatchScalarField(*this)
-            );
+                (
+                    new wideBandSpecularRadiationMixedFvPatchScalarField(*this)
+                );
         }
-
-        //- Construct as copy setting internal field reference
-        wideBandSpecularRadiationMixedFvPatchScalarField
-        (
-            const wideBandSpecularRadiationMixedFvPatchScalarField&,
-            const DimensionedField<scalar, volMesh>&
-        );
-
-        //- Construct and return a clone setting internal field reference
-        virtual tmp<fvPatchField<scalar> > clone
-        (
-            const DimensionedField<scalar, volMesh>& iF
-        ) const
+    
+    //- Construct as copy setting internal field reference
+    wideBandSpecularRadiationMixedFvPatchScalarField
+    (
+        const wideBandSpecularRadiationMixedFvPatchScalarField&,
+        const DimensionedField<scalar, volMesh>&
+    );
+    
+    //- Construct and return a clone setting internal field reference
+    virtual tmp<fvPatchField<scalar> > clone
+    (
+        const DimensionedField<scalar, volMesh>& iF
+    ) const
         {
             return tmp<fvPatchField<scalar> >
-            (
-                new wideBandSpecularRadiationMixedFvPatchScalarField(*this, iF)
-            );
+                (
+                    new wideBandSpecularRadiationMixedFvPatchScalarField(*this, iF)
+                );
         }
-
-
+    
+    
     // Member functions
+    
+    // Access
+    
+    //- Return ray IDs of reflected rays
+    const labelListList& receivedRayIDs() const;
+    
+    //- Update the coefficients associated with the patch field
+    virtual void updateCoeffs();
+    
+    //- Write
+    virtual void write(Ostream&) const;
 
-        // Access
-
-            //- Return ray IDs of reflected rays
-            const labelListList& receivedRayIDs() const;
-
-        //- Update the coefficients associated with the patch field
-        virtual void updateCoeffs();
-
-        //- Write
-        virtual void write(Ostream&) const;
-
-
+    
     // Member operators
 
-        virtual void operator=(const fvPatchScalarField& pvf);
+    virtual void operator=(const fvPatchScalarField& pvf);
 };
 
 
