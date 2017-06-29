@@ -116,6 +116,12 @@ calcReceivedRayIDs() const
                     continue;
                 }
 
+                if (dom.IRay(rayId).iBand() != dom.IRay(incomingRayI).iBand())
+                {
+                    // If the band does not match, keep looking
+                    continue;
+                }
+
                 scalar dotProductOtherRay = dAve[receivingRayI] & dReflected;
                 if (dotProductThisRay < dotProductOtherRay)
                 {
@@ -123,6 +129,7 @@ calcReceivedRayIDs() const
                     closest = false;
                     break;
                 }
+
             }
 
             if (closest)
@@ -314,7 +321,7 @@ void wideBandSpecularRadiationMixedFvPatchScalarField::updateCoeffs()
 
     const photoBioDOM& dom(refCast<const photoBioDOM>(photoBio));
 
-    // Get rayId afor this ray
+    // Get rayId for this ray
     label rayId = -1;
     dom.setRayId(internalField().name(), rayId);
 
