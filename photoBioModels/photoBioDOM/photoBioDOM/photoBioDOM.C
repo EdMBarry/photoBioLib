@@ -114,7 +114,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
     {
         for (label iTheta = 0; iTheta < nTheta_; iTheta++)
         {
-            for (label iPhi = 0; iPhi < 4*nPhi_; iPhi++)
+            for (label iPhi = 0; iPhi < nAngle_/nTheta_; iPhi++)
             {
                 label iAngle = iPhi + 4*iTheta*nPhi_;
                 scalar theta = (2.0*iTheta + 1.0)*deltaTheta_/2.0;
@@ -149,7 +149,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
 
     phaseFunctionModel_ = phaseFunctionModel::New(*this,coeffs_, mesh_.nSolutionD());
 
-    if(phaseFunctionModel_->inScatter())
+    if (phaseFunctionModel_->inScatter())
     {
         pf0_.setSize(nBand_ * nAngle_);
         for(label iBand = 0 ; iBand < nBand_; iBand++)
