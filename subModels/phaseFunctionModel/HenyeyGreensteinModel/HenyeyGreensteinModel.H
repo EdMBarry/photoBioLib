@@ -55,80 +55,66 @@ class photoBioDOM;
                            Class constantScatter Declaration
 \*---------------------------------------------------------------------------*/
 
-class HenyeyGreensteinModel
-:
-    public phaseFunctionModel
+class HenyeyGreensteinModel : public phaseFunctionModel
 {
-public:
-
 private:
 
     // Private data
-
-    	        Switch inScatter_;
-    	        
-        dictionary coeffsDict_;
-       
-        label subAngleNum_ ;
-        
-        DynamicList<scalar, 1, 0> g_;
-        
-        DynamicList<scalar, 1, 0> phaseFunction_;
-        
-        
+    Switch inScatter_;
+    dictionary coeffsDict_;
+    label subAngleNum_ ;
+    DynamicList<scalar, 1, 0> g_;
+    DynamicList<scalar, 1, 0> phaseFunction_;
+    
 public:
 
     //- Runtime type information
     TypeName("HenyeyGreensteinModel");
 
-
     // Constructors
-
-        //- Construct from components
-        HenyeyGreensteinModel
-        (
-                const photoBioDOM& dom,
-				const 	dictionary& dict,
-				const label& nDim
-        );
+    //- Construct from components
+    HenyeyGreensteinModel
+    (
+        const photoBioDOM& dom,
+        const dictionary& dict,
+        const label& nDim
+    );
 
 
     // Destructor
-
-       virtual ~HenyeyGreensteinModel();
+    virtual ~HenyeyGreensteinModel();
 
 
     // Member Operators
-
-         Foam::scalar correct
-        (
-           const  label  rayI,
-           const  label  rayJ,
-            const label  iBand
-        ) const;
+    Foam::scalar correct
+    (
+        const label rayI,
+        const label rayJ,
+        const label iBand
+    ) const;
         
-         Foam::scalar hg3d
-        (
-			const scalar cosV,
-			const scalar g
-        ) const;
-        
-         Foam::scalar hg2d
-        (
-			const scalar cosV,
-			const scalar g
-        ) const;
-        
+    Foam::scalar hg3d
+    (
+        const scalar cosV,
+        const scalar g
+    ) const;
+    
+    Foam::scalar hg2d
+    (
+        const scalar cosV,
+        const scalar g
+    ) const;
+    
 };
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+    
+    
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    
 } // End namespace photoBio
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#endif
+    #endif
 
 // ************************************************************************* //
