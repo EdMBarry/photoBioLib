@@ -22,13 +22,13 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::photoBio::constantScatter
+    Foam::photoBio::
 
 Description
-    Constant photoBio scatter coefficient
+    Schlick approximation to in scattering
 
 SourceFiles
-    scatterModel.C
+    schlickModel.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -56,54 +56,63 @@ class photoBioDOM;
 class schlickModel : public phaseFunctionModel
 {
 private:
-    
+
     // Private data
     Switch inScatter_;
     dictionary coeffsDict_;
     label subAngleNum_ ;
-    DynamicList<scalar, 1, 0> g_;
+    DynamicList<scalar, 1, 0> k_;
     DynamicList<scalar, 1, 0> phaseFunction_;
-        
+    
 public:
+
     //- Runtime type information
     TypeName("schlickModel");
 
     // Constructors
-        //- Construct from components
+    //- Construct from components
     schlickModel
     (
         const photoBioDOM& dom,
         const dictionary& dict,
         const label& nDim
     );
-    
+
+
     // Destructor
-    
     virtual ~schlickModel();
-    
+
+
     // Member Operators
-    
     Foam::scalar correct
     (
         const label rayI,
         const label rayJ,
         const label iBand
     ) const;
-    
-    Foam::scalar schlick3d
-    (
-        const scalar cosV,
-        const scalar g
-    ) const;
         
-    Foam::scalar schlick2d
+    Foam::scalar sl3d
     (
         const scalar cosV,
-        const scalar g
-    ) const;    
+        const scalar k
+    ) const;
+    
+    Foam::scalar sl2d
+    (
+        const scalar cosV,
+        const scalar k
+    ) const;
+    
 };
-
+    
+    
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    
 } // End namespace photoBio
 } // End namespace Foam
 
-#endif
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    #endif
+
+// ************************************************************************* //
