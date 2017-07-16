@@ -63,23 +63,23 @@ public:
     // Constructors
 
         //- Construct from components
-        nullModel
-        (
-            const photoBioDOM& dom,
-            const dictionary& dict,
-            const label& nDim
-        );
-
-
+    nullModel
+    (
+        const photoBioDOM& dom,
+        const dictionary& dict,
+        const label& nDim
+    );
+    
+    
     // Destructor
-
-       virtual ~nullModel();
-        
+    
+    virtual ~nullModel();
+    
 };
-
-
+    
+    
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+    
 } // End namespace photoBio
 } // End namespace Foam
 

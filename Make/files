@@ -9,6 +9,7 @@ photoBioModels/photoBioDOM/photoBioIntensityRay/photoBioIntensityRay.C
 subModels/phaseFunctionModel/phaseFunctionModel/phaseFunctionModel.C 
 subModels/phaseFunctionModel/phaseFunctionModel/newPhaseFunctionModel.C 
 subModels/phaseFunctionModel/HenyeyGreensteinModel/HenyeyGreensteinModel.C
+subModels/phaseFunctionModel/schlickModel/schlickModel.C
 subModels/phaseFunctionModel/nullModel/nullModel.C
 
 subModels/extinctionModel/extinctionModel/extinctionModel.C

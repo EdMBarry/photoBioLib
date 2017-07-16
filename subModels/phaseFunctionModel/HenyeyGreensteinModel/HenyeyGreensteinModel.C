@@ -182,7 +182,7 @@ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::correct
 {
 // this is just fucking wrong
     //    return Foam::pow((1-g*g)/(1+g*g-2*g*cosV),1.5);
-    return (1 - pow(g,2)) / pow((4*pi * (1 - pow(g,2) - 2*g*cosV)), 1.5);
+    return (1 - pow(g,2)) / (4.0 * pi * pow(1 + pow(g,2) - 2*g*cosV,1.5));
 }
 
 
@@ -192,9 +192,6 @@ Foam::scalar  Foam::photoBio::HenyeyGreensteinModel::hg2d
     const scalar g
 ) const
 {
-    return (1 - pow(g,2)) / pow((2*pi * (1 + pow(g,2) - 2*g*cosV)),1.5);
+    return (1 - pow(g,2)) / (2.0 * pi * pow(1 + pow(g,2) - 2*g*cosV,1.5));
 }
-
-
-
 // ************************************************************************* //
