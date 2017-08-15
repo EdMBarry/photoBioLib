@@ -95,7 +95,7 @@ Foam::photoBio::photoBioIntensityRay::photoBioIntensityRay
     );
 
     // check if field exists and can be read
-    if (IHeader.headerOk())
+    if (IHeader.typeHeaderOk<volScalarField>(true))
     {
         I_.set(new volScalarField(IHeader, mesh_));
     }
