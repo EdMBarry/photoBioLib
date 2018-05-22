@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     regionProperties rp(runTime);
 
     #include "createMeshes.H"
-    #include "createFields.H"
+    #include "createMultiRegionPhotoBioFields.H"
 
     while (runTime.loop())
     {
