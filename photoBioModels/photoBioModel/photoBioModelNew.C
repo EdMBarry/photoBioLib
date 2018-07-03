@@ -52,7 +52,7 @@ autoPtr<photoBioModel> photoBioModel::New
                 "photoBioProperties",
                 Enu.time().constant(),
                 Enu.mesh(),
-                IOobject::MUST_READ,
+                IOobject::NO_READ,
                 IOobject::NO_WRITE,
                 false
             )

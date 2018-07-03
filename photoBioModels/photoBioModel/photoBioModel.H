@@ -149,6 +149,8 @@ public:
             //- Read photoBioProperties dictionary
             virtual bool read() = 0;
 
+            virtual const volScalarField& G() const = 0;
+
 };
 
 
