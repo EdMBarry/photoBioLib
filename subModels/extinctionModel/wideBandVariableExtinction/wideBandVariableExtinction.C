@@ -78,7 +78,7 @@ Foam::photoBio::wideBandVariableExtinction::wideBandVariableExtinction
             aCoeffs_[i][j] = 0.0;
         }
     }
-    
+
     // Initialize scattering coefficients
     forAll(sCoeffs_, i)
     {
@@ -102,19 +102,8 @@ Foam::photoBio::wideBandVariableExtinction::wideBandVariableExtinction
     {
         aFields_.set
         (
-            i,
-            new volScalarField
-            (
-                IOobject
-                (
-                    aSpecies_[i] ,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::MUST_READ,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_
-            )
+           i,
+           mesh.lookupObject<volScalarField>(aSpecies_[i])
         );
     }
 
@@ -124,18 +113,7 @@ Foam::photoBio::wideBandVariableExtinction::wideBandVariableExtinction
         sFields_.set
         (
             i,
-            new volScalarField
-            (
-                IOobject
-                (
-                    sSpecies_[i] ,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::MUST_READ,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_
-            )
+            mesh.lookupObject<volScalarField>(sSpecies_[i])
         );
     }
     // Correct the extinction coefficient fields
