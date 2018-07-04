@@ -208,7 +208,7 @@ public:
             inline scalar pf0(const label iLambda) const;
 
             //- Const access to irradiance field
-            inline const volScalarField& G() const;
+            virtual const volScalarField& G() const;
 
             //- Const access to
             inline const volScalarField& diffusionScatter() const;
