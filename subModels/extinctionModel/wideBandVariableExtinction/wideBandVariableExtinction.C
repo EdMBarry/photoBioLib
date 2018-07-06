@@ -97,7 +97,8 @@ Foam::photoBio::wideBandVariableExtinction::wideBandVariableExtinction
     if (absorption_) coeffsDict_.lookup("absorbingVars") >> aSpecies_;
     if (scattering_) coeffsDict_.lookup("scatteringVars") >> sSpecies_;
 
-    // Read the absorbing species fields
+    // Read the absorbing species fields'
+    /*
     forAll(aFields_, i)
     {
         aFields_.set
@@ -116,6 +117,7 @@ Foam::photoBio::wideBandVariableExtinction::wideBandVariableExtinction
             mesh.lookupObject<volScalarField>(sSpecies_[i])
         );
     }
+    */
     // Correct the extinction coefficient fields
     correct();
 }
@@ -133,7 +135,28 @@ Foam::photoBio::wideBandVariableExtinction::~wideBandVariableExtinction()
 
 void Foam::photoBio::wideBandVariableExtinction::correct()
 {
-  // Set the absorption coefficient field
+    
+    forAll(aFields_, i)
+    {
+        aFields_.set
+        (
+           i,
+           this->mesh().lookupObject<volScalarField>(aSpecies_[i])
+        );
+    }
+
+    // Read the scattering species fields
+    forAll(sFields_, i)
+    {
+        sFields_.set
+        (
+            i,
+            this->mesh().lookupObject<volScalarField>(sSpecies_[i])
+        );
+    }
+
+
+    // Set the absorption coefficient field
   forAll(ALambda_, iBand)
   {
       ALambda_[iBand] = dimensionedScalar("A", dimless/dimLength, 0.0);
