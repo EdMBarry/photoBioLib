@@ -1,10 +1,10 @@
 wmake libso
-cd multiRegionPhotoBioFoam
-wclean
-wmake
-cd ..
-cd photoBioFoam
-wclean
-wmake
-cd ..
+#cd multiRegionPhotoBioFoam
+#wclean
+#wmake
+#cd ..
+#cd photoBioFoam
+#wclean
+#wmake
+#cd ..
 
