@@ -152,9 +152,9 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
     if (phaseFunctionModel_->inScatter())
     {
         pf0_.setSize(nBand_ * nAngle_);
-        for(label iBand = 0 ; iBand < nBand_; iBand++)
+        for (label iBand = 0 ; iBand < nBand_; iBand++)
 	{
-            for( label iAngle = 0 ; iAngle < nAngle_; iAngle++)
+            for (label iAngle = 0 ; iAngle < nAngle_; iAngle++)
             {
                 pf0_[iAngle+iBand*nAngle_] = phaseFunctionModel_->correct(iAngle,iAngle,iBand);
             }
