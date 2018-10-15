@@ -60,7 +60,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar("G", dimMass/pow3(dimTime), 0.0)
@@ -140,7 +140,7 @@ Foam::photoBio::photoBioDOM::photoBioDOM(const volScalarField& intensity)
                     mesh_.time().timeName(),
                     mesh_,
                     IOobject::NO_READ,
-                    IOobject::NO_WRITE
+                    IOobject::AUTO_WRITE
                 ),
                 G_
             )
