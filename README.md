@@ -9,7 +9,7 @@ This is an implementation of the radiation library which excludes heat radiation
 2. The library can be compiled with the command;
 
 ```
-#!bash
+#!/bin/bash
 wmake libso
 
 ```
@@ -18,7 +18,7 @@ wmake libso
 
 4. Compile the solver by placing it in an appropriate directory (e.g. $FOAM_USER_APP -> <name>-<versionNumber>/applications) and calling
 ```
-#!bash
+#!/bin/bash
 wmake
 
 ```
